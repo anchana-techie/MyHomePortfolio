@@ -426,6 +426,92 @@
       margin-top: .2rem;
     }
 
+    /* ── CAROUSEL ── */
+    .carousel-section-title {
+      font-family: var(--display);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 400;
+      color: var(--text);
+      margin-top: 3rem;
+      margin-bottom: 1.25rem;
+    }
+    .carousel-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.07),
+        0 0 24px 4px rgba(255,255,255,0.05);
+      transition: box-shadow 0.3s;
+      background: var(--bg-card);
+    }
+    .carousel-wrap:hover {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.13),
+        0 0 36px 8px rgba(255,255,255,0.09);
+    }
+    .carousel-viewport {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+    }
+    .carousel-viewport img {
+      min-width: 100%;
+      width: 100%;
+      flex-shrink: 0;
+      max-height: 480px;
+      object-fit: contain;
+      display: block;
+      background: var(--bg-card);
+      user-select: none;
+      pointer-events: none;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(10,11,14,0.70);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(8px);
+      padding: 0;
+    }
+    .carousel-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-50%) scale(1.08);
+    }
+    .carousel-btn.prev { left: 12px; }
+    .carousel-btn.next { right: 12px; }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 0 12px;
+      background: var(--bg-card);
+    }
+    .carousel-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .carousel-dot.active {
+      background: var(--gold);
+      transform: scale(1.25);
+    }
+
     /* ── FOOTER ── */
     footer { padding-block: 2.5rem; text-align: center; }
     footer p { font-size: 0.75rem; color: var(--text-muted); }
@@ -525,6 +611,8 @@
       <li><a onclick="showPage('experience')" id="nav-experience">Experience</a></li>
       <li><a onclick="showPage('skills')"     id="nav-skills">Skills</a></li>
       <li><a onclick="showPage('education')"  id="nav-education">Education</a></li>
+      <li><a onclick="showPage('works')" id="nav-works">Portfolio</a></li>
+      <li><a onclick="openModal('resume')" id="nav-resume">Resume</a></li>
     </ul>
   </div>
 </nav>
@@ -557,7 +645,7 @@
           </div>
           <div class="contact-item">
             <div class="contact-label">LinkedIn</div>
-            <a href="https://www.linkedin.com/in/anchana-prabakaran" target="_blank" rel="noopener">anchana-prabakaran ↗</a>
+            <a href="https://www.linkedin.com/in/anchana-prabakaran-231331233" target="_blank" rel="noopener">anchana-prabakaran ↗</a>
           </div>
         </div>
       </div>
@@ -718,7 +806,7 @@
           <div class="edu-degree">B.E. – Computer Science &amp; Engineering</div>
           <div class="edu-school">Meenakshi Sundararajan Engineering College</div>
           <div class="edu-honour">First Class with Distinction</div>
-          <div class="edu-docs">
+          <!-- <div class="edu-docs">
             <button class="edu-doc-btn" onclick="openModal('marksheet')">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               Consolidated Marksheet
@@ -727,7 +815,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               Degree Certificate
             </button>
-          </div>
+          </div> -->
         </div>
         <div class="edu-stats">
           <div class="edu-stat">
@@ -736,9 +824,46 @@
           </div>
         </div>
       </div>
+
+      <h2 class="carousel-section-title">Course Certifications</h2>
+      <div class="carousel-wrap" id="carouselWrap">
+        <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="carousel-viewport" id="carouselViewport">
+          <img src="Carousel1/Assertive_Communication_Skills_Masterclass.jpg" alt="Assertive Communication Skills Masterclass">
+          <img src="Carousel1/Generative_AI_For_Data_Engineering_And_Data_Professional.jpg" alt="Generative AI For Data Engineering">
+          <img src="Carousel1/Intro_to_AI_Agents_And_Agentic_AI.jpg" alt="Intro to AI Agents And Agentic AI">
+          <img src="Carousel1/Introduction_To_Data_Engineering_Using_Generative_AI.jpg" alt="Introduction To Data Engineering Using Generative AI">
+          <img src="Carousel1/RAG_Strategy_And_Execution.jpg" alt="RAG Strategy And Execution">
+        </div>
+        <button class="carousel-btn next" id="carouselNext" aria-label="Next">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
     </div>
   </section>
 </div><!-- /page-education -->
+
+
+
+<div class="page" id="page-works">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-header">
+        <span class="eyebrow">Portfolio</span>
+        <div class="eyebrow-rule"></div>
+      </div>
+      <div class="edu-docs">
+        <button class="edu-doc-btn" onclick="openModal('agentproductivity')">Agent Productivity Dashboard</button>
+        <button class="edu-doc-btn" onclick="openModal('claimsdashboard')">Claims Dashboard</button>
+        <button class="edu-doc-btn" onclick="openModal('portfolioatrisk')">Portfolio At Risk</button>
+        <button class="edu-doc-btn" onclick="openModal('simulatorpar')">Simulator PAR</button>
+      </div>
+    </div>
+  </section>
+</div>
 
 
 <!-- FOOTER -->
@@ -769,9 +894,14 @@
      in the same folder as this index.html file.
   ── */
   const docs = {
-    cert:      { title: 'Databricks Certified Data Engineer Associate', file: 'databricks_certificate.pdf' },
-    marksheet: { title: 'Consolidated Marksheet',                       file: 'consolidated_marksheet.pdf' },
-    degree:    { title: 'Degree Certificate',                           file: 'degree_certificate.pdf' }
+    cert: { title:'Databricks Certified Data Engineer Associate', type:'image', file:'Images/Databricks.png' },
+    marksheet: { title:'Consolidated Marksheet', type:'pdf', file:'Documents/Anchana Consolidated Marksheet.pdf' },
+    degree: { title:'Degree Certificate', type:'pdf', file:'Documents/Anchana Provisional Certificate.pdf' },
+    resume: { title:'Resume', type:'pdf', file:'Documents/Anchana_Prabakaran_Resume.pdf' },
+    agentproductivity:{ title:'Agent Productivity Dashboard', type:'pbix', file:'PowerBi/AgentProductivityFinal.pbix' },
+    claimsdashboard:{ title:'Claims Dashboard', type:'pbix', file:'PowerBi/ClaimsDashboards.pbix' },
+    portfolioatrisk:{ title:'Portfolio At Risk Dashboard', type:'pbix', file:'PowerBi/PortfolioAtRisk.pbix' },
+    simulatorpar:{ title:'Simulator PAR Dashboard', type:'pbix', file:'PowerBi/Simulator_PAR.pbix' }
   };
 
   /* ── Page switcher ── */
@@ -792,22 +922,24 @@
   function openModal(key) {
     const doc = docs[key];
     document.getElementById('modalTitle').textContent = doc.title;
-
     const body = document.getElementById('modalBody');
-    body.innerHTML = `
-      <iframe
-        src="${doc.file}#toolbar=1&view=FitH"
-        title="${doc.title}"
-        onload="checkIframe(this)"
-      ></iframe>
-      <div id="modal-fallback" class="modal-placeholder" style="display:none;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        <p>
-          To display this document, place <strong>${doc.file}</strong> in the
-          same folder as <strong>index.html</strong> and reload the page.
-        </p>
-      </div>
-    `;
+
+    if (doc.type === 'image') {
+      body.innerHTML = `<div style="padding:20px;text-align:center;">
+        <img src="${doc.file}" style="max-width:100%;max-height:75vh;border-radius:8px;">
+      </div>`;
+    } else if (doc.type === 'pbix') {
+      body.innerHTML = `<div class="modal-placeholder">
+        <h3>Power BI File</h3>
+        <p>Browsers cannot preview .pbix files directly.</p>
+        <a href="${doc.file}" download style="padding:10px 20px;border:1px solid #c9a84c;text-decoration:none;">Download PBIX File</a>
+      </div>`;
+    } else {
+      body.innerHTML = `<iframe src="${doc.file}#toolbar=1"></iframe>
+      <div style="padding:15px;text-align:center;">
+      <a href="${doc.file}" download style="padding:10px 20px;border:1px solid #c9a84c;text-decoration:none;">Download</a>
+      </div>`;
+    }
 
     document.getElementById('docModal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -844,6 +976,106 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
   });
+
+  /* ── CAROUSEL ── */
+  (function () {
+    var viewport = document.getElementById('carouselViewport');
+    var wrap     = document.getElementById('carouselWrap');
+    var dotsBar  = document.getElementById('carouselDots');
+    var btnPrev  = document.getElementById('carouselPrev');
+    var btnNext  = document.getElementById('carouselNext');
+    if (!viewport) return;
+
+    var slides  = Array.from(viewport.querySelectorAll('img'));
+    var total   = slides.length;
+    var current = 0;
+    var paused  = false;
+    var timer   = null;
+
+    /* Build dots */
+    slides.forEach(function (_, i) {
+      var dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.addEventListener('click', function () { goTo(i); });
+      dotsBar.appendChild(dot);
+    });
+
+    function updateDots() {
+      var dots = dotsBar.querySelectorAll('.carousel-dot');
+      dots.forEach(function (d, i) {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    /* Instantly jump the flex strip — no CSS transitions involved,
+       so there is nothing to "get stuck". */
+    function goTo(index) {
+      current = (index + total) % total;   /* wrap around */
+      var slideW = viewport.offsetWidth;
+      /* Use scrollLeft — supported everywhere, no transition bugs */
+      viewport.style.transition = 'none';
+      /* Temporarily make viewport scrollable, jump, then lock again */
+      viewport.style.overflowX = 'scroll';
+      viewport.scrollLeft = current * slideW;
+      viewport.style.overflowX = 'hidden';
+      updateDots();
+    }
+
+    /* Smooth animated slide using a quick CSS transition on the flex strip */
+    function slideTo(index) {
+      var next = (index + total) % total;
+      var slideW = viewport.offsetWidth;
+
+      /* Move track with CSS animation */
+      viewport.style.overflowX = 'hidden';
+      /* Animate by transitioning scrollLeft via JS frame loop */
+      var start    = viewport.scrollLeft;
+      /* We need to set scrollLeft on a scrollable element.
+         Temporarily allow scroll, animate, then lock. */
+      viewport.style.overflowX = 'scroll';
+      var end      = next * slideW;
+      var startT   = null;
+      var duration = 500;
+
+      function step(ts) {
+        if (!startT) startT = ts;
+        var prog = Math.min((ts - startT) / duration, 1);
+        /* ease-in-out */
+        var ease = prog < 0.5
+          ? 2 * prog * prog
+          : -1 + (4 - 2 * prog) * prog;
+        viewport.scrollLeft = start + (end - start) * ease;
+        if (prog < 1) {
+          requestAnimationFrame(step);
+        } else {
+          current = next;
+          viewport.scrollLeft = end;
+          viewport.style.overflowX = 'hidden';
+          updateDots();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    btnPrev.addEventListener('click', function () { slideTo(current - 1); });
+    btnNext.addEventListener('click', function () { slideTo(current + 1); });
+
+    /* Auto-advance every 2 s */
+    function startTimer() {
+      timer = setInterval(function () {
+        if (!paused) slideTo(current + 1);
+      }, 2000);
+    }
+
+    /* Pause on hover */
+    wrap.addEventListener('mouseenter', function () { paused = true; });
+    wrap.addEventListener('mouseleave', function () { paused = false; });
+
+    /* Init */
+    goTo(0);
+    startTimer();
+  })();
 </script>
 
 </body>
