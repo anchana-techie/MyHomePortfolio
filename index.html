@@ -20,9 +20,40 @@
       --gold-dim:    rgba(201,168,76,.12);
       --teal:        #2dd4bf;
       --teal-dim:    rgba(45,212,191,.1);
+      --nav-bg:      rgba(10,11,14,0.92);
+      --photo-shade: rgba(10,11,14,0.85);
+      --project-hover: #13151d;
+      --carousel-btn-bg: rgba(10,11,14,0.70);
+      --modal-overlay: rgba(0,0,0,0.82);
+      --dog-bubble-bg: rgba(20,20,30,0.85);
+      --canvas-text:  #e8eaf0;
+      --shadow-strong: rgba(0,0,0,0.7);
       --display:     'DM Serif Display', Georgia, serif;
       --body:        'Inter', sans-serif;
       --max:         1080px;
+    }
+
+    body.light-theme {
+      --bg:          #f7f4ed;
+      --bg-raised:   #ffffff;
+      --bg-card:     #fbfaf7;
+      --border:      #ded7c8;
+      --border-soft: #ebe4d7;
+      --text:        #20232a;
+      --text-soft:   #5e6673;
+      --text-muted:  #8a8276;
+      --gold:        #9f7a18;
+      --gold-dim:    rgba(159,122,24,.12);
+      --teal:        #008b7d;
+      --teal-dim:    rgba(0,139,125,.1);
+      --nav-bg:      rgba(247,244,237,0.92);
+      --photo-shade: rgba(247,244,237,0.82);
+      --project-hover: #f3eee4;
+      --carousel-btn-bg: rgba(255,255,255,0.78);
+      --modal-overlay: rgba(32,35,42,0.55);
+      --dog-bubble-bg: rgba(255,255,255,0.9);
+      --canvas-text:  #20232a;
+      --shadow-strong: rgba(47,42,31,0.22);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,6 +64,7 @@
       color: var(--text);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      transition: background .25s, color .25s;
     }
 
     .wrap {
@@ -44,7 +76,7 @@
     /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(10,11,14,0.92);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
@@ -63,6 +95,11 @@
       cursor: pointer;
     }
     .nav-logo em { color: var(--gold); font-style: normal; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
     nav ul { list-style: none; display: flex; gap: 2.25rem; }
     nav a {
       font-size: 0.75rem;
@@ -79,6 +116,125 @@
       font-family: var(--body);
     }
     nav a:hover, nav a.active { color: var(--gold); }
+    .theme-toggle {
+      position: relative;
+      width: 82px;
+      height: 42px;
+      flex: 0 0 82px;
+      border: 0;
+      border-radius: 999px;
+      background: none;
+      cursor: pointer;
+      overflow: hidden;
+      padding: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 8px 18px rgba(0,0,0,.22);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .toggle-sky {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      transition: opacity .35s ease;
+    }
+    .toggle-sky.dark {
+      background:
+        radial-gradient(circle at 58% 26%, rgba(255,255,255,.75) 0 1px, transparent 2px),
+        radial-gradient(circle at 74% 38%, rgba(255,255,255,.65) 0 1.3px, transparent 2.4px),
+        radial-gradient(circle at 66% 66%, rgba(255,255,255,.8) 0 1.2px, transparent 2.2px),
+        linear-gradient(90deg, #7b28d8 0%, #34105f 48%, #141424 100%);
+    }
+    .toggle-sky.light {
+      opacity: 0;
+      background: linear-gradient(90deg, #1fc7ee 0%, #55d7f4 58%, #8be7f8 100%);
+    }
+    body.light-theme .toggle-sky.dark { opacity: 0; }
+    body.light-theme .toggle-sky.light { opacity: 1; }
+    .toggle-cloud {
+      position: absolute;
+      left: 18px;
+      bottom: 11px;
+      width: 25px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(35,104,140,.18);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .toggle-cloud::before,
+    .toggle-cloud::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+    .toggle-cloud::before {
+      left: 4px;
+      width: 10px;
+      height: 10px;
+    }
+    .toggle-cloud::after {
+      right: 4px;
+      width: 14px;
+      height: 14px;
+    }
+    .toggle-cloud.small {
+      left: 16px;
+      top: 13px;
+      width: 21px;
+      height: 7px;
+      transform: scale(.72);
+    }
+    body.light-theme .toggle-cloud { opacity: .95; }
+    .toggle-orb {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,.96), rgba(255,255,244,.9) 45%, #eee9cc 100%);
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      transition: transform .35s ease, background .35s ease, box-shadow .35s ease;
+    }
+    .toggle-orb::before,
+    .toggle-orb::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(217,213,192,.34);
+      transition: opacity .2s ease;
+    }
+    .toggle-orb::before {
+      left: 8px;
+      top: 10px;
+      width: 7px;
+      height: 7px;
+    }
+    .toggle-orb::after {
+      right: 7px;
+      bottom: 8px;
+      width: 9px;
+      height: 9px;
+    }
+    body.light-theme .toggle-orb {
+      transform: translateX(40px);
+      background: #ffdd2e;
+      box-shadow: 0 0 0 6px rgba(255,235,77,.28), 0 2px 9px rgba(148,117,0,.25);
+    }
+    body.light-theme .toggle-orb::before,
+    body.light-theme .toggle-orb::after {
+      opacity: 0;
+    }
 
     /* ── PAGES ── */
     .page { display: none; }
@@ -125,9 +281,9 @@
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(to bottom, transparent 40%, var(--bg) 100%),
-        linear-gradient(to left,   transparent 50%, rgba(10,11,14,0.85) 100%);
+      /* background:
+        linear-gradient(to bottom, transparent 80%, var(--bg) 100%),
+        linear-gradient(to left,   transparent 80%, var(--photo-shade) 100%); */
       border-radius: 12px;
       pointer-events: none;
       transition: opacity .4s;
@@ -422,7 +578,7 @@
       transition: background .2s;
     }
     .project:last-child { border-bottom: none; }
-    .project:hover { background: #13151d; }
+    .project:hover { background: var(--project-hover); }
     .project-tag {
       font-size: 0.63rem;
       font-weight: 600;
@@ -597,7 +753,7 @@
       top: 50%;
       transform: translateY(-50%);
       z-index: 10;
-      background: rgba(10,11,14,0.70);
+      background: var(--carousel-btn-bg);
       border: 1px solid rgba(255,255,255,0.14);
       color: var(--text);
       width: 40px; height: 40px;
@@ -666,7 +822,7 @@
       position: fixed;
       inset: 0;
       z-index: 999;
-      background: rgba(0,0,0,0.82);
+      background: var(--modal-overlay);
       backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
@@ -683,7 +839,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+      box-shadow: 0 24px 80px var(--shadow-strong);
     }
     .modal-header {
       display: flex;
@@ -738,6 +894,11 @@
       .contact-item { text-align: left; }
       .edu-stat     { text-align: left; }
       nav ul        { gap: 1.25rem; }
+      nav .wrap     { align-items: flex-start; gap: 1rem; }
+      .nav-actions  { align-items: flex-end; flex-direction: column; gap: .85rem; }
+      .theme-toggle { width: 74px; height: 38px; flex-basis: 74px; }
+      .toggle-orb { width: 29px; height: 29px; top: 4.5px; left: 4.5px; }
+      body.light-theme .toggle-orb { transform: translateX(36px); }
       .modal-box    { max-height: 95vh; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -751,13 +912,22 @@
 <nav>
   <div class="wrap">
     <span class="nav-logo" onclick="showPage('home')">Anchana Prabakaran<em>.</em></span>
-    <ul>
-      <li><a onclick="showPage('experience')" id="nav-experience">Experience</a></li>
-      <li><a onclick="showPage('skills')"     id="nav-skills">Skills</a></li>
-      <li><a onclick="showPage('education')"  id="nav-education">Education</a></li>
-      <!-- <li><a onclick="showPage('works')" id="nav-works">Portfolio</a></li> -->
-      <li><a onclick="openModal('resume')" id="nav-resume">Resume</a></li>
-    </ul>
+    <div class="nav-actions">
+      <ul>
+        <li><a onclick="showPage('experience')" id="nav-experience">Experience</a></li>
+        <li><a onclick="showPage('skills')"     id="nav-skills">Skills</a></li>
+        <li><a onclick="showPage('education')"  id="nav-education">Education</a></li>
+        <!-- <li><a onclick="showPage('works')" id="nav-works">Portfolio</a></li> -->
+        <li><a onclick="openModal('resume')" id="nav-resume">Resume</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+        <span class="toggle-sky dark" aria-hidden="true"></span>
+        <span class="toggle-sky light" aria-hidden="true"></span>
+        <span class="toggle-cloud small" aria-hidden="true"></span>
+        <span class="toggle-cloud" aria-hidden="true"></span>
+        <span class="toggle-orb" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -1085,6 +1255,34 @@
 
 
 <script>
+  /* Theme toggle */
+  (function () {
+    var toggle = document.getElementById('themeToggle');
+    var savedTheme = localStorage.getItem('theme');
+    var prefersLight = window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: light)').matches;
+    var currentTheme = savedTheme || (prefersLight ? 'light' : 'dark');
+
+    function applyTheme(theme) {
+      var isLight = theme === 'light';
+      document.body.classList.toggle('light-theme', isLight);
+      if (toggle) {
+        toggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+        toggle.setAttribute('aria-pressed', String(isLight));
+      }
+    }
+
+    applyTheme(currentTheme);
+
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        currentTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        applyTheme(currentTheme);
+      });
+    }
+  })();
+
   /* ── Document registry
      Replace the 'file' values with the actual PDF filenames placed
      in the same folder as this index.html file.
@@ -1355,11 +1553,12 @@
     /* ── Draw "oof" speech bubble above dog ── */
     function drawBubble(text) {
       var c = ctx;
+      var styles = getComputedStyle(document.body);
       c.save();
       var W2 = text.length * 7 + 16;
       var H2 = 22;
       // bubble body
-      c.fillStyle   = 'rgba(20,20,30,0.85)';
+      c.fillStyle   = styles.getPropertyValue('--dog-bubble-bg').trim();
       c.strokeStyle = '#a78bfa';
       c.lineWidth   = 1.5;
       c.beginPath();
@@ -1373,7 +1572,7 @@
       c.closePath();
       c.fill(); c.stroke();
       // text
-      c.fillStyle = '#e8eaf0';
+      c.fillStyle = styles.getPropertyValue('--canvas-text').trim();
       c.font      = 'bold 10px Inter, sans-serif';
       c.textAlign = 'center';
       c.textBaseline = 'middle';
