@@ -706,6 +706,33 @@
     }
 
     /* ── CAROUSEL ── */
+    .hobby-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin: 1.2rem 0 1.4rem;
+    }
+    .hobby-chip {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      padding: .65rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: .95rem;
+      transition: all .2s ease;
+    }
+    .hobby-chip.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .beyond-work-gallery {
+      display: none;
+    }
+    .beyond-work-gallery.active {
+      display: block;
+    }
     .carousel-section-title {
       font-family: var(--display);
       font-size: clamp(1.3rem, 3vw, 1.8rem);
@@ -790,6 +817,113 @@
       transition: background 0.2s, transform 0.2s;
     }
     .carousel-dot.active {
+      background: var(--gold);
+      transform: scale(1.25);
+    }
+
+    /* ── CSR COVERFLOW ── */
+    .csr-stage {
+      position: relative;
+      height: clamp(300px, 46vw, 440px);
+      margin: 2.5rem 0 1.5rem;
+      perspective: 1700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .csr-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .csr-slide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: clamp(190px, 30vw, 330px);
+      height: clamp(230px, 34vw, 360px);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 45px var(--shadow-strong);
+      cursor: pointer;
+      transition: transform .55s cubic-bezier(.25,.75,.35,1), opacity .55s ease;
+      will-change: transform, opacity;
+    }
+    .csr-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+    .csr-slide.is-center { cursor: default; }
+    .csr-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      background: var(--carousel-btn-bg);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--text);
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(8px);
+      padding: 0;
+    }
+    .csr-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-50%) scale(1.08);
+    }
+    .csr-btn.prev { left: 0; }
+    .csr-btn.next { right: 0; }
+    @media (max-width: 640px) {
+      .csr-btn.prev { left: -6px; }
+      .csr-btn.next { right: -6px; }
+    }
+    .csr-caption {
+      text-align: center;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+    .csr-caption-title {
+      font-family: var(--display);
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: .5rem;
+      transition: opacity .25s ease;
+    }
+    .csr-caption-desc {
+      color: var(--text-soft);
+      font-size: .95rem;
+      line-height: 1.7;
+      transition: opacity .25s ease;
+    }
+    .csr-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 1.6rem;
+    }
+    .csr-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .csr-dot.active {
       background: var(--gold);
       transform: scale(1.25);
     }
@@ -904,6 +1038,183 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }
+    /* ── TIMELINE (YearExperience page) ── */
+    .tl-eyebrow-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-right: .5rem;
+      vertical-align: middle;
+    }
+    .tl-title {
+      font-family: var(--display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      color: var(--text);
+      margin: .6rem 0 1rem;
+      letter-spacing: -0.01em;
+    }
+    .tl-title span { color: var(--gold); }
+    .tl-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      max-width: 560px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+    .tl-list { position: relative; }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 128px 32px 1fr;
+      column-gap: 1.25rem;
+      position: relative;
+    }
+    .tl-item:not(:last-child) { padding-bottom: 2.25rem; }
+    .tl-when {
+      padding-top: .35rem;
+      text-align: right;
+    }
+    .tl-period {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+    .tl-current-badge {
+      display: inline-block;
+      margin-top: .4rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: #0a0b0e;
+      background: var(--gold);
+      padding: .22rem .55rem;
+      border-radius: 20px;
+    }
+    body.light-theme .tl-current-badge { color: #fff; }
+    .tl-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tl-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--text-muted);
+      margin-top: .38rem;
+      flex: 0 0 auto;
+      z-index: 2;
+    }
+    .tl-item.is-current .tl-dot {
+      width: 18px; height: 18px;
+      margin-top: .3rem;
+      border: none;
+      background: var(--gold);
+      box-shadow: 0 0 0 5px var(--gold-dim), 0 0 16px rgba(201,168,76,.55);
+    }
+    .tl-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      margin-top: .25rem;
+    }
+    .tl-card {
+      display: flex;
+      gap: 1.1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 1.6rem;
+      transition: border-color .2s, background .2s;
+    }
+    .tl-item.is-current .tl-card {
+      border-color: rgba(201,168,76,.35);
+      background: var(--gold-dim);
+    }
+    .tl-card:hover { border-color: var(--gold); }
+    .tl-icon {
+      flex: 0 0 46px;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+    }
+    .tl-icon svg { width: 20px; height: 20px; }
+    .tl-body { flex: 1; min-width: 0; }
+    .tl-role-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .75rem;
+    }
+    .tl-role {
+      font-family: var(--display);
+      font-size: 1.12rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+    .tl-company {
+      font-size: 0.82rem;
+      color: var(--gold);
+      margin-top: .15rem;
+    }
+    .tl-loc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: .2rem;
+    }
+    .tl-desc {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      line-height: 1.75;
+      margin: .85rem 0 1rem;
+    }
+    .tl-arrow {
+      flex: 0 0 auto;
+      color: var(--text-muted);
+      transition: color .2s, transform .2s;
+    }
+    .tl-card:hover .tl-arrow { color: var(--gold); transform: translate(2px,-2px); }
+    .tl-stats {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem 1.5rem;
+    }
+    .tl-stat { text-align: center; }
+    .tl-stat-icon {
+      width: 26px; height: 26px;
+      margin: 0 auto .6rem;
+      color: var(--gold);
+    }
+    .tl-stat-icon svg { width: 100%; height: 100%; }
+    .tl-stat-value {
+      font-family: var(--display);
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+    .tl-stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: .3rem;
+    }
+    @media (max-width: 700px) {
+      .tl-item { grid-template-columns: 28px 1fr; }
+      .tl-when { display: none; }
+      .tl-card { flex-direction: column; }
+      .tl-stats { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -911,13 +1222,15 @@
 <!-- NAV -->
 <nav>
   <div class="wrap">
-    <span class="nav-logo" onclick="showPage('home')">Anchana Prabakaran<em>.</em></span>
+    <span class="nav-logo" onclick="showPage('home')">Anchana Prabakaran</span>
     <div class="nav-actions">
       <ul>
-        <li><a onclick="showPage('experience')" id="nav-experience">Experience</a></li>
+        <li><a onclick="showPage('YearExperience')" id="nav-works">Experience</a></li>
+        <li><a onclick="showPage('experience')" id="nav-experience">Projects</a></li>
         <li><a onclick="showPage('skills')"     id="nav-skills">Skills</a></li>
         <li><a onclick="showPage('education')"  id="nav-education">Education</a></li>
-        <!-- <li><a onclick="showPage('works')" id="nav-works">Portfolio</a></li> -->
+        <li><a onclick="showPage('beyondwork')" id="nav-beyondwork">Beyond Work</a></li>
+        <li><a onclick="showPage('CSR')" id="nav-CSR">CSR</a></li>
         <li><a onclick="openModal('resume')" id="nav-resume">Resume</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
@@ -1018,6 +1331,22 @@
   </section>
 
 </div><!-- /page-home -->
+
+
+<!-- ═══ YEAR EXPERIENCE (TIMELINE) PAGE ═══ -->
+<div class="page" id="page-YearExperience">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <p class="eyebrow"><span class="tl-eyebrow-dot"></span>MY JOURNEY</p>
+      <h2 class="tl-title" id="tlTitle">Experience<span>.</span></h2>
+      <p class="tl-subtitle" id="tlSubtitle">Loading timeline…</p>
+
+      <div class="tl-list" id="tlList"><!-- populated from experience.json --></div>
+
+      <div class="tl-stats" id="tlStats"><!-- populated from experience.json --></div>
+    </div>
+  </section>
+</div><!-- /page-YearExperience -->
 
 
 <!-- ═══ EXPERIENCE PAGE ═══ -->
@@ -1212,6 +1541,60 @@
   </section>
 </div><!-- /page-education -->
 
+<div class="page" id="page-beyondwork">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-header">
+        <span class="eyebrow">Beyond Work</span>
+        <div class="eyebrow-rule"></div>
+      </div>
+
+      <div class="beyond-work-grid">
+        <aside class="beyond-work-nav">
+          <ul id="hobbyNavList"><!-- populated from beyondwork-images.json --></ul>
+        </aside>
+
+        <div class="beyond-work-display">
+          <div class="beyond-work-intro">
+            <p class="summary-text">These are a few of the hobbies I enjoy outside of work. 
+          </div>
+
+          <div id="hobbyGalleries"><!-- populated from beyondwork-images.json --></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ═══ CSR PAGE ═══ -->
+<div class="page" id="page-CSR">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-header">
+        <span class="eyebrow">CSR</span>
+        <div class="eyebrow-rule"></div>
+      </div>
+
+      <div class="csr-stage" id="csrStage">
+        <button class="csr-btn prev" id="csrPrev" aria-label="Previous">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="csr-track" id="csrTrack"><!-- populated from csr-images.json --></div>
+        <button class="csr-btn next" id="csrNext" aria-label="Next">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="csr-caption">
+        <div class="csr-caption-title" id="csrTitle"></div>
+        <p class="csr-caption-desc" id="csrDesc"></p>
+      </div>
+
+      <div class="csr-dots" id="csrDots"></div>
+    </div>
+  </section>
+</div>
 
 
 <!-- <div class="page" id="page-works">
@@ -1788,7 +2171,624 @@
     updateDots();
     startTimer();
   })();
-</script>
 
+  /* Shared infinite-loop carousel engine — same animation/auto-advance/pause-on-hover
+     logic as the Education carousel above, reusable for any number of carousels. */
+  function initCarousel(cfg) {
+    var viewport = cfg.viewport, track = cfg.track, wrap = cfg.wrap,
+        dotsBar = cfg.dotsBar, btnPrev = cfg.prevBtn, btnNext = cfg.nextBtn,
+        isActive = cfg.isActive || function () { return true; };
+
+    var slides    = Array.from(track.querySelectorAll('img'));
+    var total     = slides.length;
+    var current   = 0;
+    var paused    = false;
+    var animating = false;
+    var timer     = null;
+
+    if (dotsBar) {
+      dotsBar.innerHTML = '';
+      slides.forEach(function (_, i) {
+        var dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.addEventListener('click', function () { if (!animating) slideTo(i); });
+        dotsBar.appendChild(dot);
+      });
+    }
+
+    function updateDots() {
+      if (!dotsBar) return;
+      dotsBar.querySelectorAll('.carousel-dot').forEach(function (d, i) {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    function setTrackPos(index) {
+      track.style.transition = 'none';
+      track.style.transform  = 'translateX(' + (-index * 100) + '%)';
+    }
+
+    function slideTo(index) {
+      if (animating || total <= 1) return;
+      var next = ((index % total) + total) % total;
+      if (next === current) return;
+      animating = true;
+
+      var goingForward = (next === (current + 1) % total) ||
+                         (current === total - 1 && next === 0);
+
+      var clone = slides[next].cloneNode(true);
+      clone.style.position = 'absolute';
+      clone.style.top      = '0';
+      clone.style.width    = '100%';
+      clone.style.height   = '100%';
+      clone.style.objectFit = 'contain';
+      clone.style.background = 'var(--bg-card)';
+      clone.style.pointerEvents = 'none';
+      clone.style.userSelect = 'none';
+      clone.style.transition = 'none';
+      clone.style.left = goingForward ? '100%' : '-100%';
+
+      viewport.style.position = 'relative';
+      viewport.appendChild(clone);
+
+      var trackStart  = -current * 100;
+      var trackEnd    = goingForward ? trackStart - 100 : trackStart + 100;
+      var cloneStart  = parseFloat(clone.style.left);
+      var startT      = null;
+      var duration    = 480;
+
+      function step(ts) {
+        if (!startT) startT = ts;
+        var prog = Math.min((ts - startT) / duration, 1);
+        var ease = prog < 0.5
+          ? 4 * prog * prog * prog
+          : 1 - Math.pow(-2 * prog + 2, 3) / 2;
+
+        track.style.transition = 'none';
+        track.style.transform  = 'translateX(' + (trackStart + (trackEnd - trackStart) * ease) + '%)';
+        clone.style.left       = (cloneStart + (0 - cloneStart) * ease) + '%';
+
+        if (prog < 1) {
+          requestAnimationFrame(step);
+        } else {
+          current = next;
+          setTrackPos(current);
+          viewport.removeChild(clone);
+          viewport.style.position = '';
+          animating = false;
+          updateDots();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    if (btnPrev) btnPrev.addEventListener('click', function () { slideTo(current - 1); });
+    if (btnNext) btnNext.addEventListener('click', function () { slideTo(current + 1); });
+
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(function () {
+        if (!paused && !animating && isActive()) slideTo(current + 1);
+      }, 2000);
+    }
+    function stopTimer() {
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    if (wrap) {
+      wrap.addEventListener('mouseenter', function () { paused = true; });
+      wrap.addEventListener('mouseleave', function () { paused = false; });
+    }
+
+    setTrackPos(0);
+    updateDots();
+    if (total > 1) startTimer();
+
+    return { destroy: stopTimer };
+  }
+
+  /* Beyond Work — hobbies, icons, descriptions and photos are all driven by
+     beyondwork-images.json. Add a new hobby there and it appears here automatically,
+     with the exact same auto-advancing carousel as the Education section. */
+  (function () {
+    var navList = document.getElementById('hobbyNavList');
+    var galleriesWrap = document.getElementById('hobbyGalleries');
+    if (!navList || !galleriesWrap) return;
+
+    // Shown immediately, before the JSON has loaded, so something appears right away.
+    var fallbackData = {
+      'Badminton': {
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8.5" cy="7" rx="5" ry="6"/><line x1="8.5" y1="13" x2="8.5" y2="19"/><line x1="6.5" y1="19" x2="10.5" y2="19"/><line x1="12" y1="14" x2="17" y2="19"/><circle cx="18" cy="20" r="1.4"/></svg>',
+        description: "A racquet sport I picked up as a way to stay active and sharpen reflexes. I play regularly with friends and colleagues on weekends &mdash; it's fast, competitive, and a great stress reliever.",
+        images: ['BeyondWork/Badminton/placeholder.svg']
+      }
+    };
+
+    var carousels = {};
+
+    function slug(name) {
+      return String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '') || 'hobby';
+    }
+
+    function renderHobbies(data) {
+      var names = Object.keys(data || {});
+      if (!names.length) return;
+
+      Object.keys(carousels).forEach(function (k) { if (carousels[k] && carousels[k].destroy) carousels[k].destroy(); });
+      carousels = {};
+      navList.innerHTML = '';
+      galleriesWrap.innerHTML = '';
+
+      names.forEach(function (name, i) {
+        var id = slug(name);
+        var hobby = data[name] || {};
+        var images = (Array.isArray(hobby.images) && hobby.images.length) ? hobby.images : ['BeyondWork/' + name + '/placeholder.svg'];
+        var icon = hobby.icon || '';
+        var description = hobby.description || '';
+        var safeName = String(name).replace(/"/g, '&quot;');
+
+        var li = document.createElement('li');
+        li.innerHTML =
+          '<button class="hobby-item' + (i === 0 ? ' active' : '') + '" data-hobby="' + safeName + '">' +
+            '<span class="hobby-icon">' + icon + '</span>' +
+            '<span class="hobby-label">' + name + '</span>' +
+          '</button>';
+        navList.appendChild(li);
+
+        var gallery = document.createElement('div');
+        gallery.className = 'beyond-work-gallery' + (i === 0 ? ' active' : '');
+        gallery.id = 'gallery-' + id;
+        gallery.innerHTML =
+          '<div class="hobby-header">' +
+            '<span class="hobby-icon-lg">' + icon + '</span>' +
+            '<h3>' + name + '</h3>' +
+            '<p>' + description + '</p>' +
+          '</div>' +
+          '<div class="carousel-wrap" id="carouselWrap-' + id + '">' +
+            '<button class="carousel-btn prev" aria-label="Previous"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>' +
+            '<div class="carousel-viewport" id="viewport-' + id + '"><div class="carousel-track" id="track-' + id + '"></div></div>' +
+            '<button class="carousel-btn next" aria-label="Next"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>' +
+            '<div class="carousel-dots" id="dots-' + id + '"></div>' +
+          '</div>';
+        galleriesWrap.appendChild(gallery);
+
+        var track = gallery.querySelector('#track-' + id);
+        images.forEach(function (src) {
+          var img = document.createElement('img');
+          img.src = src;
+          img.alt = name;
+          track.appendChild(img);
+        });
+
+        carousels[name] = initCarousel({
+          viewport: gallery.querySelector('#viewport-' + id),
+          track: track,
+          prevBtn: gallery.querySelector('.carousel-btn.prev'),
+          nextBtn: gallery.querySelector('.carousel-btn.next'),
+          dotsBar: gallery.querySelector('#dots-' + id),
+          wrap: gallery.querySelector('#carouselWrap-' + id),
+          isActive: (function (g) { return function () { return g.classList.contains('active'); }; })(gallery)
+        });
+      });
+
+      navList.querySelectorAll('.hobby-item').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var hobby = btn.getAttribute('data-hobby');
+          navList.querySelectorAll('.hobby-item').forEach(function (c) { c.classList.toggle('active', c === btn); });
+          galleriesWrap.querySelectorAll('.beyond-work-gallery').forEach(function (g) {
+            g.classList.toggle('active', g.id === 'gallery-' + slug(hobby));
+          });
+        });
+      });
+    }
+
+    renderHobbies(fallbackData);
+
+    fetch('beyondwork-images.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('beyondwork-images.json not found (' + res.status + ')');
+        return res.json();
+      })
+      .then(function (json) {
+        if (json && Object.keys(json).length) renderHobbies(json);
+      })
+      .catch(function (err) {
+        console.warn('Beyond Work: could not load beyondwork-images.json, using fallback.', err);
+      });
+  })();
+
+  /* ── CSR coverflow — slides, titles and descriptions are all driven by
+     csr-images.json. Add/remove/reorder entries there and this section
+     updates automatically; no HTML edits needed. ── */
+  (function () {
+    var stage  = document.getElementById('csrStage');
+    var track  = document.getElementById('csrTrack');
+    var btnPrev = document.getElementById('csrPrev');
+    var btnNext = document.getElementById('csrNext');
+    var dotsBar = document.getElementById('csrDots');
+    var titleEl = document.getElementById('csrTitle');
+    var descEl  = document.getElementById('csrDesc');
+    if (!stage || !track) return;
+
+    // Shown immediately, before the JSON has loaded, so something appears right away.
+    var fallbackData = [
+      {
+        image: 'CSR/placeholder.svg',
+        title: 'Tree Plantation Drive',
+        description: 'Joined a community tree-plantation initiative aimed at increasing green cover in local neighbourhoods and raising awareness about environmental sustainability.'
+      },
+      {
+        image: 'CSR/placeholder.svg',
+        title: 'Blood Donation Camp',
+        description: 'Volunteered at a blood donation camp organized in partnership with a local hospital, supporting a cause that directly helps patients in need.'
+      },
+      {
+        image: 'CSR/placeholder.svg',
+        title: 'Elderly Care Home Visit',
+        description: 'Spent a day at an elderly care home distributing essentials and spending time with residents, an initiative focused on companionship and community care.'
+      }
+    ];
+
+    var data = fallbackData;
+    var current = 0;
+    var timer = null;
+    var paused = false;
+
+    var FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 360">' +
+      '<rect width="330" height="360" fill="#161820"/>' +
+      '<circle cx="165" cy="150" r="42" fill="none" stroke="#4a5060" stroke-width="3"/>' +
+      '<path d="M110 235 Q165 175 220 235" fill="none" stroke="#4a5060" stroke-width="3"/>' +
+      '</svg>'
+    );
+
+    function total() { return data.length; }
+
+    function circularOffset(i, cur, n) {
+      var diff = i - cur;
+      if (diff > n / 2) diff -= n;
+      if (diff < -n / 2) diff += n;
+      return diff;
+    }
+
+    function render() {
+      track.innerHTML = '';
+      dotsBar.innerHTML = '';
+      var n = total();
+      if (!n) return;
+
+      data.forEach(function (item, i) {
+        var slide = document.createElement('div');
+        slide.className = 'csr-slide';
+        slide.setAttribute('data-index', i);
+
+        var img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.title || '';
+        img.loading = 'lazy';
+        img.onerror = function () { img.onerror = null; img.src = FALLBACK_IMG; };
+        slide.appendChild(img);
+
+        slide.addEventListener('click', function () {
+          if (i !== current) goTo(i);
+        });
+
+        track.appendChild(slide);
+
+        var dot = document.createElement('button');
+        dot.className = 'csr-dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.addEventListener('click', function () { goTo(i); });
+        dotsBar.appendChild(dot);
+      });
+
+      position();
+      updateCaption();
+    }
+
+    function position() {
+      var n = total();
+      var slides = track.querySelectorAll('.csr-slide');
+      slides.forEach(function (slide) {
+        var i = Number(slide.getAttribute('data-index'));
+        var offset = circularOffset(i, current, n);
+        var abs = Math.abs(offset);
+
+        slide.classList.toggle('is-center', offset === 0);
+
+        if (abs > 2.5) {
+          slide.style.opacity = '0';
+          slide.style.pointerEvents = 'none';
+          slide.style.zIndex = '1';
+          slide.style.transform = 'translate(-50%,-50%) translateX(' + (offset > 0 ? 260 : -260) + '%) scale(.4)';
+          return;
+        }
+
+        var pct   = offset * 108;
+        var rot    = offset * -34;
+        var scale  = 1 - Math.min(abs * 0.17, 0.5);
+        var opac   = 1 - Math.min(abs * 0.4, 0.85);
+        var z      = 10 - abs;
+
+        slide.style.pointerEvents = 'auto';
+        slide.style.zIndex = String(z);
+        slide.style.opacity = String(opac);
+        slide.style.transform =
+          'translate(-50%,-50%) translateX(' + pct + '%) rotateY(' + rot + 'deg) scale(' + scale + ')';
+      });
+
+      dotsBar.querySelectorAll('.csr-dot').forEach(function (d, i) {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    function updateCaption() {
+      var item = data[current];
+      if (!item) return;
+      titleEl.style.opacity = '0';
+      descEl.style.opacity = '0';
+      setTimeout(function () {
+        titleEl.textContent = item.title || '';
+        descEl.textContent = item.description || '';
+        titleEl.style.opacity = '1';
+        descEl.style.opacity = '1';
+      }, 150);
+    }
+
+    function goTo(i) {
+      var n = total();
+      current = ((i % n) + n) % n;
+      position();
+      updateCaption();
+    }
+
+    if (btnPrev) btnPrev.addEventListener('click', function () { goTo(current - 1); });
+    if (btnNext) btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(function () {
+        if (!paused) goTo(current + 1);
+      }, 4200);
+    }
+    stage.addEventListener('mouseenter', function () { paused = true; });
+    stage.addEventListener('mouseleave', function () { paused = false; });
+
+    window.addEventListener('resize', position);
+
+    render();
+    if (total() > 1) startTimer();
+
+    fetch('csr-images.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('csr-images.json not found (' + res.status + ')');
+        return res.json();
+      })
+      .then(function (json) {
+        if (Array.isArray(json) && json.length) {
+          data = json;
+          current = 0;
+          render();
+        }
+      })
+      .catch(function (err) {
+        console.warn('CSR: could not load csr-images.json, using fallback.', err);
+      });
+  })();
+</script>
+<script>
+  /* ── Experience Timeline (page-YearExperience) ── */
+  (function () {
+    var titleEl    = document.getElementById('tlTitle');
+    var subtitleEl = document.getElementById('tlSubtitle');
+    var listEl     = document.getElementById('tlList');
+    var statsEl    = document.getElementById('tlStats');
+    if (!listEl) return;
+
+    var ICONS = {
+      chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M8 17V10m5 7V6m5 11v-8"/></svg>',
+      database: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path stroke-linecap="round" d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>',
+      star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7-5.4-4.7 7.1-.6L12 2z"/></svg>',
+      briefcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path stroke-linecap="round" d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16M2 13h20"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg>',
+      badge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.5 13 7 22l5-3 5 3-1.5-9"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>'
+    };
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function renderTimeline(data) {
+      if (titleEl && data.title) titleEl.innerHTML = escapeHtml(data.title) + '<span>.</span>';
+      if (subtitleEl && data.subtitle) subtitleEl.textContent = data.subtitle;
+
+      var items = Array.isArray(data.timeline) ? data.timeline : [];
+      listEl.innerHTML = items.map(function (item, i) {
+        var isLast = i === items.length - 1;
+        var isCurrent = !!item.current;
+        var icon = ICONS[item.icon] || ICONS.briefcase;
+        var tags = Array.isArray(item.tags) ? item.tags.map(function (t) {
+          return '<span class="skill-pill">' + escapeHtml(t) + '</span>';
+        }).join('') : '';
+
+        return (
+          '<div class="tl-item' + (isCurrent ? ' is-current' : '') + '">' +
+            '<div class="tl-when">' +
+              '<div class="tl-period">' + escapeHtml(item.period) +
+                (item.duration ? '<br>' + escapeHtml(item.duration) : '') +
+              '</div>' +
+              (isCurrent ? '<span class="tl-current-badge">Current</span>' : '') +
+            '</div>' +
+            '<div class="tl-track">' +
+              '<div class="tl-dot"></div>' +
+              (isLast ? '' : '<div class="tl-line"></div>') +
+            '</div>' +
+            '<div class="tl-card">' +
+              '<div class="tl-icon">' + icon + '</div>' +
+              '<div class="tl-body">' +
+                '<div class="tl-role-row">' +
+                  '<div>' +
+                    '<div class="tl-role">' + escapeHtml(item.role) + '</div>' +
+                    '<div class="tl-company">' + escapeHtml(item.company) + '</div>' +
+                    (item.location ? '<div class="tl-loc">' + escapeHtml(item.location) + '</div>' : '') +
+                  '</div>' +
+                  '<span class="tl-arrow">' + ICONS.arrow + '</span>' +
+                '</div>' +
+                '<p class="tl-desc">' + escapeHtml(item.description) + '</p>' +
+                (tags ? '<div class="skill-pills">' + tags + '</div>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+
+      var stats = Array.isArray(data.stats) ? data.stats : [];
+      if (statsEl) {
+        statsEl.innerHTML = stats.map(function (s) {
+          var icon = ICONS[s.icon] || ICONS.briefcase;
+          return (
+            '<div class="tl-stat">' +
+              '<div class="tl-stat-icon">' + icon + '</div>' +
+              '<div class="tl-stat-value">' + escapeHtml(s.value) + '</div>' +
+              '<div class="tl-stat-label">' + escapeHtml(s.label) + '</div>' +
+            '</div>'
+          );
+        }).join('');
+      }
+    }
+
+    fetch('experience.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('experience.json not found (' + res.status + ')');
+        return res.json();
+      })
+      .then(renderTimeline)
+      .catch(function (err) {
+        console.warn('Timeline: could not load experience.json.', err);
+        if (subtitleEl) subtitleEl.textContent = 'Could not load experience data.';
+      });
+  })();
+</script>
+<style>
+/* Beyond Work two-column layout */
+.beyond-work-grid { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; }
+.beyond-work-nav {
+  background: transparent;
+  border-right: 1px solid var(--border);
+  padding-right: 4px;
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+.beyond-work-nav ul { list-style: none; padding: 0; margin: 0; }
+.beyond-work-nav li { margin-bottom: 4px; }
+.hobby-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--text-soft);
+  position: relative;
+  transition: color .2s, background .2s;
+}
+.hobby-item .hobby-icon {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  color: var(--text-muted);
+  transition: color .2s;
+}
+.hobby-item .hobby-icon svg { width: 100%; height: 100%; display: block; }
+.hobby-item .hobby-label { flex: 1; }
+.hobby-item:hover { color: var(--text); background: var(--project-hover); }
+.hobby-item:hover .hobby-icon { color: var(--text-soft); }
+.hobby-item.active { color: var(--gold); background: var(--gold-dim); }
+.hobby-item.active .hobby-icon { color: var(--gold); }
+.hobby-item.active::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--gold);
+}
+.beyond-work-display { min-height: 320px; }
+.beyond-work-intro { margin-bottom: 12px; }
+.beyond-work-gallery { display: none; }
+.beyond-work-gallery.active { display: block; }
+.hobby-header { text-align: center; margin-bottom: 24px; }
+.hobby-header .hobby-icon-lg {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  color: var(--gold);
+}
+.hobby-header .hobby-icon-lg svg { width: 100%; height: 100%; }
+.hobby-header h3 {
+  font-family: var(--display);
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+.hobby-header p {
+  color: var(--text-soft);
+  max-width: 540px;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+  #pai-bubble {
+    position: fixed; bottom: 24px; right: 24px; width: 58px; height: 58px;
+    border-radius: 50%; background: #6c4fd1; color: #fff; border: none;
+    font-size: 24px; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    z-index: 9999;
+  }
+  #pai-panel {
+    position: fixed; bottom: 94px; right: 24px; width: 320px; max-height: 460px;
+    background: #fff; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    display: none; flex-direction: column; overflow: hidden; z-index: 9999;
+    font-family: system-ui, sans-serif;
+  }
+  #pai-panel.open { display: flex; }
+  #pai-header {
+    background: #6c4fd1; color: #fff; padding: 12px 14px; font-weight: 600;
+  }
+  #pai-messages {
+    flex: 1; overflow-y: auto; padding: 12px; font-size: 14px; line-height: 1.4;
+  }
+  .pai-msg { margin-bottom: 10px; }
+  .pai-msg.user { text-align: right; color: #333; }
+  .pai-msg.bot { text-align: left; color: #222; }
+  .pai-msg .bubble {
+    display: inline-block; padding: 8px 12px; border-radius: 10px; max-width: 85%;
+  }
+  .pai-msg.user .bubble { background: #6c4fd1; color: #fff; }
+  .pai-msg.bot .bubble { background: #f1f0f6; }
+  #pai-input-row { display: flex; border-top: 1px solid #eee; }
+  #pai-input {
+    flex: 1; border: none; padding: 10px; font-size: 14px; outline: none;
+  }
+  #pai-send { border: none; background: #6c4fd1; color: #fff; padding: 0 16px; cursor: pointer; }
+</style>
 </body>
 </html>

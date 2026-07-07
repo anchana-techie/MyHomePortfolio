@@ -1,0 +1,46 @@
+{
+  "eyebrow": "My Journey",
+  "title": "Experience",
+  "subtitle": "A timeline of the roles I've grown through — from graduate trainee to data analyst, building dashboards, pipelines and data trust along the way.",
+  "stats": [
+    { "icon": "briefcase", "value": "2.5+", "label": "Years of Experience" },
+    { "icon": "layers", "value": "300+", "label": "SSRS Reports Migrated" },
+    { "icon": "chart", "value": "10+", "label": "Power BI Dashboards" },
+    { "icon": "badge", "value": "1", "label": "Databricks Certification" }
+  ],
+  "timeline": [
+    {
+      "role": "Data Analyst",
+      "company": "Indium Software Private Limited",
+      "location": "Chennai, Tamil Nadu, India · Hybrid",
+      "period": "Apr 2026 – Present",
+      "duration": "4 mos",
+      "current": true,
+      "icon": "chart",
+      "description": "Leading Power BI dashboard development for business-critical reporting and driving the final stretch of the SSRS-to-Databricks migration, while packaging ETL transformation logic as DBT models deployed through Azure DevOps CI/CD pipelines.",
+      "tags": ["Power BI", "Databricks", "DBT", "Azure DevOps"]
+    },
+    {
+      "role": "Junior Data Analyst",
+      "company": "Indium Software Private Limited",
+      "location": "Tamil Nadu, India · On-site",
+      "period": "Oct 2024 – Mar 2026",
+      "duration": "1 yr 6 mos",
+      "current": false,
+      "icon": "database",
+      "description": "Led the end-to-end migration of 200–400 SSRS reports from SQL Server to Databricks, automating extraction of table references and T-SQL from .rdl files with Python, configuring ODBC connectivity, and validating query outputs to resolve data-sync and logic discrepancies.",
+      "tags": ["SSRS Migration", "Python", "SQL", "Data Validation"]
+    },
+    {
+      "role": "Graduate Engineering Trainee",
+      "company": "Indium Software Private Limited",
+      "location": "Chennai, Tamil Nadu, India · On-site",
+      "period": "Oct 2023 – Sep 2024",
+      "duration": "1 yr",
+      "current": false,
+      "icon": "star",
+      "description": "Started my data journey learning SQL Server fundamentals, Power BI reporting and the SSRS ecosystem, while assisting with early dashboard builds and query support to get up to speed with the team's data stack.",
+      "tags": ["SQL Server", "Power BI", "SSRS", "Foundations"]
+    }
+  ]
+}
