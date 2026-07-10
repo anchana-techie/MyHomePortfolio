@@ -1,0 +1,29 @@
+    /* ── SECTION BASE ── */
+    section { padding-block: clamp(3rem, 7vw, 5rem); border-bottom: 1px solid var(--border); }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .eyebrow {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .eyebrow-rule { flex: 1; height: 1px; background: var(--border); }
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── SUMMARY ── */
+    .summary-text { font-size: 1rem; color: var(--text-soft); max-width: 680px; line-height: 1.85; }
+

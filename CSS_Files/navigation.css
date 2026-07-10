@@ -1,0 +1,163 @@
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 1.1rem;
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+    }
+    .nav-logo em { color: var(--gold); font-style: normal; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    nav ul { list-style: none; display: flex; gap: 2.25rem; }
+    nav a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color .2s;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--body);
+    }
+    nav a:hover, nav a.active { color: var(--gold); }
+    .theme-toggle {
+      position: relative;
+      width: 82px;
+      height: 42px;
+      flex: 0 0 82px;
+      border: 0;
+      border-radius: 999px;
+      background: none;
+      cursor: pointer;
+      overflow: hidden;
+      padding: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 8px 18px rgba(0,0,0,.22);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .toggle-sky {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      transition: opacity .35s ease;
+    }
+    .toggle-sky.dark {
+      background:
+        radial-gradient(circle at 58% 26%, rgba(255,255,255,.75) 0 1px, transparent 2px),
+        radial-gradient(circle at 74% 38%, rgba(255,255,255,.65) 0 1.3px, transparent 2.4px),
+        radial-gradient(circle at 66% 66%, rgba(255,255,255,.8) 0 1.2px, transparent 2.2px),
+        linear-gradient(90deg, #7b28d8 0%, #34105f 48%, #141424 100%);
+    }
+    .toggle-sky.light {
+      opacity: 0;
+      background: linear-gradient(90deg, #1fc7ee 0%, #55d7f4 58%, #8be7f8 100%);
+    }
+    body.light-theme .toggle-sky.dark { opacity: 0; }
+    body.light-theme .toggle-sky.light { opacity: 1; }
+    .toggle-cloud {
+      position: absolute;
+      left: 18px;
+      bottom: 11px;
+      width: 25px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(35,104,140,.18);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .toggle-cloud::before,
+    .toggle-cloud::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+    .toggle-cloud::before {
+      left: 4px;
+      width: 10px;
+      height: 10px;
+    }
+    .toggle-cloud::after {
+      right: 4px;
+      width: 14px;
+      height: 14px;
+    }
+    .toggle-cloud.small {
+      left: 16px;
+      top: 13px;
+      width: 21px;
+      height: 7px;
+      transform: scale(.72);
+    }
+    body.light-theme .toggle-cloud { opacity: .95; }
+    .toggle-orb {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,.96), rgba(255,255,244,.9) 45%, #eee9cc 100%);
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      transition: transform .35s ease, background .35s ease, box-shadow .35s ease;
+    }
+    .toggle-orb::before,
+    .toggle-orb::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(217,213,192,.34);
+      transition: opacity .2s ease;
+    }
+    .toggle-orb::before {
+      left: 8px;
+      top: 10px;
+      width: 7px;
+      height: 7px;
+    }
+    .toggle-orb::after {
+      right: 7px;
+      bottom: 8px;
+      width: 9px;
+      height: 9px;
+    }
+    body.light-theme .toggle-orb {
+      transform: translateX(40px);
+      background: #ffdd2e;
+      box-shadow: 0 0 0 6px rgba(255,235,77,.28), 0 2px 9px rgba(148,117,0,.25);
+    }
+    body.light-theme .toggle-orb::before,
+    body.light-theme .toggle-orb::after {
+      opacity: 0;
+    }
+

@@ -1,0 +1,14 @@
+    /* ── STICK STORY (day-in-the-life hero strip) ── */
+    .stick-story-layer {
+      position: relative;
+      width: 100%;
+      margin-top: clamp(2.5rem, 6vw, 4rem);
+      background: var(--bg);
+      overflow: hidden;
+      transition: background .25s;
+    }
+    #stickStoryCanvas {
+      display: block;
+      width: 100%;
+    }
+

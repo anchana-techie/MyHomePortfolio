@@ -1,0 +1,108 @@
+    /* ── CSR COVERFLOW ── */
+    .csr-stage {
+      position: relative;
+      height: clamp(300px, 46vw, 440px);
+      margin: 2.5rem 0 1.5rem;
+      perspective: 1700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .csr-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .csr-slide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: clamp(190px, 30vw, 330px);
+      height: clamp(230px, 34vw, 360px);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 45px var(--shadow-strong);
+      cursor: pointer;
+      transition: transform .55s cubic-bezier(.25,.75,.35,1), opacity .55s ease;
+      will-change: transform, opacity;
+    }
+    .csr-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+    .csr-slide.is-center { cursor: default; }
+    .csr-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      background: var(--carousel-btn-bg);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--text);
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(8px);
+      padding: 0;
+    }
+    .csr-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-50%) scale(1.08);
+    }
+    .csr-btn.prev { left: 0; }
+    .csr-btn.next { right: 0; }
+    @media (max-width: 640px) {
+      .csr-btn.prev { left: -6px; }
+      .csr-btn.next { right: -6px; }
+    }
+    .csr-caption {
+      text-align: center;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+    .csr-caption-title {
+      font-family: var(--display);
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: .5rem;
+      transition: opacity .25s ease;
+    }
+    .csr-caption-desc {
+      color: var(--text-soft);
+      font-size: .95rem;
+      line-height: 1.7;
+      transition: opacity .25s ease;
+    }
+    .csr-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 1.6rem;
+    }
+    .csr-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .csr-dot.active {
+      background: var(--gold);
+      transform: scale(1.25);
+    }
+

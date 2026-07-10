@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Technical Skills",
+  "categories": [
+    {
+      "glyph": "⬡",
+      "label": "Data Platforms",
+      "pills": ["Databricks", "SQL Server", "Azure DevOps"]
+    },
+    {
+      "glyph": "◈",
+      "label": "Reporting",
+      "pills": ["Power BI", "SSRS", "DAX"]
+    },
+    {
+      "glyph": "⟨/⟩",
+      "label": "Languages",
+      "pills": ["Python", "T-SQL", "DAX"]
+    },
+    {
+      "glyph": "⇄",
+      "label": "ETL &amp; Pipelines",
+      "pills": ["DBT", "ETL Transformations", "CI/CD Pipelines"]
+    },
+    {
+      "glyph": "⌁",
+      "label": "Integration",
+      "pills": ["ODBC", "Simba Spark Driver", "PAT Authentication"]
+    },
+    {
+      "glyph": "☁",
+      "label": "Cloud &amp; DevOps",
+      "pills": ["Azure DevOps", "Version Control", "Pipeline Management"]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "eyebrow": "Work Experience",
+  "company": {
+    "role": "Data Analyst",
+    "org": "Service Based Company",
+    "period": "October 2023 &ndash; Present &nbsp;&middot;&nbsp; 1 yr 8 mo+"
+  },
+  "projects": [
+    {
+      "tag": "Project 01",
+      "title": "Power BI Dashboard Development",
+      "points": [
+        "Designed and delivered multiple Power BI dashboards — Portfolio at Risk, Agent Productivity, Claims, and Insurance — for business stakeholders.",
+        "Developed DAX measures and data models to support dynamic reporting and KPI tracking.",
+        "Collaborated with business teams to gather requirements and translate them into actionable visual analytics."
+      ]
+    },
+    {
+      "tag": "Project 02",
+      "title": "SSRS-to-Databricks Migration &nbsp;(200&ndash;400 Reports)",
+      "points": [
+        "Led end-to-end migration of 200–400 SSRS reports from SQL Server to Databricks, converting embedded T-SQL to Databricks-compatible SQL.",
+        "Automated extraction of table references and T-SQL queries from .rdl files using Python scripting, significantly reducing manual effort.",
+        "Configured ODBC connectivity via Simba Spark Driver and Databricks Personal Access Tokens to repoint reports to the new platform.",
+        "Performed thorough validation of query outputs between SQL Server and Databricks, classifying discrepancies as data sync or logic issues.",
+        "Investigated and resolved query-level discrepancies, ensuring data accuracy and consistency post-migration."
+      ]
+    },
+    {
+      "tag": "Project 03",
+      "title": "ETL Pipeline Development &amp; DBT Deployment on Azure DevOps",
+      "points": [
+        "Designed and implemented ETL transformation logic for Databricks to process and structure raw data for downstream consumption.",
+        "Packaged and deployed ETL scripts as DBT models through Azure DevOps CI/CD pipelines.",
+        "Ensured transformation logic adhered to data quality standards with full version control in the DevOps repository."
+      ]
+    }
+  ]
+}

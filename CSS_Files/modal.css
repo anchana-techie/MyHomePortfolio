@@ -1,0 +1,69 @@
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 80px var(--shadow-strong);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .modal-title { font-family: var(--display); font-size: 1rem; color: var(--text); }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-soft);
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: .2rem .5rem;
+      border-radius: 4px;
+      line-height: 1;
+      transition: color .2s, background .2s;
+    }
+    .modal-close:hover { color: var(--text); background: var(--border); }
+    .modal-body { flex: 1; overflow: hidden; position: relative; }
+    .modal-body iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 65vh;
+      border: none;
+      display: block;
+    }
+    .modal-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+      height: 65vh;
+      color: var(--text-soft);
+      text-align: center;
+    }
+    .modal-placeholder svg { opacity: .25; margin-bottom: .5rem; }
+    .modal-placeholder p { font-size: 0.9rem; line-height: 1.8; max-width: 380px; }
+    .modal-placeholder strong { color: var(--gold); }
+

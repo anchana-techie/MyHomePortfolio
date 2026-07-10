@@ -1,0 +1,57 @@
+    /* ── CERTIFICATIONS ── */
+    .cert-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      padding: 1.75rem 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .cert-row:hover { border-color: var(--gold); background: var(--gold-dim); }
+    .cert-name { font-family: var(--display); font-size: 1.1rem; color: var(--text); }
+    .cert-row-hint {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: .3rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .cert-meta { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
+    .cert-date-block { text-align: center; }
+    .cert-date-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: .15rem;
+    }
+    .cert-date-val { font-size: 0.88rem; color: var(--text-soft); }
+    .status-active {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: var(--teal-dim);
+      color: var(--teal);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .35rem .8rem;
+      border-radius: 4px;
+      border: 1px solid rgba(45,212,191,.2);
+    }
+    .status-active::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: blink 2s ease-in-out infinite;
+    }
+

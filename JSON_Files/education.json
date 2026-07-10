@@ -1,0 +1,32 @@
+{
+  "eyebrow": "Education",
+  "degree": "B.E. &ndash; Computer Science &amp; Engineering",
+  "school": "Meenakshi Sundararajan Engineering College",
+  "honour": "First Class with Distinction",
+  "stats": [
+    { "value": "8.84", "label": "CGPA" }
+  ],
+  "certificationsSectionTitle": "Course Certifications",
+  "certifications": [
+    {
+      "image": "Carousel1/Assertive_Communication_Skills_Masterclass.jpg",
+      "alt": "Assertive Communication Skills Masterclass"
+    },
+    {
+      "image": "Carousel1/Generative_AI_For_Data_Engineering_And_Data_Professional.jpg",
+      "alt": "Generative AI For Data Engineering"
+    },
+    {
+      "image": "Carousel1/Intro_to_AI_Agents_And_Agentic_AI.jpg",
+      "alt": "Intro to AI Agents And Agentic AI"
+    },
+    {
+      "image": "Carousel1/Introduction_To_Data_Engineering_Using_Generative_AI.jpg",
+      "alt": "Introduction To Data Engineering Using Generative AI"
+    },
+    {
+      "image": "Carousel1/RAG_Strategy_And_Execution.jpg",
+      "alt": "RAG Strategy And Execution"
+    }
+  ]
+}

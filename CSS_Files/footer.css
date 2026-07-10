@@ -1,0 +1,6 @@
+    /* ── FOOTER ── */
+    footer { padding-block: 2.5rem; text-align: center; }
+    footer p { font-size: 0.75rem; color: var(--text-muted); }
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+

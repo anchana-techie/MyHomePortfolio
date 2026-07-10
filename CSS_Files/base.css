@@ -1,0 +1,69 @@
+    :root {
+      --bg:          #0a0b0e;
+      --bg-raised:   #111318;
+      --bg-card:     #161820;
+      --border:      #21252f;
+      --border-soft: #1c1f28;
+      --text:        #e8eaf0;
+      --text-soft:   #8b90a0;
+      --text-muted:  #4a5060;
+      --gold:        #c9a84c;
+      --gold-dim:    rgba(201,168,76,.12);
+      --teal:        #2dd4bf;
+      --teal-dim:    rgba(45,212,191,.1);
+      --nav-bg:      rgba(10,11,14,0.92);
+      --photo-shade: rgba(10,11,14,0.85);
+      --project-hover: #13151d;
+      --carousel-btn-bg: rgba(10,11,14,0.70);
+      --modal-overlay: rgba(0,0,0,0.82);
+      --canvas-text:  #e8eaf0;
+      --shadow-strong: rgba(0,0,0,0.7);
+      --display:     'DM Serif Display', Georgia, serif;
+      --body:        'Inter', sans-serif;
+      --max:         1080px;
+    }
+
+    body.light-theme {
+      --bg:          #f7f4ed;
+      --bg-raised:   #ffffff;
+      --bg-card:     #fbfaf7;
+      --border:      #ded7c8;
+      --border-soft: #ebe4d7;
+      --text:        #20232a;
+      --text-soft:   #5e6673;
+      --text-muted:  #8a8276;
+      --gold:        #9f7a18;
+      --gold-dim:    rgba(159,122,24,.12);
+      --teal:        #008b7d;
+      --teal-dim:    rgba(0,139,125,.1);
+      --nav-bg:      rgba(247,244,237,0.92);
+      --photo-shade: rgba(247,244,237,0.82);
+      --project-hover: #f3eee4;
+      --carousel-btn-bg: rgba(255,255,255,0.78);
+      --modal-overlay: rgba(32,35,42,0.55);
+      --canvas-text:  #20232a;
+      --shadow-strong: rgba(47,42,31,0.22);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background .25s, color .25s;
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 5vw, 3rem);
+    }
+

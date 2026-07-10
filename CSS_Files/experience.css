@@ -1,0 +1,57 @@
+    /* ── EXPERIENCE ── */
+    .exp-company {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1.4rem 1.6rem;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+      border-bottom: 1px solid var(--border-soft);
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+    .exp-role { font-family: var(--display); font-size: 1.1rem; color: var(--text); }
+    .exp-org  { font-size: 0.8rem; color: var(--text-muted); margin-top: .15rem; }
+    .exp-period {
+      font-size: 0.73rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: .3rem .85rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .projects-wrap {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+    }
+    .project {
+      padding: 1.6rem 1.7rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-soft);
+      transition: background .2s;
+    }
+    .project:last-child { border-bottom: none; }
+    .project:hover { background: var(--project-hover); }
+    .project-tag {
+      font-size: 0.63rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: .5rem;
+    }
+    .project h3 {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .project ul { padding-left: 1rem; display: flex; flex-direction: column; gap: .45rem; }
+    .project li { font-size: 0.85rem; color: var(--text-soft); }
+
