@@ -1,6 +1,6 @@
   #pai-bubble {
     position: fixed; bottom: 24px; right: 24px; width: 58px; height: 58px;
-    border-radius: 50%; background: #6c4fd1; color: #fff; border: none;
+    border-radius: 50%; background: #51206E; color: #fff; border: none;
     font-size: 24px; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25);
     z-index: 9999;
   }
@@ -12,7 +12,7 @@
   }
   #pai-panel.open { display: flex; }
   #pai-header {
-    background: #6c4fd1; color: #fff; padding: 12px 14px; font-weight: 600;
+    background: #51206E; color: #fff; padding: 12px 14px; font-weight: 600;
   }
   #pai-messages {
     flex: 1; overflow-y: auto; padding: 12px; font-size: 14px; line-height: 1.4;
@@ -35,12 +35,12 @@
     overflow-x: hidden;
   }
   .pai-msg .bubble a {
-      color: #6c4fd1;
+      color: #51206E;
       text-decoration: underline;
       overflow-wrap: anywhere;
       word-break: break-word;
   }
-  .pai-msg.user .bubble { background: #6c4fd1; color: #fff; }
+  .pai-msg.user .bubble { background: #51206E; color: #fff; }
   .pai-msg.bot .bubble { background: #f1f0f6; }
   .pai-typing { display: inline-flex; align-items: center; gap: 4px; padding: 2px 0; }
   .pai-typing span {
@@ -57,4 +57,4 @@
   #pai-input {
     flex: 1; border: none; padding: 10px; font-size: 14px; outline: none;
   }
-  #pai-send { border: none; background: #6c4fd1; color: #fff; padding: 0 16px; cursor: pointer; }
+  #pai-send { border: none; background: #51206E; color: #fff; padding: 0 16px; cursor: pointer; }
