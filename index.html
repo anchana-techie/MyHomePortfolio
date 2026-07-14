@@ -1820,6 +1820,16 @@ requestAnimationFrame(loop);
     div.querySelector(".bubble").textContent = text;
     messagesEl.appendChild(div);
     messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  function addTypingIndicator() {
+    const div = document.createElement("div");
+    div.className = "pai-msg bot";
+    div.innerHTML = `<span class="bubble"><span class="pai-typing"><span></span><span></span><span></span></span></span>`;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
   }
 
   async function sendMessage() {
@@ -1827,7 +1837,7 @@ requestAnimationFrame(loop);
     if (!text) return;
     input.value = "";
     addMessage("user", text);
-    addMessage("bot", "Thinking...");
+    const typingEl = addTypingIndicator();
 
     try {
       const res = await fetch(BACKEND_URL, {
@@ -1837,14 +1847,13 @@ requestAnimationFrame(loop);
       });
       const data = await res.json();
 
-      // remove the "Thinking..." placeholder
-      messagesEl.removeChild(messagesEl.lastChild);
+      messagesEl.removeChild(typingEl);
       addMessage("bot", data.reply);
 
       history.push({ role: "user", content: text });
       history.push({ role: "assistant", content: data.reply });
     } catch (err) {
-      messagesEl.removeChild(messagesEl.lastChild);
+      messagesEl.removeChild(typingEl);
       addMessage("bot", "Sorry, I couldn't reach the server. Please try again shortly.");
     }
   }
