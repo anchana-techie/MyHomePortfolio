@@ -1,4 +1,4 @@
-:root {
+    :root {
       --bg:          #0a0b0e;
       --bg-raised:   #111318;
       --bg-card:     #161820;
@@ -46,6 +46,10 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* html {
+      overflow-x: hidden;
+    } */
 
     body {
       font-family: var(--body);
