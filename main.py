@@ -28,15 +28,18 @@ Run locally:
 Deploy: see README.md for Render deployment steps.
 """
 
+import csv
 import json
 import os
 import re
 import html
 import re
+from datetime import datetime, timezone
+
 import faiss
 import numpy as np
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
 from pydantic import BaseModel
@@ -51,6 +54,55 @@ META_PATH = os.path.join(DATA_DIR, "portfolio_meta.json")
 
 CHAT_MODEL = "llama-3.3-70b-versatile"  # fast + free-tier friendly on Groq, strong tool use
 FALLBACK_MESSAGE = "Time for bed. See you tomorrow."
+
+# ---------------------------------------------------------------------------
+# Chat logging: every message + reply gets appended to a CSV so you can
+# review what visitors are asking and how the bot answered.
+# ---------------------------------------------------------------------------
+LOGS_DIR = os.path.join(os.path.dirname(__file__), "logs")
+CHAT_LOG_PATH = os.path.join(LOGS_DIR, "chat_logs.csv")
+CHAT_LOG_FIELDS = ["ip_address", "timestamp", "message", "response"]
+
+
+def get_client_ip(request: Request) -> str:
+    """Best-effort client IP lookup. Render (and most hosts/proxies) sit in
+    front of the app, so the real visitor IP arrives via X-Forwarded-For
+    rather than request.client.host (which would just be the proxy)."""
+    forwarded_for = request.headers.get("x-forwarded-for")
+    if forwarded_for:
+        # X-Forwarded-For can be a comma-separated chain; the first entry
+        # is the original client.
+        return forwarded_for.split(",")[0].strip()
+
+    real_ip = request.headers.get("x-real-ip")
+    if real_ip:
+        return real_ip.strip()
+
+    return request.client.host if request.client else "unknown"
+
+
+def log_chat_interaction(ip_address: str, message: str, response: str) -> None:
+    """Append one row to the chat log CSV, creating the file (with header)
+    if it doesn't exist yet."""
+    try:
+        os.makedirs(LOGS_DIR, exist_ok=True)
+        file_exists = os.path.exists(CHAT_LOG_PATH)
+
+        with open(CHAT_LOG_PATH, "a", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=CHAT_LOG_FIELDS)
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow(
+                {
+                    "ip_address": ip_address,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "message": message,
+                    "response": response,
+                }
+            )
+    except Exception as exc:
+        # Logging should never break the chat experience for a visitor.
+        print(f"Warning: failed to write chat log: {exc}")
 
 EMAIL_PATTERN = re.compile(
     r'(?<!["\'>])\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\b'
@@ -388,9 +440,13 @@ class ChatRequest(BaseModel):
 
 
 @app.post("/chat")
-def chat(req: ChatRequest):
+def chat(req: ChatRequest, request: Request):
     messages = req.history + [{"role": "user", "content": req.message}]
     reply = run_agent(messages)
+
+    client_ip = get_client_ip(request)
+    log_chat_interaction(client_ip, req.message, reply)
+
     return {"reply": reply}
 
 
