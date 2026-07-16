@@ -1,2 +1,5 @@
-﻿AboutMe.zip
+AboutMe.zip
 PowerBi/ClaimsDashboards.pbix
+
+# Chat logs contain visitor IP addresses - keep these off GitHub
+logs/
