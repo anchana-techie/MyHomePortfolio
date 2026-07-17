@@ -29,13 +29,17 @@
   <style>
     /* Small scoped rule for the new nav logo mark - kept inline since the
        shared navigation.css wasn't part of this edit. Move into
-       navigation.css whenever that file is next touched. */
+       navigation.css whenever that file is next touched.
+       The logo artwork has a near-white circular fill, which blends into
+       the light-theme nav-bg (also near-white/cream). The box-shadow ring
+       gives it a defined edge against ANY nav background, light or dark. */
     .nav-logo-mark {
-      height: 34px;
-      width: 34px;
+      height: 40px;
+      width: 40px;
       vertical-align: middle;
       margin-right: 8px;
       border-radius: 50%;
+      box-shadow: 0 0 0 1.5px var(--gold), 0 2px 6px rgba(0,0,0,.18);
     }
   </style>
 </head>
