@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Anchana Prabakaran – Data Analyst</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="CSS_Files/base.css" />
@@ -23,13 +26,28 @@
   <link rel="stylesheet" href="CSS_Files/timeline.css" />
   <link rel="stylesheet" href="CSS_Files/beyondwork.css" />
   <link rel="stylesheet" href="CSS_Files/chatbot.css" />
+  <style>
+    /* Small scoped rule for the new nav logo mark - kept inline since the
+       shared navigation.css wasn't part of this edit. Move into
+       navigation.css whenever that file is next touched. */
+    .nav-logo-mark {
+      height: 34px;
+      width: 34px;
+      vertical-align: middle;
+      margin-right: 8px;
+      border-radius: 50%;
+    }
+  </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
   <div class="wrap">
-    <span class="nav-logo" onclick="showPage('home')">Anchana Prabakaran</span>
+    <span class="nav-logo" onclick="showPage('home')">
+      <img class="nav-logo-mark" src="Images/logo-192.png" alt="Anchana Prabakaran logo" />
+      Anchana Prabakaran
+    </span>
     <button class="nav-hamburger" id="navHamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navActions">
       <span></span><span></span><span></span>
     </button>
