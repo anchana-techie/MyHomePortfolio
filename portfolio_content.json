@@ -22,12 +22,12 @@
   {
     "id": "project_ssrs_migration",
     "title": "Project: SSRS-to-Databricks Migration (200-400 Reports)",
-    "text": "Anchana led an end-to-end migration of 200 to 400 SSRS reports from SQL Server to Databricks, converting embedded T-SQL to Databricks-compatible SQL. She automated extraction of table references and T-SQL queries from .rdl files using Python scripting, significantly reducing manual effort. She configured ODBC connectivity via the Simba Spark Driver and Databricks Personal Access Tokens to repoint reports to the new platform, validated query outputs between SQL Server and Databricks, classified discrepancies as data sync or logic issues, and resolved them to ensure accuracy post-migration."
+    "text": "Anchana played a key role in the end-to-end migration of 200 to 400 SSRS reports from SQL Server to Databricks, converting embedded T-SQL to Databricks-compatible SQL. She automated extraction of table references and T-SQL queries from .rdl files using Python scripting, significantly reducing manual effort. She configured ODBC connectivity via the Simba Spark Driver and Databricks Personal Access Tokens to repoint reports to the new platform, validated query outputs between SQL Server and Databricks, classified discrepancies as data sync or logic issues, and resolved them to ensure accuracy post-migration."
   },
   {
     "id": "project_etl_dbt",
     "title": "Project: ETL Pipeline Development & DBT Deployment on Azure DevOps",
-    "text": "Anchana designed and implemented ETL transformation logic in Databricks to process and structure raw data for downstream consumption. She packaged and deployed ETL scripts as DBT models through Azure DevOps CI/CD pipelines, ensuring transformation logic adhered to data quality standards with full version control in the DevOps repository."
+    "text": "Anchana converted existing T-SQL stored procedures into DBT models for Databricks, and rebuilt the remaining stored procedures as Databricks notebooks, restructuring transformation logic to process and structure raw data for downstream consumption. She deployed both the DBT models and notebooks through Azure DevOps CI/CD pipelines with full version control in the repository, and authored the Terraform configuration to provision and schedule the corresponding Databricks job."
   },
   {
   "id": "skills",
