@@ -10,6 +10,9 @@
       align-items: center;
       justify-content: space-between;
       padding-block: 1.1rem;
+      max-width: none;
+      width: 100%;
+      padding-inline: clamp(1.25rem, 4vw, 3rem);
     }
     .nav-logo {
       font-family: var(--display);
@@ -159,5 +162,39 @@
     body.light-theme .toggle-orb::before,
     body.light-theme .toggle-orb::after {
       opacity: 0;
+    }
+
+    /* ── HAMBURGER (mobile) ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      flex: 0 0 auto;
+      z-index: 210;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text);
+      transition: transform .25s ease, opacity .2s ease;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
     }
 

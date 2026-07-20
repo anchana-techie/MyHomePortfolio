@@ -1,19 +1,73 @@
     /* ── RESPONSIVE ── */
+
+    /* Hamburger nav kicks in once the full link row no longer fits comfortably */
+    @media (max-width: 880px) {
+      .nav-hamburger { display: flex; }
+
+      nav .wrap { position: relative; }
+
+      .nav-actions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        background: var(--nav-bg);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 16px 30px rgba(0,0,0,.18);
+        transition: max-height .3s ease, opacity .25s ease;
+      }
+      .nav-actions.open {
+        max-height: 80vh;
+        opacity: 1;
+        overflow-y: auto;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+      }
+      nav ul li { width: 100%; border-bottom: 1px solid var(--border-soft); }
+      nav ul li:last-child { border-bottom: none; }
+      nav a {
+        display: block;
+        padding: 1rem clamp(1.25rem, 4vw, 3rem);
+      }
+      .theme-toggle {
+        flex: 0 0 auto;
+        width: 82px;
+        height: 42px;
+        margin: 1.1rem clamp(1.25rem, 4vw, 3rem) 1.4rem;
+      }
+    }
+
     @media (max-width: 640px) {
       .hero-grid    { grid-template-columns: 1fr; }
-      .hero-photo-col { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 1rem; }
-      .hero-photo   { width: 120px; height: 150px; }
-      .hero-contact { align-items: flex-start; }
-      .contact-item { text-align: left; }
+      .hero-photo-col { align-items: center; flex-direction: column; gap: 1.25rem; }
+      .hero-photo-wrap { width: 160px; height: 200px; }
+      .hero-contact { align-items: center; }
+      .contact-item { text-align: center; }
       .edu-stat     { text-align: left; }
-      nav ul        { gap: 1.25rem; }
-      nav .wrap     { align-items: flex-start; gap: 1rem; }
-      .nav-actions  { align-items: flex-end; flex-direction: column; gap: .85rem; }
-      .theme-toggle { width: 74px; height: 38px; flex-basis: 74px; }
-      .toggle-orb { width: 29px; height: 29px; top: 4.5px; left: 4.5px; }
-      body.light-theme .toggle-orb { transform: translateX(36px); }
       .modal-box    { max-height: 95vh; }
     }
+
+    @media (max-width: 400px) {
+      .theme-toggle { flex: 0 0 auto; width: 74px; height: 38px; }
+      .toggle-orb { width: 29px; height: 29px; top: 4.5px; left: 4.5px; }
+      body.light-theme .toggle-orb { transform: translateX(36px); }
+      .carousel-viewport { padding-inline: 38px; }
+      .carousel-btn { width: 32px; height: 32px; }
+      .carousel-btn.prev { left: 4px; }
+      .carousel-btn.next { right: 4px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }

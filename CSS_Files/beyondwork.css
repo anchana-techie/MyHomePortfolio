@@ -79,3 +79,36 @@
   font-size: 0.95rem;
   line-height: 1.7;
 }
+
+/* Sidebar list becomes a horizontal scrollable bar on narrow screens */
+@media (max-width: 780px) {
+  .beyond-work-grid { grid-template-columns: 1fr; gap: 4px; }
+  .beyond-work-nav {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+    padding-bottom: .5rem;
+    margin-bottom: 1.25rem;
+    position: static;
+    top: auto;
+    min-width: 0;
+  }
+  .beyond-work-nav ul {
+    display: flex;
+    gap: .5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: .35rem;
+  }
+  .beyond-work-nav li { margin-bottom: 0; flex: 0 0 auto; }
+  .hobby-item { white-space: nowrap; padding: .6rem .9rem; }
+  .hobby-item.active::after {
+    right: 10px;
+    left: 10px;
+    top: auto;
+    bottom: 2px;
+    width: auto;
+    height: 3px;
+  }
+  .beyond-work-display { padding-bottom: 4.5rem; }
+}

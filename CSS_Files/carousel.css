@@ -52,6 +52,9 @@
     .carousel-viewport {
       overflow: hidden;
       width: 100%;
+      box-sizing: border-box;
+      padding-inline: 48px;
+      background: var(--bg-card);
     }
     .carousel-track {
       display: flex;
@@ -91,8 +94,8 @@
       border-color: rgba(255,255,255,0.35);
       transform: translateY(-50%) scale(1.08);
     }
-    .carousel-btn.prev { left: 12px; }
-    .carousel-btn.next { right: 12px; }
+    .carousel-btn.prev { left: 8px; }
+    .carousel-btn.next { right: 8px; }
     .carousel-dots {
       display: flex;
       justify-content: center;
