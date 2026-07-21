@@ -243,6 +243,7 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:3000",
     "null",  # browsers send this literal Origin header for file:// pages (double-clicked HTML)
 ]
 app.add_middleware(
@@ -293,7 +294,7 @@ def search_portfolio(query: str, top_k: int = 3) -> str:
 
 def get_contact_info() -> str:
     return """
-    Email: anchana.professional@gmail.com
+    Email: anchana.techie@gmail.com
 LinkedIn: 
 https://www.linkedin.com/in/anchana-prabakaran-231331233
     """.strip()
