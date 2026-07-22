@@ -312,14 +312,26 @@
 
 
 <!-- FOOTER -->
+<!-- <footer> -->
+  <!-- <div class="wrap"> -->
+    <!-- <p>© 2026 Anchana Prabakaran &nbsp;·&nbsp; Chennai, India &nbsp;·&nbsp; -->
+      <!-- <a href="mailto:anchana.professional@gmail.com">anchana.professional@gmail.com</a> -->
+    <!-- </p> -->
+  <!-- </div> -->
+<!-- </footer> -->
+
+<!-- FOOTER -->
 <footer>
   <div class="wrap">
-    <p>© 2026 Anchana Prabakaran &nbsp;·&nbsp; Chennai, India &nbsp;·&nbsp;
+    <p>© <span id="copyright-year"></span> Anchana Prabakaran &nbsp;·&nbsp; Chennai, India &nbsp;·&nbsp;
       <a href="mailto:anchana.professional@gmail.com">anchana.professional@gmail.com</a>
     </p>
   </div>
 </footer>
 
+<script>
+  document.getElementById('copyright-year').textContent = new Date().getFullYear();
+</script>
 
 <!-- ═══ DOCUMENT MODAL ═══ -->
 <div class="modal-overlay" id="docModal" onclick="handleOverlayClick(event)">
