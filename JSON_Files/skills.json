@@ -4,32 +4,56 @@
     {
       "glyph": "⬡",
       "label": "Data Platforms",
-      "pills": ["Databricks", "SQL Server", "Azure DevOps"]
+      "pills": [
+        "Databricks",
+        "SQL Server",
+        "Azure DevOps"
+      ]
     },
     {
       "glyph": "◈",
       "label": "Reporting",
-      "pills": ["Power BI", "SSRS", "DAX"]
+      "pills": [
+        "Power BI",
+        "SSRS",
+        "DAX"
+      ]
     },
     {
       "glyph": "⟨/⟩",
       "label": "Languages",
-      "pills": ["Python", "T-SQL", "DAX"]
+      "pills": [
+        "Python",
+        "T-SQL",
+        "DAX"
+      ]
     },
     {
       "glyph": "⇄",
       "label": "ETL &amp; Pipelines",
-      "pills": ["DBT", "ETL Transformations", "CI/CD Pipelines"]
+      "pills": [
+        "DBT",
+        "ETL Transformations",
+        "CI/CD Pipelines"
+      ]
     },
     {
       "glyph": "⌁",
       "label": "Integration",
-      "pills": ["ODBC", "Simba Spark Driver", "PAT Authentication"]
+      "pills": [
+        "ODBC",
+        "Simba Spark Driver",
+        "PAT Authentication"
+      ]
     },
     {
       "glyph": "☁",
       "label": "Cloud &amp; DevOps",
-      "pills": ["Azure DevOps", "Version Control", "Pipeline Management"]
+      "pills": [
+        "Azure DevOps",
+        "Version Control",
+        "Pipeline Management"
+      ]
     }
   ]
 }
