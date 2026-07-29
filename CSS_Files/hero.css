@@ -61,6 +61,18 @@
       transition: filter .4s;
     }
     .hero-photo-wrap:hover .hero-photo { filter: grayscale(0%); }
+    .hero-brandmark {
+      display: block;
+      width: clamp(96px, 12vw, 148px);
+      height: auto;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 22px rgba(168, 85, 247, .35));
+      animation: brandmark-float 6s ease-in-out infinite;
+    }
+    @keyframes brandmark-float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
     .hero-eyebrow {
       display: flex;
       align-items: center;
