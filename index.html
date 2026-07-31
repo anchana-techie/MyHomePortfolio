@@ -83,9 +83,16 @@
     <div class="wrap">
       <div class="hero-grid">
         <div>
-          <span class="hero-brandmark-float">
-            <img class="hero-brandmark" id="heroBrandmark" src="Images/anchana-logo-large.png" alt="Anchana logo" />
-          </span>
+          <div class="hero-brandmark-flip">
+            <div class="hero-brandmark-flip-inner" id="heroBrandmarkInner">
+              <div class="hero-brandmark-face hero-brandmark-face--front">
+                <img class="hero-brandmark" src="Images/anchana-logo-large.png" alt="Anchana logo" />
+              </div>
+              <div class="hero-brandmark-face hero-brandmark-face--back">
+                <img class="hero-brandmark-photo" id="heroBrandmarkBack" src="" alt="Anchana Prabakaran" />
+              </div>
+            </div>
+          </div>
           <p class="hero-eyebrow" id="heroEyebrow"><span></span></p>
           <h1 id="heroName">&nbsp;</h1>
           <p class="hero-desc" id="heroDesc"></p>
@@ -1237,15 +1244,16 @@ requestAnimationFrame(loop);
       certIssuedDate: document.getElementById('certIssuedDate'),
       certValidLabel: document.getElementById('certValidLabel'),
       certValidDate: document.getElementById('certValidDate'),
-      certStatus: document.getElementById('certStatus')
+      certStatus: document.getElementById('certStatus'),
+      brandmarkInner: document.getElementById('heroBrandmarkInner'),
+      brandmarkBack: document.getElementById('heroBrandmarkBack')
     };
-    // Hovering the hero photo spins the brandmark logo; hovering it again
-    // (the next mouseenter) spins it back to its original orientation.
-    var brandmark = document.getElementById('heroBrandmark');
+    // Hovering the hero photo flips the brandmark card over to reveal the
+    // profile photo; hovering it again flips it back to the logo.
     var photoWrap = document.querySelector('.hero-photo-wrap');
-    if (brandmark && photoWrap) {
+    if (els.brandmarkInner && photoWrap) {
       photoWrap.addEventListener('mouseenter', function () {
-        brandmark.classList.toggle('is-spun');
+        els.brandmarkInner.classList.toggle('is-flipped');
       });
     }
 
@@ -1260,6 +1268,7 @@ requestAnimationFrame(loop);
       if (els.name) els.name.innerHTML = (hero.firstName || '') + '<br>' + (hero.lastName || '');
       if (els.desc) els.desc.innerHTML = hero.description || '';
       if (els.photo) { els.photo.src = hero.photo || ''; els.photo.alt = hero.photoAlt || ''; }
+      if (els.brandmarkBack) { els.brandmarkBack.src = hero.photo || ''; els.brandmarkBack.alt = hero.photoAlt || ''; }
       var contact = hero.contact || {};
       if (els.email) { els.email.href = 'mailto:' + (contact.email || ''); els.email.textContent = contact.email || ''; }
       if (els.linkedin) { els.linkedin.href = contact.linkedinUrl || '#'; els.linkedin.innerHTML = contact.linkedinLabel || ''; }
