@@ -83,7 +83,9 @@
     <div class="wrap">
       <div class="hero-grid">
         <div>
-          <img class="hero-brandmark" src="Images/anchana-logo-large.png" alt="Anchana logo" />
+          <span class="hero-brandmark-float">
+            <img class="hero-brandmark" id="heroBrandmark" src="Images/anchana-logo-large.png" alt="Anchana logo" />
+          </span>
           <p class="hero-eyebrow" id="heroEyebrow"><span></span></p>
           <h1 id="heroName">&nbsp;</h1>
           <p class="hero-desc" id="heroDesc"></p>
@@ -1237,6 +1239,16 @@ requestAnimationFrame(loop);
       certValidDate: document.getElementById('certValidDate'),
       certStatus: document.getElementById('certStatus')
     };
+    // Hovering the hero photo spins the brandmark logo; hovering it again
+    // (the next mouseenter) spins it back to its original orientation.
+    var brandmark = document.getElementById('heroBrandmark');
+    var photoWrap = document.querySelector('.hero-photo-wrap');
+    if (brandmark && photoWrap) {
+      photoWrap.addEventListener('mouseenter', function () {
+        brandmark.classList.toggle('is-spun');
+      });
+    }
+
     if (!els.name) return;
 
     function renderHome(data) {
