@@ -53,7 +53,8 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 INDEX_PATH = os.path.join(DATA_DIR, "portfolio.index")
 META_PATH = os.path.join(DATA_DIR, "portfolio_meta.json")
 
-CHAT_MODEL = "llama-3.3-70b-versatile"  # fast + free-tier friendly on Groq, strong tool use
+# CHAT_MODEL = "llama-3.3-70b-versatile"  # fast + free-tier friendly on Groq, strong tool use
+CHAT_MODEL = "openai/gpt-oss-120b"
 FALLBACK_MESSAGE = "Time for bed. See you tomorrow."
 
 # ---------------------------------------------------------------------------
