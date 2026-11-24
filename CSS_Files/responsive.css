@@ -91,3 +91,23 @@
       .nav-logo-mark { height: 30px; width: 30px; margin-right: 6px; }
       .nav-hamburger { margin-right: 4px; }
     }
+
+    /* The name gives way to the menu button, even with enlarged phone text. */
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+    nav .wrap a.nav-logo { min-width: 0; flex: 0 1 auto; }
+    .nav-logo-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .nav-hamburger, .theme-toggle { flex-shrink: 0; }
+    @media (max-width: 640px) {
+      nav .wrap a.nav-logo { font-size: min(1.05rem, 4.6vw); }
+    }
+    @media (max-width: 380px) {
+      nav .wrap a.nav-logo { font-size: min(.95rem, 4.4vw); }
+    }
+
+    /* The mobile menu's link padding must not apply to the logo. */
+    nav .wrap > a.nav-logo { padding: 0; flex: 0 1 auto; min-width: 0; }
+    @media (max-width: 1220px) {
+      nav .wrap > a.nav-logo { margin-right: .75rem; }
+    }
+    @media (max-width: 640px) { .exp-period { white-space: normal; } }
+    @media (max-width: 640px) { h1 { font-size: min(3rem, 13vw); overflow-wrap: anywhere; } }
