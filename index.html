@@ -59,6 +59,8 @@
   <link rel="stylesheet" href="CSS_Files/beyondwork.css" />
   <link rel="stylesheet" href="CSS_Files/chatbot.css" />
   <link rel="stylesheet" href="CSS_Files/animations.css" />
+  <link rel="stylesheet" href="CSS_Files/id-badge.css" />
+  <link rel="stylesheet" href="CSS_Files/skills-orbit.css" />
   <style>
     /* Small scoped rule for the new nav logo mark - kept inline since the
        shared navigation.css wasn't part of this edit. Move into
@@ -147,19 +149,58 @@
           </div>
         </div>
         <div class="hero-photo-col">
-          <div class="hero-photo-wrap">
-            <img src="" alt="" class="hero-photo" id="heroPhoto" />
-            <img class="hero-photo-logo" src="Images/anchana-logo-large.png" alt="Anchana Prabakaran logo" />
-          </div>
-          <div class="hero-contact">
-            <div class="contact-item">
-              <div class="contact-label">Email</div>
-              <a href="#" id="heroEmail"></a>
+          <!-- ID badge on a retractable reel. Front: photo + role.
+               Click / Enter / Space flips it; the back "runs" a SQL query
+               that returns the contact links. -->
+          <div class="id-scene" id="idScene">
+            <div class="id-reel" aria-hidden="true">
+              <span class="id-reel-clip"></span>
+              <span class="id-reel-body"><span class="id-reel-ring"></span><span class="id-reel-mono">AP</span></span>
             </div>
-            <div class="contact-item">
-              <div class="contact-label">LinkedIn</div>
-              <a href="#" target="_blank" rel="noopener" id="heroLinkedin"></a>
+            <div class="id-hang">
+            <span class="id-cord" id="idCord" aria-hidden="true"></span>
+            <span class="id-strap" aria-hidden="true"><span></span></span>
+
+            <div class="id-badge" id="idBadge" role="button" tabindex="0" aria-pressed="false"
+                 aria-label="ID badge for Anchana Prabakaran. Press to flip it and see contact links.">
+              <div class="id-inner" id="idInner">
+                <div class="id-face id-front">
+                  <span class="id-sheen" aria-hidden="true"></span>
+                  <span class="id-slot" aria-hidden="true"></span>
+                  <div class="id-top"><span>Access pass</span><span class="id-dept">Data · AI</span></div>
+                  <div class="id-photo"><img src="" alt="" class="hero-photo" id="heroPhoto" width="210" height="236" /></div>
+                  <p class="id-name" id="badgeName">Anchana Prabakaran</p>
+                  <p class="id-role" id="badgeRole">Data Analyst · Chennai</p>
+                  <div class="id-foot">
+                    <div class="id-meta">
+                      <span class="id-status"><span class="id-dot"></span><span id="badgeStatus">Databricks certified</span></span>
+                      <span class="id-since">Since Oct 2023</span>
+                    </div>
+                    <span class="id-qr" title="Scan to open LinkedIn"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" class="segno"><path class="qrline" stroke="currentColor" d="M1 1.5h7m9 0h1m1 0h4m1 0h1m2 0h7m-33 1h1m5 0h1m2 0h1m2 0h1m2 0h2m1 0h1m2 0h1m2 0h1m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h4m2 0h2m3 0h4m3 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h4m3 0h1m1 0h4m1 0h3m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m4 0h4m2 0h1m3 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h1m2 0h1m1 0h2m2 0h2m1 0h2m2 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m1 0h2m4 0h1m2 0h1m1 0h4m-25 1h1m1 0h5m3 0h1m1 0h3m2 0h1m4 0h1m1 0h1m1 0h5m-31 1h2m6 0h2m3 0h1m2 0h1m1 0h2m3 0h1m2 0h2m1 0h2m1 0h1m-33 1h1m1 0h1m2 0h4m1 0h9m3 0h1m1 0h1m3 0h1m1 0h2m-32 1h1m1 0h1m2 0h1m3 0h1m3 0h1m2 0h1m1 0h4m1 0h1m1 0h1m2 0h4m-31 1h1m2 0h3m3 0h2m2 0h1m1 0h5m2 0h1m1 0h1m1 0h3m-27 1h1m1 0h1m1 0h2m1 0h1m4 0h1m1 0h1m1 0h1m3 0h1m2 0h1m2 0h1m1 0h2m-27 1h3m2 0h1m3 0h3m2 0h1m1 0h1m2 0h4m2 0h1m-32 1h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h2m3 0h1m1 0h1m2 0h4m1 0h2m-30 1h3m2 0h1m1 0h1m1 0h4m1 0h1m1 0h1m4 0h1m1 0h2m1 0h2m3 0h1m-32 1h2m2 0h1m1 0h2m1 0h2m2 0h1m3 0h3m2 0h5m1 0h2m1 0h1m-32 1h1m1 0h1m1 0h3m1 0h2m3 0h2m1 0h2m1 0h3m4 0h2m1 0h2m-27 1h1m5 0h1m1 0h2m1 0h1m4 0h3m2 0h5m-31 1h2m1 0h1m1 0h2m4 0h2m4 0h4m3 0h2m2 0h2m2 0h1m-33 1h4m4 0h1m5 0h4m1 0h1m2 0h2m2 0h1m3 0h1m1 0h1m-33 1h1m1 0h1m3 0h1m1 0h4m1 0h2m5 0h1m4 0h1m1 0h1m1 0h3m-32 1h1m2 0h1m1 0h1m2 0h1m1 0h2m2 0h1m1 0h1m4 0h7m2 0h1m-31 1h1m1 0h1m3 0h1m5 0h1m1 0h1m2 0h2m3 0h7m3 0h1m-25 1h2m3 0h1m2 0h1m1 0h4m1 0h2m3 0h1m1 0h1m1 0h1m-33 1h7m3 0h1m1 0h7m4 0h2m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h1m1 0h1m2 0h3m4 0h2m1 0h2m3 0h5m-33 1h1m1 0h3m1 0h1m1 0h4m6 0h1m1 0h1m3 0h6m-30 1h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m1 0h3m1 0h1m2 0h2m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h5m1 0h1m2 0h8m1 0h2m-31 1h1m5 0h1m3 0h1m1 0h4m3 0h1m1 0h2m5 0h3m-31 1h7m1 0h2m2 0h1m2 0h1m1 0h1m4 0h4m1 0h1m1 0h1m1 0h1"/></svg></span>
+                  </div>
+                </div>
+
+                <div class="id-face id-back">
+                  <div class="id-editor-bar" aria-hidden="true">
+                    <span class="d d1"></span><span class="d d2"></span><span class="d d3"></span>
+                    <span class="id-file">contact.sql</span>
+                  </div>
+                  <pre class="id-sql" id="idSql" aria-label="SELECT email, linkedin, github, resume FROM anchana WHERE open_to_chat = TRUE"></pre>
+                  <div class="id-result" id="idResult">
+                    <div class="id-rows" aria-hidden="true">&#10003; 1 row &middot; 0.02 s</div>
+                    <dl class="id-grid">
+                      <dt>email</dt><dd><a href="#" id="heroEmail"></a></dd>
+                      <dt>linkedin</dt><dd><a href="#" target="_blank" rel="noopener" id="heroLinkedin"></a></dd>
+                      <dt>github</dt><dd><a href="https://github.com/anchana-techie" target="_blank" rel="noopener">anchana-techie &#8599;</a></dd>
+                      <dt>resume</dt><dd><a href="#resume" data-modal="resume">view.pdf &#8599;</a></dd>
+                    </dl>
+                  </div>
+                  <span class="id-back-hint" aria-hidden="true">tap to flip back</span>
+                </div>
+              </div>
             </div>
+            </div>
+            <p class="id-hint" id="idHint" aria-hidden="true">Tap the badge for contact details</p>
           </div>
         </div>
       </div>
@@ -260,6 +301,14 @@
         <span class="eyebrow" id="skillsEyebrow">Technical Skills</span>
         <div class="eyebrow-rule"></div>
       </div>
+      <div class="orbit-wrap" id="orbitWrap" hidden>
+        <div class="orbit" id="skillsOrbit">
+          <div class="orbit-core" aria-hidden="true"><span class="orbit-core-mono" id="orbitCore">AP</span><span class="orbit-core-label" id="orbitCoreLabel"></span></div>
+          <div class="orbit-tip" id="orbitTip" role="tooltip" hidden></div>
+        </div>
+        <p class="orbit-caption">Hover a skill to see where I've used it &middot; hover a card below to find its skills</p>
+      </div>
+
       <div class="skills-grid" id="skillsGrid"><!-- populated from JSON_Files/skills.json --></div>
     </div>
   </section>
@@ -564,7 +613,12 @@
 
   document.addEventListener('click', function (e) {
     const pageLink = e.target.closest('a[data-page]');
-    if (pageLink) { e.preventDefault(); showPage(pageLink.getAttribute('data-page')); return; }
+    if (pageLink) {
+      e.preventDefault();
+      showPage(pageLink.getAttribute('data-page'));
+      if (e.detail > 0) pageLink.blur();   // mouse/touch click: drop focus ring
+      return;
+    }
     const modalLink = e.target.closest('a[data-modal]');
     if (modalLink) { e.preventDefault(); closeMobileNav(); openModal(modalLink.getAttribute('data-modal')); }
   });
@@ -1398,6 +1452,16 @@ requestAnimationFrame(loop);
       if (els.email) { els.email.href = 'mailto:' + (contact.email || ''); els.email.textContent = contact.email || ''; }
       if (els.linkedin) { els.linkedin.href = contact.linkedinUrl || '#'; els.linkedin.innerHTML = contact.linkedinLabel || ''; }
 
+      // ID badge front
+      var badgeName = document.getElementById('badgeName');
+      var badgeRole = document.getElementById('badgeRole');
+      var badgeStatus = document.getElementById('badgeStatus');
+      if (badgeName) badgeName.textContent = [hero.firstName, hero.lastName].filter(Boolean).join(' ');
+      if (badgeRole) badgeRole.innerHTML = hero.eyebrow || '';
+      if (badgeStatus && cert.status && cert.name) {
+        badgeStatus.textContent = (/^active$/i.test(cert.status) ? 'Databricks certified' : cert.status);
+      }
+
       if (els.certBadgeStatus) els.certBadgeStatus.textContent = cert.status || '';
       if (els.certBadgeName) els.certBadgeName.textContent = cert.name || '';
 
@@ -2004,6 +2068,256 @@ requestAnimationFrame(loop);
         console.warn('Timeline: could not load experience.json.', err);
         if (subtitleEl) subtitleEl.textContent = 'Could not load experience data.';
       });
+  })();
+</script>
+
+<script>
+  /* ── ID BADGE (hero) ─────────────────────────────────────────
+     Click / tap / Enter / Space flips the badge. The first flip types
+     out a SQL query and then shows the "result row" with the contact
+     links. The reel cord stretches while the badge turns. Mouse
+     movement tilts the badge a little and moves a faint sheen. */
+  (function () {
+    var badge = document.getElementById('idBadge');
+    if (!badge) return;
+    var inner = document.getElementById('idInner');
+    var scene = document.getElementById('idScene');
+    var sqlEl = document.getElementById('idSql');
+    var result = document.getElementById('idResult');
+    var hint = document.getElementById('idHint');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    var QUERY = [
+      ['SELECT ', 'kw'], ['email, linkedin,\n       github, resume\n', ''],
+      ['FROM ', 'kw'], ['anchana\n', ''],
+      ['WHERE ', 'kw'], ['open_to_chat = ', ''], ['TRUE', 'val'], [';', '']
+    ];
+    var typed = false;
+
+    function typeQuery() {
+      if (typed) return;
+      typed = true;
+      sqlEl.textContent = '';
+      if (reduce) {
+        QUERY.forEach(function (part) { addSpan(part[0], part[1]); });
+        result.classList.add('is-shown');
+        return;
+      }
+      var qi = 0, ci = 0, span = null;
+      (function step() {
+        if (qi >= QUERY.length) {
+          var caret = document.createElement('span');
+          caret.className = 'id-caret';
+          sqlEl.appendChild(caret);
+          setTimeout(function () { result.classList.add('is-shown'); }, 250);
+          return;
+        }
+        var part = QUERY[qi];
+        if (ci === 0) span = addSpan('', part[1]);
+        span.textContent += part[0].charAt(ci);
+        ci++;
+        if (ci >= part[0].length) { qi++; ci = 0; }
+        setTimeout(step, 24);
+      })();
+    }
+    function addSpan(text, cls) {
+      var sp = document.createElement('span');
+      if (cls) sp.className = 'id-' + cls;
+      sp.textContent = text;
+      sqlEl.appendChild(sp);
+      return sp;
+    }
+
+    function flip() {
+      var flipped = !badge.classList.contains('is-flipped');
+      badge.classList.toggle('is-flipped', flipped);
+      badge.setAttribute('aria-pressed', String(flipped));
+      inner.style.transform = '';
+      if (hint) hint.classList.add('is-used');
+      // The reel cord pays out while the badge turns, then winds back.
+      scene.classList.remove('is-pulling'); void scene.offsetWidth; scene.classList.add('is-pulling');
+      if (flipped) setTimeout(typeQuery, reduce ? 0 : 320);
+    }
+
+    badge.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;           // links on the back work normally
+      flip();
+    });
+    badge.addEventListener('keydown', function (e) {
+      if (e.target !== badge) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+    });
+    scene.addEventListener('animationend', function (e) {
+      if (e.animationName === 'id-pull') scene.classList.remove('is-pulling');
+    });
+
+    if (finePointer && !reduce) {
+      badge.addEventListener('mousemove', function (e) {
+        if (badge.classList.contains('is-flipped')) return;
+        var r = badge.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        inner.style.transform = 'rotateY(' + (x * 10).toFixed(2) + 'deg) rotateX(' + (-y * 8).toFixed(2) + 'deg)';
+        badge.style.setProperty('--sheen-x', (100 - (x + 0.5) * 100).toFixed(1) + '%');
+      });
+      badge.addEventListener('mouseleave', function () {
+        inner.style.transform = '';
+        badge.style.setProperty('--sheen-x', '120%');
+      });
+    }
+  })();
+</script>
+
+<script>
+  /* ── SKILLS ORBIT (page-skills) ──────────────────────────────
+     Rings and tooltip notes come from JSON_Files/skills-orbit.json.
+     Hovering (or focusing) a skill pauses the orbit, shows its note
+     and lights up the cards it belongs to; hovering a card lights up
+     its skills in the orbit. */
+  (function () {
+    var wrap = document.getElementById('orbitWrap');
+    var orbit = document.getElementById('skillsOrbit');
+    var tip = document.getElementById('orbitTip');
+    var grid = document.getElementById('skillsGrid');
+    if (!orbit || !grid) return;
+    var rings = [];          // [{el, factor, planets: []}]
+    var notes = {};
+    var small = window.matchMedia('(max-width: 640px)');
+
+    function norm(t) { return String(t || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
+    function decode(t) { var d = document.createElement('textarea'); d.innerHTML = t; return d.value; }
+
+    function build(data) {
+      notes = data.notes || {};
+      document.getElementById('orbitCore').textContent = data.core || 'AP';
+      document.getElementById('orbitCoreLabel').textContent = data.coreLabel || '';
+      var FACTORS = [0.34, 0.6, 0.86];
+      (data.rings || []).slice(0, 3).forEach(function (ring, ri) {
+        var el = document.createElement('div');
+        el.className = 'orbit-ring orbit-ring-' + (ri + 1);
+        el.style.setProperty('--spin', (ring.seconds || 50) + 's');
+        el.style.setProperty('--dir', ri % 2 ? 'reverse' : 'normal');
+        var list = ring.skills || [];
+        var planets = list.map(function (name, pi) {
+          var angle = (360 / list.length) * pi + ri * 22;
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'orbit-planet';
+          b.style.setProperty('--a', angle + 'deg');
+          b.setAttribute('aria-label', name + (notes[name] ? ': ' + notes[name] : ''));
+          b.dataset.skill = name;
+          var label = document.createElement('span');
+          label.className = 'orbit-label';
+          label.textContent = name;
+          b.appendChild(label);
+          el.appendChild(b);
+          return b;
+        });
+        orbit.insertBefore(el, tip);
+        rings.push({ el: el, factor: FACTORS[ri], planets: planets });
+      });
+      layout();
+      wrap.hidden = false;
+    }
+
+    function layout() {
+      var w = orbit.clientWidth;
+      var compact = small.matches;
+      rings.forEach(function (ring, i) {
+        // On phones keep two rings; the outer ring's skills are in the cards.
+        var factor = compact ? [0.42, 0.84, 0][i] : ring.factor;
+        ring.el.hidden = factor === 0;
+        var r = (w / 2) * factor;
+        ring.el.style.width = ring.el.style.height = (r * 2) + 'px';
+        ring.el.style.setProperty('--r', r + 'px');
+      });
+    }
+    window.addEventListener('resize', layout);
+    if (small.addEventListener) small.addEventListener('change', layout);
+
+    /* Linking planets <-> cards */
+    function cardsFor(skill) {
+      return Array.prototype.filter.call(grid.querySelectorAll('.skill-card'), function (card) {
+        return Array.prototype.some.call(card.querySelectorAll('.skill-pill'), function (p) {
+          return norm(p.textContent) === norm(skill);
+        });
+      });
+    }
+    function skillsOf(card) {
+      return Array.prototype.map.call(card.querySelectorAll('.skill-pill'), function (p) { return norm(p.textContent); });
+    }
+    var litCard = null;
+    function clearLit() {
+      litCard = null;
+      orbit.classList.remove('is-paused', 'has-lit');
+      orbit.querySelectorAll('.is-lit').forEach(function (n) { n.classList.remove('is-lit'); });
+      grid.querySelectorAll('.is-lit').forEach(function (n) { n.classList.remove('is-lit'); });
+      tip.hidden = true;
+    }
+    function showPlanet(planet) {
+      clearLit();
+      var skill = planet.dataset.skill;
+      orbit.classList.add('is-paused', 'has-lit');
+      planet.classList.add('is-lit');
+      cardsFor(skill).forEach(function (c) {
+        c.classList.add('is-lit');
+        c.querySelectorAll('.skill-pill').forEach(function (p) { if (norm(p.textContent) === norm(skill)) p.classList.add('is-lit'); });
+      });
+      var note = notes[skill];
+      tip.innerHTML = '';
+      var strong = document.createElement('strong'); strong.textContent = skill; tip.appendChild(strong);
+      if (note) { var span = document.createElement('span'); span.textContent = note; tip.appendChild(span); }
+      tip.hidden = false;
+      var o = orbit.getBoundingClientRect(), p = planet.getBoundingClientRect();
+      var x = p.left + p.width / 2 - o.left;
+      var y = p.top - o.top;
+      var tw = tip.offsetWidth;
+      x = Math.max(tw / 2 + 4, Math.min(o.width - tw / 2 - 4, x));
+      var below = y < tip.offsetHeight + 16;
+      tip.classList.toggle('below', below);
+      tip.style.left = x + 'px';
+      tip.style.top = (below ? p.bottom - o.top + 10 : y - 10) + 'px';
+    }
+    orbit.addEventListener('mouseover', function (e) {
+      var planet = e.target.closest('.orbit-planet'); if (planet) showPlanet(planet);
+    });
+    orbit.addEventListener('focusin', function (e) {
+      var planet = e.target.closest('.orbit-planet'); if (planet) showPlanet(planet);
+    });
+    orbit.addEventListener('mouseleave', clearLit);
+    orbit.addEventListener('focusout', function (e) { if (!orbit.contains(e.relatedTarget)) clearLit(); });
+    orbit.addEventListener('click', function (e) {
+      var planet = e.target.closest('.orbit-planet'); if (planet) showPlanet(planet);   // touch
+    });
+
+    grid.addEventListener('mouseover', function (e) {
+      var card = e.target.closest('.skill-card');
+      if (!card || card === litCard) return;
+      clearLit();
+      litCard = card;
+      var names = skillsOf(card);
+      orbit.classList.add('is-paused', 'has-lit');
+      card.classList.add('is-lit');
+      orbit.querySelectorAll('.orbit-planet').forEach(function (p) {
+        if (names.indexOf(norm(p.dataset.skill)) !== -1) p.classList.add('is-lit');
+      });
+    });
+    grid.addEventListener('mouseleave', clearLit);
+
+    fetch('JSON_Files/skills-orbit.json')
+      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function (data) {
+        // Labels in skills.json may contain HTML entities (&amp;); match on text.
+        Object.keys(data.notes || {}).forEach(function (k) { data.notes[decode(k)] = data.notes[k]; });
+        build(data);
+      })
+      .catch(function (err) { console.warn('Skills orbit: could not load skills-orbit.json.', err); });
+
+    // The Skills page is hidden until opened; size the rings when it shows.
+    new MutationObserver(function () {
+      if (document.getElementById('page-skills').classList.contains('active')) layout();
+    }).observe(document.getElementById('page-skills'), { attributes: true, attributeFilter: ['class'] });
   })();
 </script>
 

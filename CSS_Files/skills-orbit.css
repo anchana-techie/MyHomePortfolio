@@ -1,0 +1,120 @@
+    /* ── SKILLS ORBIT ────────────────────────────────────────────
+       Rings spin; each planet is placed on its ring with
+       rotate(angle) translateX(radius) and its label spins the other
+       way so text stays upright. Pausing = animation-play-state.   */
+
+    .orbit-wrap { margin: 0 0 3rem; }
+    .orbit {
+      position: relative;
+      width: min(560px, 100%);
+      aspect-ratio: 1;
+      margin: 0 auto;
+    }
+    .orbit-core {
+      position: absolute; left: 50%; top: 50%;
+      width: 104px; height: 104px;
+      margin: -52px 0 0 -52px;
+      border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 35% 30%, rgba(var(--accent-rgb), .28), rgba(var(--accent2-rgb), .16) 60%, var(--bg-card) 100%);
+      border: 1px solid rgba(var(--accent-rgb), .45);
+      box-shadow: 0 0 0 8px rgba(var(--accent-rgb), .05), 0 0 60px rgba(var(--accent-rgb), .22);
+      animation: core-breathe 5s ease-in-out infinite;
+    }
+    .orbit-core-mono { font-family: var(--display); font-size: 1.6rem; font-weight: 600; color: var(--text); line-height: 1; }
+    .orbit-core-label { margin-top: 6px; font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+    @keyframes core-breathe {
+      0%, 100% { box-shadow: 0 0 0 8px rgba(var(--accent-rgb), .05), 0 0 50px rgba(var(--accent-rgb), .18); }
+      50%      { box-shadow: 0 0 0 14px rgba(var(--accent-rgb), .03), 0 0 70px rgba(var(--accent-rgb), .28); }
+    }
+
+    .orbit-ring {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px dashed rgba(var(--accent2-rgb), .28);
+      pointer-events: none;
+      animation: orbit-spin var(--spin, 50s) linear infinite;
+      animation-direction: var(--dir, normal);
+    }
+    .orbit-ring-1 { border-color: rgba(var(--accent-rgb), .35); }
+    @keyframes orbit-spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .orbit-planet {
+      position: absolute; left: 50%; top: 50%;
+      padding: 0; border: 0; background: none;
+      font: inherit;
+      cursor: default;
+      pointer-events: auto;
+      transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a))) translate(-50%, -50%);
+      transform-origin: 0 0;
+    }
+    .orbit-label {
+      display: inline-block;
+      white-space: nowrap;
+      padding: .34rem .75rem;
+      border-radius: 999px;
+      font-size: .74rem; font-weight: 500;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      box-shadow: 0 4px 16px rgba(0,0,0,.18);
+      animation: orbit-spin-label var(--spin, 50s) linear infinite;
+      animation-direction: var(--dir, normal);
+      transition: background .2s, color .2s, border-color .2s, box-shadow .2s, opacity .25s, scale .2s;
+    }
+    @keyframes orbit-spin-label { from { rotate: 0deg; } to { rotate: -360deg; } }
+    .orbit-ring-1 .orbit-label { color: var(--gold); border-color: rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .08); }
+    .orbit-ring-2 .orbit-label { color: var(--teal); border-color: rgba(var(--accent2-rgb), .35); }
+
+    /* Paused + highlighting */
+    .orbit.is-paused .orbit-ring,
+    .orbit.is-paused .orbit-label { animation-play-state: paused; }
+    .orbit.has-lit .orbit-label { opacity: .4; }
+    body.light-theme .orbit.has-lit .orbit-label { opacity: .55; }
+    .orbit.has-lit .orbit-planet.is-lit .orbit-label {
+      opacity: 1;
+      scale: 1.08;
+      color: var(--bg);
+      background: var(--gold);
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .18), 0 6px 22px rgba(var(--accent-rgb), .35);
+    }
+    .orbit-planet:focus-visible { outline: none; }
+    .orbit-planet:focus-visible .orbit-label { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    .orbit-tip {
+      position: absolute;
+      z-index: 5;
+      width: max-content; max-width: 240px;
+      transform: translate(-50%, -100%);
+      padding: .6rem .8rem;
+      border-radius: 8px;
+      background: var(--bg-raised);
+      border: 1px solid rgba(var(--accent-rgb), .35);
+      box-shadow: 0 12px 32px var(--shadow-strong);
+      font-size: .74rem; line-height: 1.45;
+      color: var(--text-soft);
+      pointer-events: none;
+    }
+    .orbit-tip.below { transform: translate(-50%, 0); }
+    .orbit-tip strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+
+    .orbit-caption { text-align: center; font-size: .74rem; color: var(--text-muted); margin-top: 1rem; }
+
+    /* Cards and pills light up in step with the orbit */
+    .skill-card.is-lit { border-color: rgba(var(--accent-rgb), .55) !important; box-shadow: 0 0 0 1px rgba(var(--accent-rgb), .25), 0 14px 36px rgba(var(--accent-rgb), .12); }
+    .skill-pill.is-lit { background: var(--gold) !important; color: var(--bg) !important; border-color: var(--gold) !important; }
+
+    @media (max-width: 640px) {
+      .orbit-core { width: 78px; height: 78px; margin: -39px 0 0 -39px; }
+      .orbit-core-mono { font-size: 1.2rem; }
+      .orbit-label { font-size: .66rem; padding: .28rem .6rem; }
+      .orbit-caption { font-size: .68rem; padding: 0 1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .orbit-ring, .orbit-label, .orbit-core { animation: none !important; }
+    }

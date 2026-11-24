@@ -1,0 +1,59 @@
+{
+  "_help": "Skills orbit on the Skills page. Each ring lists skill names exactly as they appear in skills.json (so hovering links them to their cards). 'notes' is the one-line tooltip for each skill.",
+  "core": "AP",
+  "coreLabel": "Data · AI",
+  "rings": [
+    {
+      "label": "Daily tools",
+      "seconds": 38,
+      "skills": [
+        "Python",
+        "T-SQL",
+        "DAX",
+        "Power BI"
+      ]
+    },
+    {
+      "label": "Platforms",
+      "seconds": 56,
+      "skills": [
+        "Databricks",
+        "DBT",
+        "Azure DevOps",
+        "SSRS",
+        "SQL Server"
+      ]
+    },
+    {
+      "label": "Integration and delivery",
+      "seconds": 80,
+      "skills": [
+        "ODBC",
+        "Simba Spark Driver",
+        "PAT Authentication",
+        "ETL Transformations",
+        "CI/CD Pipelines",
+        "Version Control",
+        "Pipeline Management"
+      ]
+    }
+  ],
+  "notes": {
+    "Python": "Automated pulling table references and T-SQL out of hundreds of SSRS .rdl files.",
+    "T-SQL": "Converted report queries and stored procedures from SQL Server to Databricks SQL.",
+    "DAX": "Measures and data models behind KPI tracking in Power BI.",
+    "Power BI": "Portfolio at Risk, Agent Productivity, Claims and Insurance dashboards.",
+    "Databricks": "Certified Data Engineer Associate; target platform of the SSRS migration.",
+    "DBT": "Rebuilt T-SQL stored procedures as DBT models on Databricks.",
+    "Azure DevOps": "CI/CD pipelines that deploy DBT models and Databricks notebooks.",
+    "SSRS": "Migrated 200–400 SSRS reports from SQL Server to Databricks.",
+    "SQL Server": "Source system for the migration, and where her data journey started.",
+    "ODBC": "Repointed reports to Databricks over ODBC connections.",
+    "Simba Spark Driver": "The ODBC driver used to connect the reports to Databricks.",
+    "PAT Authentication": "Databricks personal access tokens for secure report connections.",
+    "ETL Transformations": "Restructured raw data into clean models for downstream reports.",
+    "CI/CD Pipelines": "Automated, version-controlled deployments through Azure DevOps.",
+    "Version Control": "Git repositories in Azure DevOps for models and notebooks.",
+    "Pipeline Management": "Scheduling Databricks jobs, provisioned with Terraform."
+  }
+}
