@@ -8,8 +8,10 @@
  * Setup (about 5 minutes):
  *  1. Create a Google Sheet, e.g. "Portfolio Chat Logs".
  *  2. Extensions -> Apps Script. Delete the sample code and paste this file.
- *  3. Project Settings (gear icon) -> Script properties -> Add property:
+ *  3. Project Settings (gear icon) -> Script properties -> add two:
  *       LOG_SECRET = <any long random text>
+ *       SHEET_ID   = <the sheet's ID: the part of its address between
+ *                     /d/ and /edit>
  *  4. Deploy -> New deployment -> type "Web app".
  *       Execute as: Me
  *       Who has access: Anyone
@@ -55,7 +57,13 @@ function doGet() {
 }
 
 function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  // SHEET_ID (Script property) = the long ID in the sheet's address bar,
+  // between /d/ and /edit. If it isn't set, use the sheet this script was
+  // opened from (Extensions -> Apps Script).
+  var sheetId = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  var ss = sheetId ? SpreadsheetApp.openById(sheetId.trim())
+                   : SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) throw new Error('Set the SHEET_ID script property to your Google Sheet ID.');
   var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);

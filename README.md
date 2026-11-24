@@ -91,7 +91,7 @@ Render start command: `uvicorn main:app --host 0.0.0.0 --port $PORT` (build: `pi
 Render's free tier wipes its disk on every restart, so the CSV log doesn't last. `apps_script/ChatLogger.gs` is a tiny Apps Script web app that appends each exchange to a sheet:
 
 1. Create a Google Sheet → **Extensions → Apps Script** → paste `apps_script/ChatLogger.gs`.
-2. **Project Settings → Script properties** → add `LOG_SECRET` = any long random text.
+2. **Project Settings → Script properties** → add `LOG_SECRET` = any long random text, and `SHEET_ID` = the sheet's ID (the part of its address between `/d/` and `/edit`).
 3. **Deploy → New deployment → Web app**, execute as *Me*, access *Anyone* → copy the URL.
 4. In Render → **Environment**, add `LOG_SHEET_WEBHOOK_URL` (the URL) and `LOG_SHEET_SECRET` (the same text). Render redeploys and rows start arriving in the `ChatLogs` tab.
 
