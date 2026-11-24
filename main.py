@@ -313,32 +313,50 @@ def call_with_key_rotation(operation, *args, **kwargs):
 # ---------------------------------------------------------------------------
 # Index
 # ---------------------------------------------------------------------------
-def load_portfolio_data():
-    """Load the FAISS index, or build it from portfolio_content.json when the
-    files are missing (e.g. after the content changed and the index was
-    deleted - Render then rebuilds it on startup)."""
-    os.makedirs(DATA_DIR, exist_ok=True)
+def _read_content():
     try:
+        from ingest import CONTENT_PATH
+        with open(CONTENT_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as exc:
+        print(f"Warning: could not read portfolio_content.json: {exc}")
+        return []
+
+
+# Start with plain keyword search over the raw content, so the server can
+# answer (and Render sees the port open) straight away.
+faiss_index = None
+portfolio_meta = _read_content()
+
+
+def _prepare_index():
+    """Runs in the background after startup: load the FAISS index, or build
+    it from portfolio_content.json when the files are missing (Render's disk
+    is wiped on restart, so it usually builds). Also warms up the embedding
+    model so the first visitor doesn't wait for the download."""
+    global faiss_index, portfolio_meta
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
         if not (os.path.exists(INDEX_PATH) and os.path.exists(META_PATH)):
             from ingest import main as build_index
             build_index()
         with open(META_PATH, "r", encoding="utf-8") as f:
             meta = json.load(f)
-        return faiss.read_index(INDEX_PATH), meta
+        index = faiss.read_index(INDEX_PATH)
+        list(get_embedder().embed(["query: warm up"]))
+        portfolio_meta = meta   # same chunk order as the raw content
+        faiss_index = index
+        print(f"Search index ready ({index.ntotal} chunks).")
     except Exception as exc:
-        print(f"Warning: could not load or build portfolio index: {exc}")
-        # Fall back to keyword search over the raw content.
-        try:
-            from ingest import CONTENT_PATH
-            with open(CONTENT_PATH, "r", encoding="utf-8") as f:
-                return None, json.load(f)
-        except Exception:
-            return None, []
+        print(f"Warning: could not load or build portfolio index, using keyword search: {exc}")
 
-
-faiss_index, portfolio_meta = load_portfolio_data()
 
 app = FastAPI(title="Anchana Portfolio AI")
+
+
+@app.on_event("startup")
+def start_index_build():
+    threading.Thread(target=_prepare_index, daemon=True).start()
 
 # ---- CORS: allow the GitHub Pages site (and local testing) to call this API ----
 ALLOWED_ORIGINS = [
