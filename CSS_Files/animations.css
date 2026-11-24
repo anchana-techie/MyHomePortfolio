@@ -1,0 +1,161 @@
+    /* ── MOTION (theme: Ocean pink) ──────────────────────────────
+       Hero glow, name shimmer, typing line, entrance, page change,
+       scroll reveal, small hover touches. All of it switches off for
+       visitors who ask for reduced motion (bottom of this file). */
+
+    /* ── Hero: two soft glows drifting behind the content ── */
+    .hero > .wrap { position: relative; z-index: 1; }
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(10px);
+      will-change: transform;
+    }
+    .hero::after {
+      top: -35%; right: -12%;
+      width: 620px; height: 620px;
+      background: radial-gradient(circle, rgba(var(--accent-rgb), .16) 0%, transparent 62%);
+      animation: glow-drift-a 18s ease-in-out infinite alternate;
+    }
+    .hero::before {
+      bottom: -45%; left: -15%;
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(var(--accent2-rgb), .13) 0%, transparent 62%);
+      animation: glow-drift-b 22s ease-in-out infinite alternate;
+    }
+    body.light-theme .hero::after  { background: radial-gradient(circle, rgba(var(--accent-rgb), .10) 0%, transparent 62%); }
+    body.light-theme .hero::before { background: radial-gradient(circle, rgba(var(--accent2-rgb), .08) 0%, transparent 62%); }
+    @keyframes glow-drift-a {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(-90px, 60px) scale(1.12); }
+      100% { transform: translate(-30px, 140px) scale(.95); }
+    }
+    @keyframes glow-drift-b {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(120px, -50px) scale(1.1); }
+      100% { transform: translate(60px, -120px) scale(1.18); }
+    }
+
+    /* ── Hero: name in a slow pink → violet shimmer ── */
+    #heroName {
+      background: linear-gradient(100deg, var(--text) 0%, var(--text) 35%, var(--gold) 55%, var(--teal) 70%, var(--text) 90%);
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: name-shimmer 9s ease-in-out infinite;
+    }
+    @keyframes name-shimmer {
+      0%, 100% { background-position: 100% 0; }
+      50%      { background-position: 0% 0; }
+    }
+
+    /* ── Hero: "I build ___" typing line ── */
+    .hero-typed {
+      font-family: var(--display);
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      color: var(--text-soft);
+      margin: -0.5rem 0 1.25rem;
+      min-height: 1.6em;
+    }
+    .hero-typed .typed-word { color: var(--gold); font-weight: 500; }
+    .typed-caret {
+      display: inline-block;
+      width: 2px; height: 1.05em;
+      margin-left: 3px;
+      vertical-align: -0.15em;
+      background: var(--gold);
+      animation: caret-blink 1s steps(1) infinite;
+    }
+    @keyframes caret-blink { 50% { opacity: 0; } }
+
+    /* ── Hero: content rises in on first load ── */
+    .hero-grid > div:first-child > *,
+    .hero-photo-col {
+      animation: rise-in .8s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    .hero-grid > div:first-child > :nth-child(1) { animation-delay: .05s; }
+    .hero-grid > div:first-child > :nth-child(2) { animation-delay: .15s; }
+    .hero-grid > div:first-child > :nth-child(3) { animation-delay: .25s; }
+    .hero-grid > div:first-child > :nth-child(4) { animation-delay: .35s; }
+    .hero-grid > div:first-child > :nth-child(5) { animation-delay: .45s; }
+    .hero-photo-col { animation-delay: .3s; }
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Photo: soft pink ring on hover. */
+    .hero-photo-wrap { transition: box-shadow .35s, transform .35s, border-color .35s; }
+    .hero-photo-wrap:hover {
+      transform: translateY(-4px);
+      border-color: rgba(var(--accent-rgb), .5);
+      box-shadow: 0 14px 44px rgba(0,0,0,.35), 0 0 0 4px rgba(var(--accent-rgb), .12);
+    }
+
+    /* ── Page change: each page fades up when opened ── */
+    .page.active { animation: page-in .45s cubic-bezier(.2, .7, .2, 1) both; }
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── Scroll reveal (classes added by the motion script) ── */
+    .motion-ok .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .7s cubic-bezier(.2, .7, .2, 1);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+    .motion-ok .reveal.is-visible { opacity: 1; transform: none; }
+    /* Once revealed, hover effects should react instantly again. */
+    .motion-ok .reveal.is-visible:hover { transition-delay: 0ms; }
+
+    /* ── Menu: pink underline slides in under the link ── */
+    nav ul a { position: relative; }
+    nav ul a::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -6px;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+    }
+    nav ul a:hover::after,
+    nav ul a.active::after { transform: scaleX(1); }
+
+    /* ── Cards lift slightly on hover ── */
+    .skill-card, .tl-card, .tl-stat, .edu-stat { transition: transform .3s, border-color .3s, box-shadow .3s, background .2s; }
+    .skill-card:hover, .tl-card:hover, .tl-stat:hover, .edu-stat:hover { transform: translateY(-3px); }
+
+    /* ── Chat button: a gentle pulse to invite the first click ── */
+    #pai-bubble::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      animation: chat-pulse 2.4s ease-out 1.5s 4;
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes chat-pulse {
+      0%   { transform: scale(1);   opacity: .7; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ── Respect "reduce motion" system settings ── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before, .hero::after, #heroName, .typed-caret,
+      .hero-grid > div:first-child > *, .hero-photo-col,
+      .page.active, #pai-bubble::after { animation: none !important; }
+      .hero-photo-wrap:hover, .skill-card:hover, .tl-card:hover,
+      .tl-stat:hover, .edu-stat:hover { transform: none; }
+      nav ul a::after { transition: none; }
+    }

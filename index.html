@@ -58,6 +58,7 @@
   <link rel="stylesheet" href="CSS_Files/timeline.css" />
   <link rel="stylesheet" href="CSS_Files/beyondwork.css" />
   <link rel="stylesheet" href="CSS_Files/chatbot.css" />
+  <link rel="stylesheet" href="CSS_Files/animations.css" />
   <style>
     /* Small scoped rule for the new nav logo mark - kept inline since the
        shared navigation.css wasn't part of this edit. Move into
@@ -135,6 +136,9 @@
         <div>
           <p class="hero-eyebrow" id="heroEyebrow"><span></span></p>
           <h1 id="heroName">&nbsp;</h1>
+          <p class="hero-typed" aria-label="I build data pipelines, Power BI dashboards, Databricks migrations, RAG chatbots and web apps for fun.">
+            <span aria-hidden="true">I build </span><span class="typed-word" id="heroTyped" aria-hidden="true"></span><span class="typed-caret" aria-hidden="true"></span>
+          </p>
           <p class="hero-desc" id="heroDesc"></p>
           <div class="cert-badge" id="heroCertBadge" onclick="openModal('cert')" title="Click to view certificate">
             <span class="live" id="heroCertStatus"></span>
@@ -671,16 +675,16 @@ window.addEventListener('resize', resize);
 resize();
 
 const COL_DARK = {
-  bg:'#0b1220', line:'#8f7cf0', lineDim:'#5c4fae',
-  girl:'#c7bbfb', partner:'#ffb4d0',
-  accentSun:'#f6c667', accentMoon:'#d9def0',
-  paper:'#efe7ff', ink:'#3a2f66', screen:'#2a2350', code:'#a996ff', shuttle:'#ffffff'
+  bg:'#0b1220', line:'#a78bfa', lineDim:'#4c3f8f',
+  girl:'#f472b6', partner:'#c4b5fd',
+  accentSun:'#fbbf77', accentMoon:'#e2e8f5',
+  paper:'#fdf2f8', ink:'#3b1d33', screen:'#1a2440', code:'#f9a8d4', shuttle:'#ffffff'
 };
 const COL_LIGHT = {
-  bg:'#fbf6f9', line:'#5b4aa8', lineDim:'#b3a7de',
-  girl:'#6b57c9', partner:'#c9527e',
-  accentSun:'#d99a1f', accentMoon:'#8d89ab',
-  paper:'#ffffff', ink:'#3a2f66', screen:'#e3ddf7', code:'#5b4aa8', shuttle:'#3a2f66'
+  bg:'#fbf6f9', line:'#6d28d9', lineDim:'#d6c8f5',
+  girl:'#db2777', partner:'#7c3aed',
+  accentSun:'#e08a1e', accentMoon:'#8d89ab',
+  paper:'#ffffff', ink:'#3b1d33', screen:'#fce7f3', code:'#be185d', shuttle:'#3b1d33'
 };
 const COL = Object.assign({}, COL_DARK);
 function applyStickStoryTheme(isLight) {
@@ -855,7 +859,7 @@ function easel(cx, progress){
   }
   if(progress>0.4){ ctx.beginPath(); ctx.arc(cx+w*0.22, cyTop+h*0.2, 7,0,Math.PI*2); ctx.stroke(); }
   if(progress>0.6){
-    ctx.fillStyle='#7a6fd6';
+    ctx.fillStyle=COL.girl;
     ctx.beginPath();
     ctx.moveTo(cx-w/2+4, cyTop+h*0.55);
     ctx.lineTo(cx-w/2+22, cyTop+h*0.28);
@@ -2000,6 +2004,76 @@ requestAnimationFrame(loop);
         console.warn('Timeline: could not load experience.json.', err);
         if (subtitleEl) subtitleEl.textContent = 'Could not load experience data.';
       });
+  })();
+</script>
+
+<script>
+  /* ── MOTION ──────────────────────────────────────────────────
+     1. Hero typing line, cycling through what Anchana builds.
+     2. Scroll reveal: cards, timeline items and stats fade up as they
+        come into view (also when a page is first opened).
+     Everything here is skipped for visitors who ask their system for
+     reduced motion. */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* 1. Typing line */
+    var WORDS = ['data pipelines', 'Power BI dashboards', 'Databricks migrations', 'RAG chatbots', 'web apps for fun'];
+    var typedEl = document.getElementById('heroTyped');
+    if (typedEl) {
+      if (reduce) {
+        typedEl.textContent = WORDS[0];
+      } else {
+        var w = 0, i = 0, deleting = false;
+        (function tick() {
+          var word = WORDS[w];
+          i += deleting ? -1 : 1;
+          typedEl.textContent = word.slice(0, i);
+          var delay = deleting ? 45 : 85;
+          if (!deleting && i === word.length) { deleting = true; delay = 1600; }
+          else if (deleting && i === 0) { deleting = false; w = (w + 1) % WORDS.length; delay = 350; }
+          setTimeout(tick, delay);
+        })();
+      }
+    }
+
+    /* 2. Scroll reveal */
+    if (reduce || !('IntersectionObserver' in window)) return;
+    document.documentElement.classList.add('motion-ok');
+
+    var SELECTOR = [
+      '.section-header', '.exp-company', '.project', '.personal-card', '.personal-intro',
+      '.skill-card', '.tl-item', '.tl-stat', '.edu-stat', '.edu-main',
+      '.cert-row', '.summary-text', '.carousel-wrap', '.csr-stage', '.hobby-gallery',
+      '.carousel-section-title'
+    ].join(',');
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
+
+    function prepare(el) {
+      if (el.classList.contains('reveal') || el.closest('.hero')) return;
+      el.classList.add('reveal');
+      // Stagger siblings of the same kind (cards in a grid, timeline items).
+      var idx = 0, sib = el.previousElementSibling;
+      while (sib && idx < 6) { if (sib.classList.contains('reveal')) idx++; sib = sib.previousElementSibling; }
+      el.style.setProperty('--reveal-delay', (idx * 70) + 'ms');
+      io.observe(el);
+    }
+    function scan(root) {
+      if (root.matches && root.matches(SELECTOR)) prepare(root);
+      if (root.querySelectorAll) root.querySelectorAll(SELECTOR).forEach(prepare);
+    }
+    scan(document.body);
+    // Sections are filled in from the JSON files after load - catch those too.
+    new MutationObserver(function (list) {
+      list.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) scan(n); }); });
+    }).observe(document.body, { childList: true, subtree: true });
   })();
 </script>
 
