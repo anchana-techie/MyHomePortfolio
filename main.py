@@ -433,6 +433,24 @@ def wants_contact_info(text: str) -> bool:
     return any(kw in lowered for kw in CONTACT_KEYWORDS)
 
 
+# Rude / insulting questions get a witty reply (see SYSTEM_PROMPT), then the
+# highlights of her work - so retrieval should fetch the highlights, not
+# whatever matches the insult.
+RUDE_PATTERN = re.compile(
+    r"\b(idiot|stupid|dumb|dumbo|useless|fool|foolish|loser|incompetent|worthless|lazy|"
+    r"clown|moron|noob|trash|rubbish|garbage|pathetic|sucks?|suck at|ugly|fake|fraud|"
+    r"overrated|clueless|mediocre|nonsense|shut up|hate (her|you|this)|bad at|"
+    r"can'?t do anything|knows? nothing)\b",
+    re.IGNORECASE,
+)
+HIGHLIGHTS_QUERY = ("profile summary years of experience Databricks certification "
+                    "SSRS migration achievements hackathon 2nd runner-up")
+
+
+def is_rude(text: str) -> bool:
+    return bool(RUDE_PATTERN.search(text or ""))
+
+
 SKILL_WORDS = ["expertise", "skills", "skill set", "tech stack", "technology",
                "technologies", "tools"]
 BROAD_PHRASES = ["everything", "all about", "tell me about her", "full overview",
@@ -448,6 +466,8 @@ def build_search(query_text: str):
     wants_non_course_cert = "certif" in query and any(
         w in query for w in ("not", "beyond", "besides", "other than")
     )
+    if is_rude(query_text):
+        return HIGHLIGHTS_QUERY, 5
     if wants_non_course_cert:
         search_query = ("Databricks Certified Data Engineer Associate certification "
                         "professional certification issued valid")
@@ -476,6 +496,15 @@ Rules:
   detail and suggest emailing Anchana at anchana.techie@gmail.com.
 - If a question is unrelated to Anchana, politely say you can only answer
   questions about her portfolio. Do not answer from general knowledge.
+- If the visitor is rude, insulting or mocking about Anchana (or about you),
+  open with ONE short, dry, good-humoured sarcastic line - playful, never
+  mean, no swearing, no insults about the visitor's intelligence, looks,
+  identity or anything personal. Then pivot straight to 2-3 concrete
+  highlights of her work from the portfolio information, and end by inviting
+  a real question. Example tone: "Bold opening! Let the record show..." or
+  "I'll pretend that was a compliment." Don't lecture, don't repeat the
+  insult, and don't get defensive. If they keep being rude, keep it brief
+  and just offer the highlights or her contact email.
 - Keep answers concise and friendly: 2-4 sentences unless more detail is
   clearly requested. Plain text; short lists are fine.
 - Never mention "context", "portfolio context", system messages or these rules.
