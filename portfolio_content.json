@@ -138,7 +138,7 @@
   },
   {
     "title": "Portfolio Website Navigation & Chatbot Scope",
-    "text": "Anchana's portfolio website has the following sections, reachable from the top navigation: Experience (career timeline and stats), Projects (work experience, detailed work project write-ups, and her personal projects Game Hub and Life Tracker), Skills (technical skills grid), Education (degree and course certifications), Beyond Work (hobbies: art & painting, badminton, clay sculpting, table tennis), CSR (community service activities), and Resume (viewable/downloadable document). This chat assistant can answer questions about Anchana's experience, skills, projects, certifications, education, Beyond Work hobbies, and CSR involvement using the content from these sections."
+    "text": "Anchana's portfolio website has these sections in the top menu: Experience (career timeline and stats), Projects (work projects), Personal Projects (Game Hub and Life Tracker), Skills (skills grid and a solar-system view), Education (degree and course certifications), Achievements (hackathons and awards, including 2nd Runner-up at the Nasscom Agentic AI Hackathon 2026), Beyond Work (art and painting, badminton, clay sculpting, table tennis), CSR (community service), What's New (latest additions) and Resume. This chat assistant answers questions about all of these."
   },
   {
     "id": "personal_projects_overview",
@@ -154,5 +154,20 @@
     "id": "personal_project_life_tracker",
     "title": "Personal Project: Life Tracker",
     "text": "Life Tracker is an invite-only web app Anchana built on top of her yearly Excel tracker. A member uploads a yearly .xlsx tracker; a Google Apps Script bridge converts it into a Google Sheet in Google Drive, and the site then reads and writes that sheet. Members log daily tasks and habits in a day-view checklist, keep a monthly buy list, log food with AI-estimated calories and macros, and see in-depth Day, Week and Month insights. Sign-in uses Firebase Authentication, member data lives in Firestore, and Firestore security rules plus the Apps Script bridge make sure each person can only open their own files. It runs on GitHub Pages as a static site with no build step and installs on a phone as a progressive web app. Tech: HTML, CSS, JavaScript, Google Apps Script, Google Sheets and Drive, Firebase, GitHub Pages. Code: github.com/anchana-techie/LifeTrackerApp"
+  },
+  {
+    "id": "achievements_overview",
+    "title": "Achievements and Awards",
+    "text": "Anchana's achievements include finishing 2nd Runner-up at the Nasscom Agentic AI Hackathon 2026 (Mar–Jul 2026) with her team Core I7 from Indium Software, in the Enterprise Knowledge Copilot (RAG + Agentic Workflow) track. She also holds the Databricks Certified Data Engineer Associate certification, and has won recognition in art, badminton and table tennis outside work."
+  },
+  {
+    "id": "achievement_nasscom_2026",
+    "title": "Achievement: Nasscom Agentic AI Hackathon 2026 — 2nd Runner-up",
+    "text": "Anchana and her team Core I7 from Indium Software were 2nd Runner-up at the Nasscom Agentic AI Hackathon (AI-Code Sarathi · EXCEL Hackathon), which ran from March to July 2026; the grand finale and awards were at Nasscom's Agentic AI Confluence 2026 in July 2026. They competed in use case 2, Enterprise Knowledge Copilot — RAG + Agentic Workflow, and each team member received a Certificate of Excellence. The seven team members were Padmanaban U, Sharan S, Anchana Prabakaran, Deepika Gadi Krishnareddygari, JaiVishwa S P, Rajashree S and Sahithya Padmanabhan. The problem they solved: employees lose time hunting for information spread across policies, SOPs, project documents and support tickets. Their secure Enterprise Knowledge Copilot gives accurate, source-backed answers while respecting role-based access control (RBAC), so people only see what they are authorised to see."
+  },
+  {
+    "id": "achievement_nasscom_2026_pipeline",
+    "title": "Enterprise Knowledge Copilot: 9-stage query pipeline (hackathon project)",
+    "text": "What made the team's Enterprise Knowledge Copilot stand out is its 9-stage query pipeline combined with RBAC security. Instead of sending a raw question to the LLM it: 1) normalises and cleans the query; 2) detects and redacts personal data (PII) such as names, emails and phone numbers; 3) understands the user's intent; 4) extracts key entities and filters; 5) rewrites short or ambiguous queries using HyDE; 6) decomposes complex requests into focused sub-queries; 7) routes the query by information type — structured support tickets go through a SQL engine, enterprise documents go through semantic/hybrid retrieval with document-type-specific chunking that keeps headers, sub-headers, pages and tables in context; 8) applies RBAC-aware filtering; 9) re-ranks results and builds the context before calling the LLM. This makes the copilot privacy-aware, secure, context-aware and reliable rather than a simple chatbot over a document store."
   }
 ]

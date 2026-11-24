@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Portfolio Content Editor</title>
+  <link rel="icon" href="../Images/favicon.ico" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- Start: pick the portfolio folder -->
+<main class="start" id="start">
+  <div class="start-card">
+    <img src="../Images/logo-192.png" alt="" width="64" height="64" />
+    <h1>Portfolio Content Editor</h1>
+    <p>Edit every section of your site — text, lists and images — and save straight into your portfolio folder. Then commit and push to publish.</p>
+    <button class="btn btn-primary" id="openFolder" type="button">Open my portfolio folder</button>
+    <button class="btn" id="reopenFolder" type="button" hidden>Reopen <span id="lastFolder"></span></button>
+    <p class="hint" id="startHint">Choose the folder that contains <code>index.html</code> and <code>JSON_Files</code>. Works in Chrome or Edge on a computer.</p>
+    <p class="error" id="startError" hidden></p>
+  </div>
+</main>
+
+<!-- Editor -->
+<div class="app" id="app" hidden>
+  <aside class="side">
+    <div class="side-head">
+      <img src="../Images/logo-192.png" alt="" width="32" height="32" />
+      <div>
+        <strong>Content Editor</strong>
+        <span id="folderName"></span>
+      </div>
+    </div>
+    <div class="quick">
+      <span class="side-label">Quick add</span>
+      <button class="btn btn-small" type="button" data-quick="achievement">+ Achievement</button>
+      <button class="btn btn-small" type="button" data-quick="project">+ Personal project</button>
+      <button class="btn btn-small" type="button" data-quick="news">+ What's New post</button>
+    </div>
+    <span class="side-label">Sections</span>
+    <nav class="files" id="fileList"></nav>
+  </aside>
+
+  <main class="main">
+    <header class="bar">
+      <div>
+        <h2 id="fileTitle">Choose a section</h2>
+        <p id="fileDesc"></p>
+      </div>
+      <div class="bar-actions">
+        <label class="switch"><input type="checkbox" id="rawToggle" /> <span>Raw JSON</span></label>
+        <button class="btn" id="revertBtn" type="button" disabled>Undo changes</button>
+        <button class="btn btn-primary" id="saveBtn" type="button" disabled>Save</button>
+      </div>
+    </header>
+    <div class="editor" id="editor">
+      <div class="welcome">
+        <h3>Welcome back</h3>
+        <p>Pick a section on the left. Changes are kept in this tab until you press <strong>Save</strong>, which writes the JSON file into your folder.</p>
+        <ul>
+          <li><strong>Lists</strong> of things (projects, photos, steps) can be added, reordered, duplicated or removed.</li>
+          <li><strong>Images:</strong> use <em>Upload</em> next to any image field — the file is copied into your folder and the path is filled in.</li>
+          <li><strong>Live numbers:</strong> write <code>{years}</code> or <code>{tenure}</code> in text, or <code>{auto}</code> as a timeline duration.</li>
+          <li>Adding an achievement or personal project offers to post it to <strong>What's New</strong> too.</li>
+          <li>To publish: commit and push the folder (e.g. GitHub Desktop or <code>git add -A &amp;&amp; git commit -m "Update content" &amp;&amp; git push</code>).</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- What's New prompt -->
+<dialog class="dialog" id="newsDialog">
+  <form method="dialog" id="newsForm">
+    <h3>Add this to What's New?</h3>
+    <p class="hint">It will appear at the top of the What's New page and as the "New" link on your homepage.</p>
+    <label>Title <input name="title" required /></label>
+    <label>Short text <textarea name="text" rows="3"></textarea></label>
+    <div class="row">
+      <label>Date <input name="date" type="date" required /></label>
+      <label>Type
+        <select name="type">
+          <option value="achievement">Achievement</option>
+          <option value="project">Project</option>
+          <option value="site">Website</option>
+          <option value="skill">Skill</option>
+          <option value="certification">Certification</option>
+          <option value="role">Role</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+    </div>
+    <label>Link <input name="link" placeholder="#achievements or https://…" /></label>
+    <label>Image (optional) <input name="image" placeholder="Path to an image in your folder" /></label>
+    <div class="dialog-actions">
+      <button class="btn" value="skip" type="submit">Not now</button>
+      <button class="btn btn-primary" value="add" type="submit">Add to What's New</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

@@ -61,6 +61,7 @@
   <link rel="stylesheet" href="CSS_Files/animations.css" />
   <link rel="stylesheet" href="CSS_Files/id-badge.css" />
   <link rel="stylesheet" href="CSS_Files/skills-orbit.css" />
+  <link rel="stylesheet" href="CSS_Files/achievements.css" />
   <style>
     /* Small scoped rule for the new nav logo mark - kept inline since the
        shared navigation.css wasn't part of this edit. Move into
@@ -111,10 +112,13 @@
       <ul>
         <li><a href="#experience" data-page="YearExperience" id="nav-YearExperience">Experience</a></li>
         <li><a href="#projects" data-page="experience" id="nav-experience">Projects</a></li>
+        <li><a href="#personal-projects" data-page="personal" id="nav-personal">Personal Projects</a></li>
         <li><a href="#skills" data-page="skills" id="nav-skills">Skills</a></li>
         <li><a href="#education" data-page="education" id="nav-education">Education</a></li>
+        <li><a href="#achievements" data-page="achievements" id="nav-achievements">Achievements</a></li>
         <li><a href="#beyond-work" data-page="beyondwork" id="nav-beyondwork">Beyond Work</a></li>
         <li><a href="#csr" data-page="CSR" id="nav-CSR">CSR</a></li>
+        <li><a href="#whats-new" data-page="whatsnew" id="nav-whatsnew">What's New<span class="nav-new-dot" id="navNewDot" hidden aria-label="new"></span></a></li>
         <li><a href="#resume" data-modal="resume" id="nav-resume">Resume</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
@@ -147,6 +151,9 @@
             <span id="heroCertName"></span>
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="opacity:.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           </div>
+          <a class="hero-latest" id="heroLatest" href="#whats-new" hidden>
+            <span class="hero-latest-tag">New</span><span id="heroLatestText"></span><span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
         <div class="hero-photo-col">
           <!-- ID badge on a retractable reel. Front: photo + role.
@@ -280,7 +287,16 @@
 
       <div class="projects-wrap" id="projectsWrap"><!-- populated from JSON_Files/projects.json --></div>
 
-      <div class="personal-projects" id="personalProjects" hidden>
+    </div>
+  </section>
+</div><!-- /page-experience -->
+
+
+<!-- ═══ PERSONAL PROJECTS PAGE ═══ -->
+<div class="page" id="page-personal">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <div class="personal-projects" id="personalProjects">
         <div class="section-header">
           <span class="eyebrow" id="personalEyebrow">Personal Projects</span>
           <div class="eyebrow-rule"></div>
@@ -290,7 +306,45 @@
       </div>
     </div>
   </section>
-</div><!-- /page-experience -->
+</div><!-- /page-personal -->
+
+
+<!-- ═══ ACHIEVEMENTS PAGE (JSON_Files/achievements.json) ═══ -->
+<div class="page" id="page-achievements">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-header">
+        <span class="eyebrow" id="achEyebrow">Achievements</span>
+        <div class="eyebrow-rule"></div>
+      </div>
+      <p class="personal-intro" id="achIntro"></p>
+      <div class="ach-list" id="achList"><!-- populated from achievements.json --></div>
+    </div>
+  </section>
+</div><!-- /page-achievements -->
+
+
+<!-- ═══ WHAT'S NEW PAGE (JSON_Files/whats-new.json) ═══ -->
+<div class="page" id="page-whatsnew">
+  <section style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-header">
+        <span class="eyebrow" id="wnEyebrow">What's New</span>
+        <div class="eyebrow-rule"></div>
+      </div>
+      <p class="personal-intro" id="wnIntro"></p>
+      <ol class="wn-list" id="wnList"><!-- populated from whats-new.json --></ol>
+    </div>
+  </section>
+</div><!-- /page-whatsnew -->
+
+<!-- Photo viewer (achievements gallery) -->
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-close" type="button" aria-label="Close">&#x2715;</button>
+  <button class="lb-nav lb-prev" type="button" aria-label="Previous photo">&#8249;</button>
+  <figure class="lb-figure"><img id="lbImg" alt="" /><figcaption id="lbCaption"></figcaption></figure>
+  <button class="lb-nav lb-next" type="button" aria-label="Next photo">&#8250;</button>
+</div>
 
 
 <!-- ═══ SKILLS PAGE ═══ -->
@@ -576,7 +630,8 @@
      opens straight on Projects, and the browser Back button works. */
   const PAGE_SLUGS = {
     home: 'home', YearExperience: 'experience', experience: 'projects',
-    skills: 'skills', education: 'education', beyondwork: 'beyond-work', CSR: 'csr'
+    personal: 'personal-projects', skills: 'skills', education: 'education',
+    achievements: 'achievements', beyondwork: 'beyond-work', CSR: 'csr', whatsnew: 'whats-new'
   };
   const SLUG_PAGES = {};
   Object.keys(PAGE_SLUGS).forEach(function (k) { SLUG_PAGES[PAGE_SLUGS[k]] = k; });
@@ -623,6 +678,7 @@
     if (modalLink) { e.preventDefault(); closeMobileNav(); openModal(modalLink.getAttribute('data-modal')); }
   });
   window.addEventListener('popstate', pageFromHash);
+  window.addEventListener('hashchange', pageFromHash);   // plain #links, e.g. in What's New
   document.addEventListener('DOMContentLoaded', function () { if (location.hash) pageFromHash(); });
 
   /* ── Modal ── */
@@ -701,601 +757,7 @@
     };
   }
 
-  /* ── STICK STORY (day-in-the-life hero animation) ── */
-  (function(){
-const canvas = document.getElementById('stickStoryCanvas');
-if (!canvas) return;
-const layer = document.getElementById('stickStoryLayer');
-const ctx = canvas.getContext('2d');
-
-const BG_W = 1400, BG_H = 380;
-const GROUND_Y = 320; // the floor line every standing figure's feet touch
-
-// Full-bleed, aspect-correct resize: the strip always fills the container's
-// actual width (never letterboxed/cropped) and stays crisp at any screen size.
-function resize(){
-  const w = layer.clientWidth;
-  const scale = w / BG_W;
-  const h = BG_H * scale;
-  layer.style.height = h+'px';
-  canvas.style.width = w+'px';
-  canvas.style.height = h+'px';
-  const dpr = window.devicePixelRatio||1;
-  canvas.width = Math.round(w*dpr);
-  canvas.height = Math.round(h*dpr);
-  ctx.setTransform(scale*dpr,0,0,scale*dpr,0,0);
-}
-window.addEventListener('resize', resize);
-resize();
-
-const COL_DARK = {
-  bg:'#0b1220', line:'#a78bfa', lineDim:'#4c3f8f',
-  girl:'#f472b6', partner:'#c4b5fd',
-  accentSun:'#fbbf77', accentMoon:'#e2e8f5',
-  paper:'#fdf2f8', ink:'#3b1d33', screen:'#1a2440', code:'#f9a8d4', shuttle:'#ffffff'
-};
-const COL_LIGHT = {
-  bg:'#fbf6f9', line:'#6d28d9', lineDim:'#d6c8f5',
-  girl:'#db2777', partner:'#7c3aed',
-  accentSun:'#e08a1e', accentMoon:'#8d89ab',
-  paper:'#ffffff', ink:'#3b1d33', screen:'#fce7f3', code:'#be185d', shuttle:'#3b1d33'
-};
-const COL = Object.assign({}, COL_DARK);
-function applyStickStoryTheme(isLight) {
-  Object.assign(COL, isLight ? COL_LIGHT : COL_DARK);
-}
-applyStickStoryTheme(document.body.classList.contains('light-theme'));
-window.addEventListener('themechange', function (e) {
-  applyStickStoryTheme(e.detail && e.detail.theme === 'light');
-});
-
-// scene anchor x positions (design space) — all left→right, nothing overlaps
-const SCENES = {
-  bed1:   {x:110, w:150},
-  desk:   {x:300},
-  tt:     {x:520, tableL:470, tableR:650, girlX:430, partnerX:690},
-  easel:  {x:790},
-  pottery:{x:900},
-  bad:    {x:1020, netX:1085, partnerX:1150},
-  bed2:   {x:1280, w:150}
-};
-// derived stopping points for the girl's walk path (matches draw geometry)
-const STOPS = {
-  bed1Foot:  SCENES.bed1.x + SCENES.bed1.w/2 - 30,
-  deskSeat:  SCENES.desk.x - 10,
-  ttSpot:    SCENES.tt.girlX,
-  easelSpot: SCENES.easel.x - 40,
-  potterySpot: SCENES.pottery.x - 34,
-  badSpot:   SCENES.bad.x,
-  bed2Foot:  SCENES.bed2.x + SCENES.bed2.w/2 - 30
-};
-
-let t = 0, sunProgress = 0, moonProgress = 0;
-
-// ---------------- windows ----------------
-function drawWindow(cx, cy, w, h){
-  ctx.strokeStyle = COL.line; ctx.lineWidth = 2;
-  ctx.strokeRect(cx-w/2, cy-h/2, w, h);
-  ctx.beginPath();
-  ctx.moveTo(cx-w/2, cy); ctx.lineTo(cx+w/2, cy);
-  ctx.moveTo(cx, cy-h/2); ctx.lineTo(cx, cy+h/2);
-  ctx.stroke();
-}
-function drawSunWindow(cx, cy, w, h, progress){
-  drawWindow(cx, cy, w, h);
-  ctx.save(); ctx.beginPath(); ctx.rect(cx-w/2, cy-h/2, w, h); ctx.clip();
-  const sy = (cy+h/2) - progress*h*1.1;
-  ctx.fillStyle = COL.accentSun;
-  ctx.beginPath(); ctx.arc(cx-w*0.15, sy, w*0.16, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle = COL.accentSun; ctx.lineWidth=1.5;
-  for(let i=0;i<6;i++){
-    const a = i/6*Math.PI*2 + t*0.3;
-    ctx.beginPath();
-    ctx.moveTo(cx-w*0.15+Math.cos(a)*w*0.2, sy+Math.sin(a)*w*0.2);
-    ctx.lineTo(cx-w*0.15+Math.cos(a)*w*0.28, sy+Math.sin(a)*w*0.28);
-    ctx.stroke();
-  }
-  ctx.restore();
-}
-function drawMoonWindow(cx, cy, w, h, progress){
-  drawWindow(cx, cy, w, h);
-  ctx.save(); ctx.beginPath(); ctx.rect(cx-w/2, cy-h/2, w, h); ctx.clip();
-  ctx.fillStyle = COL.accentMoon;
-  [[0.3,0.3],[0.7,0.25],[0.55,0.6],[0.2,0.7]].forEach((s,i)=>{
-    const tw = 0.5+0.5*Math.sin(t*3+i);
-    ctx.globalAlpha = Math.min(1,progress*1.5)*tw;
-    ctx.beginPath(); ctx.arc(cx-w/2+s[0]*w, cy-h/2+s[1]*h, 1.6,0,Math.PI*2); ctx.fill();
-  });
-  ctx.globalAlpha=1;
-  const my = (cy+h/2) - progress*h*1.1;
-  ctx.fillStyle = COL.accentMoon;
-  ctx.beginPath(); ctx.arc(cx+w*0.12, my, w*0.15, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = COL.bg;
-  ctx.beginPath(); ctx.arc(cx+w*0.12+w*0.07, my-w*0.03, w*0.13,0,Math.PI*2); ctx.fill();
-  ctx.restore();
-}
-
-// ---------------- bed (returns surface coords the figure aligns to) ----------------
-function bed(cx, w){
-  const floor=GROUND_Y, bx=cx-w/2, topY=floor-30, botY=floor-2;
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  ctx.strokeRect(bx, topY+10, w, botY-(topY+10));
-  ctx.beginPath(); ctx.moveTo(bx,topY+10); ctx.lineTo(bx,topY-14); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(bx-4,topY-14); ctx.lineTo(bx+6,topY-14); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(bx+4,botY); ctx.lineTo(bx+4,floor);
-  ctx.moveTo(bx+w-4,botY); ctx.lineTo(bx+w-4,floor);
-  ctx.stroke();
-  const pillowCx=bx+26, pillowCy=topY+14;
-  ctx.beginPath(); ctx.ellipse(pillowCx, pillowCy, 16, 8, 0, 0, Math.PI*2); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(bx+42,topY+18);
-  ctx.quadraticCurveTo(bx+w*0.6, topY+6, bx+w-8, topY+16);
-  ctx.lineTo(bx+w-8, topY+22);
-  ctx.quadraticCurveTo(bx+w*0.6, topY+16, bx+42,topY+22);
-  ctx.stroke();
-  return {pillowCx, pillowCy};
-}
-
-// ---------------- desk + chair ----------------
-function chairAndDesk(cx, codeOffset){
-  const floor=GROUND_Y;
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  const dx=cx+4, deskTopY=floor-58;
-  ctx.strokeRect(dx, deskTopY, 132, 6);
-  ctx.beginPath();
-  ctx.moveTo(dx+6,deskTopY+6); ctx.lineTo(dx+6,floor);
-  ctx.moveTo(dx+126,deskTopY+6); ctx.lineTo(dx+126,floor);
-  ctx.stroke();
-  // chair (raised so the seated figure lines up with the desktop)
-  const seatX=cx-34, seatY=floor-36, seatW=30;
-  ctx.strokeRect(seatX, seatY, seatW, 5);
-  ctx.beginPath(); ctx.moveTo(seatX, seatY); ctx.lineTo(seatX, seatY-30); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(seatX-2, seatY-30); ctx.lineTo(seatX+2, seatY-2); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(seatX+3,seatY+5); ctx.lineTo(seatX+3,floor);
-  ctx.moveTo(seatX+seatW-3,seatY+5); ctx.lineTo(seatX+seatW-3,floor);
-  ctx.stroke();
-  // laptop with scrolling code — centered on the desk
-  const lx=dx+42, ly=deskTopY-26, lw=48, lh=26;
-  ctx.strokeRect(lx,ly,lw,lh);
-  ctx.beginPath(); ctx.moveTo(lx-4,ly+lh); ctx.lineTo(lx+lw+4,ly+lh); ctx.stroke();
-  ctx.save();
-  ctx.beginPath(); ctx.rect(lx+3,ly+3,lw-6,lh-6); ctx.clip();
-  ctx.fillStyle=COL.screen; ctx.fillRect(lx+3,ly+3,lw-6,lh-6);
-  ctx.strokeStyle=COL.code; ctx.lineWidth=1.5;
-  for(let i=-1;i<8;i++){
-    const yy = ly+3 + ((i*6+codeOffset)%lh);
-    ctx.beginPath(); ctx.moveTo(lx+5,yy); ctx.lineTo(lx+5+(6+((i*13)%18)),yy); ctx.stroke();
-  }
-  ctx.restore();
-}
-
-// ---------------- table tennis ----------------
-function tableTennisTable(x1,x2){
-  const floor=GROUND_Y, y=floor-16;
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  ctx.strokeRect(x1,y-4,x2-x1,4);
-  ctx.beginPath();
-  ctx.moveTo(x1+8,y); ctx.lineTo(x1+8,floor);
-  ctx.moveTo(x2-8,y); ctx.lineTo(x2-8,floor);
-  ctx.stroke();
-  const midx=(x1+x2)/2;
-  ctx.beginPath();
-  ctx.moveTo(midx,y-4); ctx.lineTo(midx,y-16);
-  ctx.moveTo(midx-10,y-16); ctx.lineTo(midx+10,y-16);
-  ctx.stroke();
-  return y;
-}
-
-// ---------------- easel / painting ----------------
-function easel(cx, progress){
-  const floor=GROUND_Y;
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  const w=70,h=76, cyTop=floor-h;
-  ctx.fillStyle=COL.paper;
-  ctx.fillRect(cx-w/2, cyTop, w, h*0.72);
-  ctx.strokeRect(cx-w/2, cyTop, w, h*0.72);
-  ctx.beginPath();
-  ctx.moveTo(cx-w/2, cyTop+h*0.72); ctx.lineTo(cx-w/2-14, floor);
-  ctx.moveTo(cx+w/2, cyTop+h*0.72); ctx.lineTo(cx+w/2+14, floor);
-  ctx.moveTo(cx, cyTop+h*0.4); ctx.lineTo(cx, floor);
-  ctx.stroke();
-  ctx.save();
-  ctx.beginPath(); ctx.rect(cx-w/2, cyTop, w, h*0.72); ctx.clip();
-  ctx.strokeStyle=COL.ink; ctx.lineWidth=1.6;
-  if(progress>0.15){
-    ctx.beginPath();
-    ctx.moveTo(cx-w/2+4, cyTop+h*0.55);
-    ctx.lineTo(cx-w/2+22, cyTop+h*0.28);
-    ctx.lineTo(cx-w/2+38, cyTop+h*0.5);
-    ctx.stroke();
-  }
-  if(progress>0.4){ ctx.beginPath(); ctx.arc(cx+w*0.22, cyTop+h*0.2, 7,0,Math.PI*2); ctx.stroke(); }
-  if(progress>0.6){
-    ctx.fillStyle=COL.girl;
-    ctx.beginPath();
-    ctx.moveTo(cx-w/2+4, cyTop+h*0.55);
-    ctx.lineTo(cx-w/2+22, cyTop+h*0.28);
-    ctx.lineTo(cx-w/2+38, cyTop+h*0.5);
-    ctx.lineTo(cx-w/2+4, cyTop+h*0.5);
-    ctx.closePath(); ctx.globalAlpha=0.5; ctx.fill(); ctx.globalAlpha=1;
-  }
-  if(progress>0.8){
-    ctx.beginPath();
-    ctx.moveTo(cx-w/2, cyTop+h*0.68); ctx.lineTo(cx+w/2, cyTop+h*0.6); ctx.stroke();
-  }
-  ctx.restore();
-}
-
-// ---------------- pottery ----------------
-function potteryStool(cx){
-  const floor=GROUND_Y, seatY=floor-16;
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(cx-10,seatY); ctx.lineTo(cx+10,seatY); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(cx-8,seatY); ctx.lineTo(cx-8,floor);
-  ctx.moveTo(cx+8,seatY); ctx.lineTo(cx+8,floor);
-  ctx.stroke();
-}
-function potteryWheel(cx,spin){
-  const floor=GROUND_Y, y=floor-10;
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  ctx.beginPath();
-  ctx.moveTo(cx-18,floor); ctx.lineTo(cx+18,floor);
-  ctx.moveTo(cx-14,floor); ctx.lineTo(cx-8,y);
-  ctx.moveTo(cx+14,floor); ctx.lineTo(cx+8,y);
-  ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(cx,y,22,7,0,0,Math.PI*2); ctx.stroke();
-  for(let i=0;i<4;i++){
-    const a = spin + i*Math.PI/2;
-    ctx.beginPath(); ctx.moveTo(cx,y); ctx.lineTo(cx+Math.cos(a)*20, y+Math.sin(a)*6); ctx.stroke();
-  }
-  return y;
-}
-function claySilhouette(cx, wheelY, progress){
-  const blob=[10,13,15,15,13,9], vase=[8,13,16,12,7,9], n=blob.length;
-  const h = 4+(34-4)*progress;
-  ctx.strokeStyle=COL.line; ctx.fillStyle='rgba(143,124,240,0.18)'; ctx.lineWidth=2;
-  ctx.beginPath();
-  for(let i=0;i<n;i++){
-    const r = blob[i]+(vase[i]-blob[i])*progress, py = wheelY-(i/(n-1))*h, px = cx-r;
-    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-  }
-  for(let i=n-1;i>=0;i--){
-    const r = blob[i]+(vase[i]-blob[i])*progress, py = wheelY-(i/(n-1))*h;
-    ctx.lineTo(cx+r,py);
-  }
-  ctx.closePath(); ctx.fill(); ctx.stroke();
-}
-
-// ---------------- badminton ----------------
-function badmintonNet(netX){
-  const floor=GROUND_Y, topY=floor-58;
-  ctx.strokeStyle=COL.lineDim; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(netX-90,floor); ctx.lineTo(netX+90,floor); ctx.stroke();
-  ctx.strokeStyle=COL.line; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(netX,floor); ctx.lineTo(netX,topY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(netX,topY); ctx.lineTo(netX,topY+22); ctx.stroke();
-  ctx.strokeStyle=COL.lineDim; ctx.lineWidth=1;
-  for(let i=-3;i<=3;i++){ ctx.beginPath(); ctx.moveTo(netX+i*4,topY); ctx.lineTo(netX+i*4,topY+22); ctx.stroke(); }
-  for(let j=0;j<=3;j++){ ctx.beginPath(); ctx.moveTo(netX-12,topY+j*7); ctx.lineTo(netX+12,topY+j*7); ctx.stroke(); }
-}
-
-function drawGround(){
-  ctx.strokeStyle=COL.lineDim; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(0,GROUND_Y); ctx.lineTo(BG_W,GROUND_Y); ctx.stroke();
-}
-
-function drawBackground(codeOffset, paintProgress, potteryProgress, wheelSpin){
-  ctx.clearRect(0,0,BG_W,BG_H);
-  ctx.fillStyle=COL.bg; ctx.fillRect(0,0,BG_W,BG_H);
-  drawGround();
-  drawSunWindow(SCENES.bed1.x+34, 90, 70, 70, sunProgress);
-  const bed1Info = bed(SCENES.bed1.x, SCENES.bed1.w);
-  chairAndDesk(SCENES.desk.x, codeOffset);
-  const tableY = tableTennisTable(SCENES.tt.tableL, SCENES.tt.tableR);
-  easel(SCENES.easel.x, paintProgress);
-  potteryStool(SCENES.pottery.x-34);
-  const wheelY = potteryWheel(SCENES.pottery.x, wheelSpin);
-  claySilhouette(SCENES.pottery.x, wheelY, potteryProgress);
-  badmintonNet(SCENES.bad.netX);
-  drawMoonWindow(SCENES.bed2.x+34, 90, 70, 70, moonProgress);
-  const bed2Info = bed(SCENES.bed2.x, SCENES.bed2.w);
-  return {bed1Info, bed2Info, tableY};
-}
-
-// ============================================================
-// FIGURE (supports single-segment or knee/elbow two-segment limbs)
-// ============================================================
-function limbTo(ox, oy, seg){
-  if(Array.isArray(seg)){ ctx.moveTo(ox,oy); ctx.lineTo(seg[0],seg[1]); }
-  else { ctx.moveTo(ox,oy); ctx.lineTo(seg.mid[0],seg.mid[1]); ctx.lineTo(seg.end[0],seg.end[1]); }
-}
-function drawFigure(cx, groundY, facing, color, pose){
-  ctx.save();
-  ctx.translate(cx, groundY);
-  ctx.scale(facing,1);
-  ctx.strokeStyle=color; ctx.fillStyle=color;
-  ctx.lineWidth=2.4; ctx.lineCap='round'; ctx.lineJoin='round';
-  const hipY=pose.hipY, shY=hipY-24, headY=shY-13, lean=pose.torsoLean||0;
-
-  ctx.beginPath(); limbTo(0,hipY,pose.legL); limbTo(0,hipY,pose.legR); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,hipY); ctx.lineTo(lean,shY); ctx.stroke();
-  ctx.beginPath(); limbTo(lean,shY,pose.armL); limbTo(lean,shY,pose.armR); ctx.stroke();
-  ctx.beginPath(); ctx.arc(lean, headY, 8, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(lean-6, headY-4);
-  ctx.quadraticCurveTo(lean-16, headY+2, lean-10, headY+14);
-  ctx.stroke();
-
-  if(pose.racket){
-    const end = Array.isArray(pose.armR)?pose.armR:pose.armR.end;
-    ctx.beginPath(); ctx.moveTo(end[0],end[1]); ctx.lineTo(end[0]+pose.racket[0], end[1]+pose.racket[1]); ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(end[0]+pose.racket[0], end[1]+pose.racket[1], 6,8,0.3,0,Math.PI*2); ctx.stroke();
-  }
-  ctx.restore();
-}
-// back-facing figure — used at the desk so we see the character from behind, square to the laptop
-function drawFigureBack(cx, groundY, color, pose){
-  ctx.save();
-  ctx.translate(cx, groundY);
-  ctx.strokeStyle=color; ctx.fillStyle=color;
-  ctx.lineWidth=2.4; ctx.lineCap='round'; ctx.lineJoin='round';
-  const hipY=pose.hipY, shY=hipY-24, headY=shY-13;
-
-  ctx.beginPath(); limbTo(0,hipY,pose.legL); limbTo(0,hipY,pose.legR); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,hipY); ctx.lineTo(0,shY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(-7,shY); ctx.lineTo(7,shY); ctx.stroke();
-  ctx.beginPath(); limbTo(-6,shY,pose.armL); limbTo(6,shY,pose.armR); ctx.stroke();
-  ctx.beginPath(); ctx.arc(0, headY, 8, 0, Math.PI*2); ctx.fill();
-  // hair covering the back of the head — no side fringe, so no face reads on this view
-  ctx.beginPath(); ctx.arc(0, headY-1, 8.6, Math.PI*1.05, Math.PI*1.95); ctx.stroke();
-  ctx.restore();
-}
-function drawHeadOnPillow(pillowCx, pillowCy, color, breathe){
-  ctx.save();
-  ctx.fillStyle=color; ctx.strokeStyle=color; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.arc(pillowCx-4, pillowCy-6+breathe, 8, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(pillowCx-8,pillowCy-6+breathe); ctx.lineTo(pillowCx-2,pillowCy-6+breathe); ctx.stroke();
-  ctx.restore();
-}
-
-// ---------------- poses ----------------
-function poseWalk(phase){
-  const s=Math.sin(phase*Math.PI*2), c=Math.cos(phase*Math.PI*2), bob=Math.abs(s)*2;
-  return {hipY:-34+bob, legL:[10*s,bob], legR:[-10*s,bob], armL:[-9*c,-16+bob], armR:[9*c,-16+bob], torsoLean:1};
-}
-function poseSitUp(k){
-  const lean=10*(1-k);
-  return {hipY:-16, legL:[16,0], legR:[10,0], armL:[-8,-10-6*k], armR:[8,-10-6*k], torsoLean:lean};
-}
-function poseStretch(k){
-  const raise=-14-10*Math.sin(k*Math.PI);
-  return {hipY:-34, legL:[6,0], legR:[-6,0], armL:[-6,raise], armR:[6,raise], torsoLean:0};
-}
-function poseSitChair(phase){
-  const type=Math.sin(phase*Math.PI*2)*2;
-  return {
-    hipY:-36,
-    legL:{mid:[10,-36], end:[10,0]}, legR:{mid:[17,-34], end:[17,0]},
-    armL:{mid:[10,-54], end:[16,-56+type]}, armR:{mid:[17,-56], end:[25,-58-type]}
-  };
-}
-function poseTableTennis(phase){
-  const swing=Math.sin(phase*Math.PI*2);
-  return {hipY:-34, legL:[10,0], legR:[-8,2], armL:[-8,-18], armR:[14+swing*10,-16-swing*8], torsoLean:swing*3, racket:[8,-6]};
-}
-function posePartnerIdleTT(phase){
-  const p=(phase+0.5)%1, swing=Math.sin(p*Math.PI*2);
-  return {hipY:-34, legL:[8,0], legR:[-8,0], armL:[-10,-16], armR:[8+swing*10,-16-swing*8], torsoLean:swing*3, racket:[8,-6]};
-}
-function posePainting(phase){
-  const swing=Math.sin(phase*Math.PI*2);
-  return {hipY:-34, legL:[8,0], legR:[-8,0], armL:[-8,-16], armR:[10+swing*6,-30+swing*4], torsoLean:1};
-}
-function posePotterySit(phase){
-  const k=Math.sin(phase*Math.PI*2)*2;
-  return {hipY:-16, legL:{mid:[16,-16], end:[16,0]}, legR:{mid:[10,-14], end:[10,0]}, armL:[-6+k,-8], armR:[8-k,-8], torsoLean:6};
-}
-function poseBadminton(phase){
-  const swing=Math.sin(phase*Math.PI*2);
-  return {hipY:-34+Math.abs(swing)*3, legL:[12,0], legR:[-10,2], armL:[-8,-16], armR:[14+swing*14,-30-swing*10], torsoLean:-swing*4, racket:[10,-10]};
-}
-function posePartnerIdleBad(phase){
-  const swing=Math.sin(phase*Math.PI*2);
-  return {hipY:-34+Math.abs(swing)*3, legL:[10,0], legR:[-8,2], armL:[-8,-16], armR:[10+swing*14,-28-swing*10], torsoLean:-swing*4, racket:[10,-10]};
-}
-
-// ============================================================
-// GIRL + STATE MACHINE  (no evening exit/re-entry — she walks straight to bed2)
-// ============================================================
-const girl = { x: STOPS.bed1Foot, facing:1 };
-const WALK_SPEED = 130;
-function moveTo(obj, targetX, dt){
-  const dx = targetX - obj.x;
-  if(Math.abs(dx) < 2){ obj.x = targetX; return true; }
-  obj.facing = dx>0?1:-1;
-  obj.x += Math.sign(dx)*Math.min(Math.abs(dx), WALK_SPEED*dt);
-  return false;
-}
-
-let state='wake', stateT=0;
-let ballT=0, rallyCount=0, showYaay=false, yaayT=0, shuttleT=0;
-let codeOffset=0, paintProgress=0, potteryProgress=0, wheelSpin=0;
-
-const DUR = { wake:2.8, code:4.2, tt:5.5, paint:5.0, pottery:5.0, bad:5.0, sleep:4.5 };
-
-function enterState(s){
-  state=s; stateT=0;
-  if(s==='tt'){ rallyCount=0; showYaay=false; }
-  if(s==='paint') paintProgress=0;
-  if(s==='pottery') potteryProgress=0;
-}
-
-function update(dt){
-  t += dt; stateT += dt;
-  codeOffset += dt*14; wheelSpin += dt*4;
-
-  switch(state){
-    case 'wake':
-      sunProgress = Math.min(1, stateT/DUR.wake);
-      if(stateT >= DUR.wake){ girl.x = STOPS.bed1Foot; girl.facing=1; enterState('walk_desk'); }
-      break;
-    case 'walk_desk':
-      if(moveTo(girl, STOPS.deskSeat, dt)){ girl.facing=1; enterState('code'); }
-      break;
-    case 'code':
-      if(stateT >= DUR.code) enterState('walk_tt');
-      break;
-    case 'walk_tt':
-      if(moveTo(girl, STOPS.ttSpot, dt)) enterState('tt');
-      break;
-    case 'tt': {
-      ballT += dt;
-      const cyc=1.4, phase=(ballT%cyc)/cyc;
-      if(phase < 0.02) rallyCount++;
-      if(rallyCount>=3 && !showYaay){ showYaay=true; yaayT=0; }
-      if(showYaay) yaayT += dt;
-      if(stateT >= DUR.tt) enterState('walk_easel');
-      break;
-    }
-    case 'walk_easel':
-      if(moveTo(girl, STOPS.easelSpot, dt)) enterState('paint');
-      break;
-    case 'paint':
-      paintProgress = Math.min(1, stateT/DUR.paint);
-      if(stateT >= DUR.paint) enterState('walk_pottery');
-      break;
-    case 'walk_pottery':
-      if(moveTo(girl, STOPS.potterySpot, dt)) enterState('pottery');
-      break;
-    case 'pottery':
-      potteryProgress = Math.min(1, stateT/DUR.pottery);
-      if(stateT >= DUR.pottery) enterState('walk_bad');
-      break;
-    case 'walk_bad':
-      if(moveTo(girl, STOPS.badSpot, dt)) enterState('bad');
-      break;
-    case 'bad':
-      shuttleT += dt;
-      if(stateT >= DUR.bad) enterState('walk_bed2');
-      break;
-    case 'walk_bed2':
-      if(moveTo(girl, STOPS.bed2Foot, dt)) enterState('sleep');
-      break;
-    case 'sleep':
-      moonProgress = Math.min(1, stateT/1.6);
-      if(stateT >= DUR.sleep){
-        sunProgress=0; moonProgress=0; paintProgress=0; potteryProgress=0;
-        girl.x=STOPS.bed1Foot; girl.facing=1;
-        enterState('wake');
-      }
-      break;
-  }
-}
-
-// ============================================================
-// RENDER
-// ============================================================
-function render(){
-  const info = drawBackground(codeOffset, paintProgress, potteryProgress, wheelSpin);
-
-  switch(state){
-    case 'wake': {
-      const p = stateT/DUR.wake;
-      if(p < 0.35){
-        drawHeadOnPillow(info.bed1Info.pillowCx, info.bed1Info.pillowCy, COL.girl, Math.sin(t*4)*0.6);
-        ctx.fillStyle=COL.line; ctx.font='12px sans-serif';
-        ctx.fillText('z z z', info.bed1Info.pillowCx-6, info.bed1Info.pillowCy-16);
-      } else if(p < 0.7){
-        const k=(p-0.35)/0.35;
-        drawFigure(STOPS.bed1Foot, GROUND_Y, 1, COL.girl, poseSitUp(k));
-      } else {
-        const k=(p-0.7)/0.3;
-        drawFigure(STOPS.bed1Foot, GROUND_Y, 1, COL.girl, poseStretch(k));
-      }
-      break;
-    }
-    case 'walk_desk': case 'walk_tt': case 'walk_easel':
-    case 'walk_pottery': case 'walk_bad': case 'walk_bed2': {
-      const phase=(t*2.2)%1;
-      drawFigure(girl.x, GROUND_Y, girl.facing, COL.girl, poseWalk(phase));
-      break;
-    }
-    case 'code': {
-      const phase=(stateT*0.6)%1;
-      drawFigureBack(STOPS.deskSeat, GROUND_Y, COL.girl, poseSitChair(phase));
-      break;
-    }
-    case 'tt': {
-      const phase=(t*0.9)%1;
-      drawFigure(STOPS.ttSpot, GROUND_Y, 1, COL.girl, poseTableTennis(phase));
-      drawFigure(SCENES.tt.partnerX, GROUND_Y, -1, COL.partner, posePartnerIdleTT(phase));
-      const cyc=1.4, bp=(ballT%cyc)/cyc;
-      let bx,by;
-      if(bp<0.5){ const k=bp/0.5; bx=STOPS.ttSpot+18+k*(SCENES.tt.partnerX-30-(STOPS.ttSpot+18)); by=info.tableY-20-30*Math.sin(k*Math.PI); }
-      else { const k=(bp-0.5)/0.5; bx=SCENES.tt.partnerX-30-k*(SCENES.tt.partnerX-30-(STOPS.ttSpot+18)); by=info.tableY-20-30*Math.sin(k*Math.PI); }
-      ctx.fillStyle=COL.shuttle; ctx.beginPath(); ctx.arc(bx,by,3.5,0,Math.PI*2); ctx.fill();
-      if(showYaay && yaayT<1.2){
-        ctx.save();
-        ctx.globalAlpha=Math.min(1,(1.2-yaayT)*2);
-        ctx.fillStyle=COL.line; ctx.font='bold 16px sans-serif'; ctx.textAlign='center';
-        ctx.fillText('Yaay!! 🎉', STOPS.ttSpot, GROUND_Y-90-yaayT*10);
-        ctx.restore();
-      }
-      break;
-    }
-    case 'paint': {
-      const phase=(t*0.8)%1;
-      drawFigure(STOPS.easelSpot, GROUND_Y, 1, COL.girl, posePainting(phase));
-      break;
-    }
-    case 'pottery': {
-      const phase=(t*1.0)%1;
-      drawFigure(STOPS.potterySpot, GROUND_Y, 1, COL.girl, posePotterySit(phase));
-      break;
-    }
-    case 'bad': {
-      const phase=(t*0.9)%1;
-      drawFigure(STOPS.badSpot, GROUND_Y, 1, COL.girl, poseBadminton(phase));
-      drawFigure(SCENES.bad.partnerX, GROUND_Y, -1, COL.partner, posePartnerIdleBad(phase+0.5));
-      // shuttle phase is locked to the swing phase (0.25 = girl's racket contact, 0.75 = partner's) so the hit and return are synced to the animation
-      const sp=(phase-0.25+1)%1;
-      let sx, sy;
-      if(sp<0.5){
-        const k=sp/0.5;
-        sx=STOPS.badSpot+16+k*(SCENES.bad.partnerX-16-(STOPS.badSpot+16));
-        sy=GROUND_Y-40-Math.sin(k*Math.PI)*60;
-      } else {
-        const k=(sp-0.5)/0.5;
-        sx=SCENES.bad.partnerX-16-k*(SCENES.bad.partnerX-16-(STOPS.badSpot+16));
-        sy=GROUND_Y-40-Math.sin(k*Math.PI)*60;
-      }
-      ctx.fillStyle=COL.shuttle;
-      ctx.beginPath(); ctx.moveTo(sx,sy-4); ctx.lineTo(sx-3,sy+3); ctx.lineTo(sx+3,sy+3); ctx.closePath(); ctx.fill();
-      break;
-    }
-    case 'sleep': {
-      drawHeadOnPillow(info.bed2Info.pillowCx, info.bed2Info.pillowCy, COL.girl, Math.sin(t*2)*0.8);
-      ctx.fillStyle=COL.line; ctx.font='12px sans-serif';
-      ctx.fillText('z z z', info.bed2Info.pillowCx-6, info.bed2Info.pillowCy-16);
-      break;
-    }
-  }
-}
-
-let last = performance.now();
-function loop(now){
-  const dt = Math.min(0.05, (now-last)/1000);
-  last = now;
-  update(dt);
-  render();
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
-
-  })();
+  /* Day-in-my-life animation: see JS_Files/day-story.js */
 
   /* Shared infinite-loop carousel engine — same animation/auto-advance/pause-on-hover
      logic used by every carousel on the site (Education, Beyond Work galleries, etc). */
@@ -2072,6 +1534,209 @@ requestAnimationFrame(loop);
 </script>
 
 <script>
+  /* ── ACHIEVEMENTS, WHAT'S NEW, PHOTO VIEWER ──────────────────
+     achievements.json: a list, newest first after sorting by "date"
+     (YYYY-MM). Add a new object to the list for each new award.
+     whats-new.json: dated items; the newest one also appears as the
+     "New" link on the homepage, and the menu shows a dot until the
+     visitor has opened What's New. */
+  (function () {
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+    function safeHref(h) { return /^(https?:\/\/|#|mailto:)/i.test(h || '') ? h : '#'; }
+    function fmtDate(iso) {
+      var d = new Date(iso.length === 7 ? iso + '-01' : iso);
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString('en-GB', iso.length === 7 ? { month: 'short', year: 'numeric' } : { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    function getJSON(path) {
+      return fetch(path).then(function (r) { if (!r.ok) throw new Error(path + ' ' + r.status); return r.json(); });
+    }
+
+    /* Photo viewer */
+    var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCaption');
+    var lbSet = [], lbIdx = 0, lbReturn = null;
+    function lbShow(i) {
+      lbIdx = (i + lbSet.length) % lbSet.length;
+      lbImg.src = lbSet[lbIdx].src; lbImg.alt = lbSet[lbIdx].caption || '';
+      lbCap.textContent = lbSet[lbIdx].caption || '';
+    }
+    function lbOpen(set, i, from) {
+      lbSet = set; lbReturn = from; lbShow(i);
+      lb.hidden = false; document.body.style.overflow = 'hidden';
+      lb.querySelector('.lb-close').focus();
+    }
+    function lbClose() { lb.hidden = true; document.body.style.overflow = ''; if (lbReturn) lbReturn.focus(); }
+    lb.querySelector('.lb-close').addEventListener('click', lbClose);
+    lb.querySelector('.lb-prev').addEventListener('click', function () { lbShow(lbIdx - 1); });
+    lb.querySelector('.lb-next').addEventListener('click', function () { lbShow(lbIdx + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lbClose(); });
+    document.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') lbClose();
+      if (e.key === 'ArrowLeft') lbShow(lbIdx - 1);
+      if (e.key === 'ArrowRight') lbShow(lbIdx + 1);
+    });
+
+    /* Achievements */
+    function renderAchievements(data) {
+      document.getElementById('achEyebrow').textContent = data.eyebrow || 'Achievements';
+      document.getElementById('achIntro').textContent = data.intro || '';
+      var list = document.getElementById('achList');
+      var items = (data.achievements || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+      items.forEach(function (a) {
+        var card = el('article', 'ach-card');
+        card.id = 'ach-' + (a.id || '');
+
+        var head = el('div', 'ach-head');
+        var text = el('div', 'ach-head-text');
+        var badge = el('span', 'ach-medal ach-medal-' + (a.medal || 'star'));
+        badge.appendChild(el('span', 'ach-medal-icon', a.medal === 'gold' ? '🏆' : (a.medal === 'star' ? '★' : '🏅')));
+        badge.appendChild(document.createTextNode(a.placement || ''));
+        text.appendChild(badge);
+        text.appendChild(el('h3', 'ach-title', a.title || ''));
+        if (a.event) text.appendChild(el('p', 'ach-event', a.event));
+        var meta = el('p', 'ach-meta');
+        meta.textContent = [a.organizer, a.dateLabel || (a.date ? fmtDate(a.date) : '')].filter(Boolean).join(' · ');
+        text.appendChild(meta);
+        if (a.track) text.appendChild(el('p', 'ach-track', a.track));
+        if (a.summary) text.appendChild(el('p', 'ach-summary', a.summary));
+        head.appendChild(text);
+        if (a.cover && a.cover.src) {
+          var fig = el('button', 'ach-cover');
+          fig.type = 'button';
+          fig.setAttribute('aria-label', 'Open photo: ' + (a.cover.alt || a.title));
+          var img = el('img'); img.src = a.cover.src; img.alt = a.cover.alt || ''; img.loading = 'lazy';
+          fig.appendChild(img);
+          var coverSet = [{ src: a.cover.src, caption: a.cover.alt }].concat(a.photos || []);
+          fig.addEventListener('click', function () { lbOpen(coverSet, 0, fig); });
+          head.appendChild(fig);
+        }
+        card.appendChild(head);
+
+        var body = el('div', 'ach-body');
+        if (a.problem) {
+          var sec = el('div', 'ach-sec');
+          sec.appendChild(el('h4', null, a.problemTitle || 'The problem'));
+          sec.appendChild(el('p', null, a.problem));
+          body.appendChild(sec);
+        }
+        if (a.steps && a.steps.length) {
+          var sec2 = el('div', 'ach-sec ach-sec-wide');
+          sec2.appendChild(el('h4', null, a.uniqueTitle || 'How it works'));
+          if (a.uniqueIntro) sec2.appendChild(el('p', null, a.uniqueIntro));
+          var ol = el('ol', 'ach-steps');
+          a.steps.forEach(function (st, i) {
+            var li = el('li', 'ach-step');
+            li.appendChild(el('span', 'ach-step-n', String(i + 1)));
+            var t = el('div');
+            t.appendChild(el('strong', null, st.title || ''));
+            t.appendChild(el('span', null, st.text || ''));
+            li.appendChild(t);
+            ol.appendChild(li);
+          });
+          sec2.appendChild(ol);
+          if (a.uniqueOutro) sec2.appendChild(el('p', 'ach-outro', a.uniqueOutro));
+          body.appendChild(sec2);
+        }
+        if (a.team && a.team.members && a.team.members.length) {
+          var sec3 = el('div', 'ach-sec');
+          sec3.appendChild(el('h4', null, 'Team ' + (a.team.name || '') + (a.team.org ? ' · ' + a.team.org : '')));
+          var chips = el('div', 'ach-team');
+          a.team.members.forEach(function (m) {
+            var c = el('span', 'ach-member' + (m === a.team.me ? ' is-me' : ''), m);
+            chips.appendChild(c);
+          });
+          sec3.appendChild(chips);
+          if (a.tech && a.tech.length) {
+            var tags = el('div', 'skill-pills ach-tech');
+            a.tech.forEach(function (t) { tags.appendChild(el('span', 'skill-pill', t)); });
+            sec3.appendChild(tags);
+          }
+          body.appendChild(sec3);
+        }
+        if (a.photos && a.photos.length) {
+          var sec4 = el('div', 'ach-sec ach-sec-wide');
+          sec4.appendChild(el('h4', null, 'Gallery'));
+          var g = el('div', 'ach-gallery');
+          a.photos.forEach(function (ph, i) {
+            var b = el('button', 'ach-thumb'); b.type = 'button';
+            b.setAttribute('aria-label', 'Open photo: ' + (ph.caption || ''));
+            var im = el('img'); im.src = ph.src; im.alt = ph.caption || ''; im.loading = 'lazy';
+            b.appendChild(im);
+            if (ph.caption) b.appendChild(el('span', 'ach-thumb-cap', ph.caption));
+            b.addEventListener('click', function () { lbOpen(a.photos, i, b); });
+            g.appendChild(b);
+          });
+          sec4.appendChild(g);
+          body.appendChild(sec4);
+        }
+        card.appendChild(body);
+        list.appendChild(card);
+      });
+    }
+
+    /* What's New */
+    var TYPE_LABEL = { achievement: 'Achievement', project: 'Project', site: 'Website', skill: 'Skill', certification: 'Certification', role: 'Role', other: 'Update' };
+    function renderWhatsNew(data) {
+      document.getElementById('wnEyebrow').textContent = data.eyebrow || "What's New";
+      document.getElementById('wnIntro').textContent = data.intro || '';
+      var list = document.getElementById('wnList');
+      var items = (data.items || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+      items.forEach(function (it) {
+        var li = el('li', 'wn-item wn-' + (it.type || 'other'));
+        var when = el('time', 'wn-date', fmtDate(it.date || ''));
+        when.setAttribute('datetime', it.date || '');
+        li.appendChild(when);
+        li.appendChild(el('span', 'wn-dot'));
+        var card = el(it.link ? 'a' : 'div', 'wn-card');
+        if (it.link) card.href = safeHref(it.link);
+        var txt = el('div', 'wn-text');
+        txt.appendChild(el('span', 'wn-type', TYPE_LABEL[it.type] || TYPE_LABEL.other));
+        txt.appendChild(el('strong', 'wn-title', it.title || ''));
+        if (it.text) txt.appendChild(el('span', 'wn-desc', it.text));
+        card.appendChild(txt);
+        if (it.image) { var im = el('img', 'wn-img'); im.src = it.image; im.alt = ''; im.loading = 'lazy'; card.appendChild(im); }
+        li.appendChild(card);
+        list.appendChild(li);
+      });
+
+      // Homepage "New" link + menu dot
+      var top = items[0];
+      if (!top) return;
+      var latest = document.getElementById('heroLatest');
+      if (latest) {
+        document.getElementById('heroLatestText').textContent = top.title;
+        latest.href = safeHref(top.link || '#whats-new');
+        latest.hidden = false;
+      }
+      var seen = '';
+      try { seen = localStorage.getItem('whatsNewSeen') || ''; } catch (e) {}
+      var fresh = (Date.now() - new Date(top.date).getTime()) < 45 * 864e5;
+      var dot = document.getElementById('navNewDot');
+      if (dot && fresh && seen < top.date) dot.hidden = false;
+      function markSeen() {
+        if (dot) dot.hidden = true;
+        try { localStorage.setItem('whatsNewSeen', top.date); } catch (e) {}
+      }
+      if (document.getElementById('page-whatsnew').classList.contains('active')) markSeen();
+      new MutationObserver(function () {
+        if (document.getElementById('page-whatsnew').classList.contains('active')) markSeen();
+      }).observe(document.getElementById('page-whatsnew'), { attributes: true, attributeFilter: ['class'] });
+    }
+
+    getJSON('JSON_Files/achievements.json').then(renderAchievements)
+      .catch(function (err) { console.warn('Achievements: could not load achievements.json.', err); });
+    getJSON('JSON_Files/whats-new.json').then(renderWhatsNew)
+      .catch(function (err) { console.warn("What's New: could not load whats-new.json.", err); });
+  })();
+</script>
+
+<script>
   /* ── ID BADGE (hero) ─────────────────────────────────────────
      Click / tap / Enter / Space flips the badge. The first flip types
      out a SQL query and then shows the "result row" with the contact
@@ -2677,5 +2342,6 @@ requestAnimationFrame(loop);
   input.addEventListener("keydown", function (e) { if (e.key === "Enter") send(); });
 })();
 </script>
+<script src="JS_Files/day-story.js"></script>
 </body>
 </html>

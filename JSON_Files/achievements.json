@@ -1,0 +1,110 @@
+{
+  "eyebrow": "Achievements",
+  "intro": "Hackathons, awards and recognition — newest first.",
+  "achievements": [
+    {
+      "id": "nasscom-agentic-ai-2026",
+      "date": "2026-07",
+      "dateLabel": "Mar – Jul 2026",
+      "placement": "2nd Runner-up",
+      "medal": "bronze",
+      "title": "Nasscom Agentic AI Hackathon",
+      "event": "AI-Code Sarathi · EXCEL Hackathon Grand Finale, Agentic AI Confluence 2026",
+      "organizer": "Nasscom",
+      "track": "Use case 2 · Enterprise Knowledge Copilot — RAG + Agentic Workflow",
+      "summary": "Our team, Core I7 from Indium Software, built a secure Enterprise Knowledge Copilot and finished 2nd Runner-up in the Enterprise Knowledge Copilot track.",
+      "problemTitle": "The problem we solved",
+      "problem": "Employees lose hours hunting for answers spread across policies, SOPs, project documents and support tickets. Our copilot gives accurate answers with their sources — and only shows each person the information their role allows.",
+      "uniqueTitle": "What made it stand out",
+      "uniqueIntro": "Instead of sending a question straight to an LLM, every query passes through a 9-stage pipeline:",
+      "steps": [
+        {
+          "title": "Clean up",
+          "text": "Normalises and tidies the question."
+        },
+        {
+          "title": "Protect privacy",
+          "text": "Finds and masks personal data such as names, emails and phone numbers."
+        },
+        {
+          "title": "Understand intent",
+          "text": "Works out what the person is actually asking for."
+        },
+        {
+          "title": "Pick out details",
+          "text": "Extracts key entities and filters from the question."
+        },
+        {
+          "title": "Sharpen the question",
+          "text": "Rewrites short or vague questions using HyDE."
+        },
+        {
+          "title": "Break it down",
+          "text": "Splits complex requests into focused sub-questions."
+        },
+        {
+          "title": "Route smartly",
+          "text": "Ticket questions go to a SQL engine; document questions go to semantic and hybrid search over chunks split by document type — headers, pages and tables."
+        },
+        {
+          "title": "Respect access",
+          "text": "Role-based access control (RBAC) filters results, so people only see what they're allowed to."
+        },
+        {
+          "title": "Rank and answer",
+          "text": "Re-ranks the results and builds the context, and only then asks the LLM — with sources attached."
+        }
+      ],
+      "uniqueOutro": "The result: a copilot that is privacy-aware, secure and reliable — not just a chatbot on top of a document store.",
+      "tech": [
+        "RAG",
+        "Agentic workflow",
+        "RBAC",
+        "HyDE",
+        "Hybrid search",
+        "Text-to-SQL",
+        "PII redaction"
+      ],
+      "team": {
+        "name": "Core I7",
+        "org": "Indium Software",
+        "members": [
+          "Padmanaban U",
+          "Sharan S",
+          "Anchana Prabakaran",
+          "Deepika Gadi Krishnareddygari",
+          "JaiVishwa S P",
+          "Rajashree S",
+          "Sahithya Padmanabhan"
+        ],
+        "me": "Anchana Prabakaran"
+      },
+      "cover": {
+        "src": "Achievements/nasscom-agentic-ai-2026/anchana-with-trophy.jpg",
+        "alt": "Anchana holding the hackathon trophy at Agentic AI Confluence 2026"
+      },
+      "photos": [
+        {
+          "src": "Achievements/nasscom-agentic-ai-2026/team-on-stage.jpg",
+          "caption": "Team Core I7 receiving the award on stage"
+        },
+        {
+          "src": "Achievements/nasscom-agentic-ai-2026/team-with-certificates.jpg",
+          "caption": "The team with our certificates"
+        },
+        {
+          "src": "Achievements/nasscom-agentic-ai-2026/winners-board.jpg",
+          "caption": "Winning teams board at the grand finale"
+        },
+        {
+          "src": "Achievements/nasscom-agentic-ai-2026/certificate.jpg",
+          "caption": "Certificate of Excellence — 2nd Runner-up"
+        },
+        {
+          "src": "Achievements/nasscom-agentic-ai-2026/trophy.jpg",
+          "caption": "The trophy"
+        }
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@ Two pieces work together:
 |---|---|---|
 | The website | GitHub Pages | `index.html` + `CSS_Files/` + `JSON_Files/` + images. Every section is drawn from a JSON file, so content changes never touch the HTML. |
 | The chat assistant | Render (`https://myhome-zb8s.onrender.com`) | `main.py` — a FastAPI RAG backend: fastembed + FAISS for search, Groq for answers. |
-| Content editor (local only) | Your laptop | `content_manager.py` — a Streamlit app for editing the JSON files and uploading images. |
+| Content editor | Your browser | `admin/index.html` — edits the JSON files and uploads images straight into your local folder. |
 
 ```
 Visitor's browser ──(GitHub Pages)──▶ index.html ──reads──▶ JSON_Files/*.json
@@ -27,11 +27,14 @@ Each page has its own address, so you can send someone straight to it:
 |---|---|
 | Home | `#home` |
 | Experience (timeline) | `#experience` |
-| Projects (work + personal) | `#projects` |
+| Projects (work) | `#projects` |
+| Personal Projects | `#personal-projects` |
 | Skills | `#skills` |
 | Education | `#education` |
+| Achievements | `#achievements` |
 | Beyond Work | `#beyond-work` |
 | CSR | `#csr` |
+| What's New | `#whats-new` |
 | Resume (opens the viewer) | `#resume` |
 
 For example: `https://anchana-techie.github.io/MyHomePortfolio/#projects`
@@ -46,14 +49,20 @@ Text in the JSON files (and in `portfolio_content.json`) can contain:
 
 The career start date lives in two places: `CAREER_START` near the top of the main script in `index.html`, and `CAREER_START` in `main.py`.
 
-## Editing content
+## Editing content (no code needed)
 
-```bash
-pip install -r requirements_stream.txt
-streamlit run content_manager.py
-```
+Open **`admin/index.html`** in Chrome or Edge (double-click it, or visit `…/MyHomePortfolio/admin/` on the live site) and click **Open my portfolio folder** — pick this folder. The browser remembers it next time.
 
-There's a tab per JSON file (Home, Skills, Projects, Education, Experience, CSR, Beyond Work, Personal Projects). Edits are written to disk only when you press **Save** in that tab; image uploads go straight into the right folder. Commit and push afterwards — GitHub Pages updates in a minute or two.
+- Every section has a page: Home, What's New, Achievements, Personal Projects, Experience, Work projects, Skills, Skills solar system, Education, Beyond Work, CSR and the chatbot's knowledge.
+- Lists (projects, photos, steps, team members…) can be added to, reordered, duplicated and deleted.
+- **Upload** next to any image copies the picture into the right folder (large photos are shrunk to 1600px) and fills in the path. Achievement photos go into `Achievements/<achievement-id>/`.
+- **Quick add** buttons start a new achievement, personal project or What's New post.
+- Saving a new achievement or personal project offers to post it to **What's New** too.
+- **Raw JSON** shows the file as text for anything the form doesn't cover.
+- Nothing leaves your computer: Save writes the JSON files in your folder. Commit and push to publish.
+
+### Adding a future achievement
+Quick add → **+ Achievement**, fill in placement, medal (`gold` winner · `silver` 1st runner-up · `bronze` 2nd runner-up · `star` other), title, dates, story, team and photos → **Save** → accept the What's New prompt → commit and push. Also add a short paragraph about it under **Chatbot knowledge** so the assistant can talk about it.
 
 ## The chat assistant
 
@@ -114,7 +123,7 @@ main.py                    chat backend (Render)
 ingest.py                  builds data/portfolio.index from portfolio_content.json
 portfolio_content.json     what the chat assistant knows
 apps_script/ChatLogger.gs  optional Google Sheet chat log
-content_manager.py         local Streamlit content editor
+admin/                     content editor (open admin/index.html in Chrome or Edge)
+Achievements/              photos for each achievement
 requirements.txt           backend packages (Render)
-requirements_stream.txt    editor packages
 ```

@@ -1,7 +1,7 @@
     /* ── RESPONSIVE ── */
 
     /* Hamburger nav kicks in once the full link row no longer fits comfortably */
-    @media (max-width: 880px) {
+    @media (max-width: 1220px) {
       .nav-hamburger { display: flex; }
 
       nav .wrap { position: relative; }
