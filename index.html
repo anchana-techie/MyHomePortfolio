@@ -306,7 +306,7 @@
           <div class="orbit-core" aria-hidden="true"><span class="orbit-core-mono" id="orbitCore">AP</span><span class="orbit-core-label" id="orbitCoreLabel"></span></div>
           <div class="orbit-tip" id="orbitTip" role="tooltip" hidden></div>
         </div>
-        <p class="orbit-caption">Hover a skill to see where I've used it &middot; hover a card below to find its skills</p>
+        <p class="orbit-caption">Hover a planet to meet its moons &middot; hover a moon to see where I've used it</p>
       </div>
 
       <div class="skills-grid" id="skillsGrid"><!-- populated from JSON_Files/skills.json --></div>
@@ -2170,151 +2170,185 @@ requestAnimationFrame(loop);
 </script>
 
 <script>
-  /* ── SKILLS ORBIT (page-skills) ──────────────────────────────
-     Rings and tooltip notes come from JSON_Files/skills-orbit.json.
-     Hovering (or focusing) a skill pauses the orbit, shows its note
-     and lights up the cards it belongs to; hovering a card lights up
-     its skills in the orbit. */
+  /* ── SKILLS SOLAR SYSTEM (page-skills) ───────────────────────
+     Sun = AP. Each category in skills.json is a planet, its skills
+     are moons. Layout + tooltip notes: JSON_Files/skills-orbit.json.
+     Hover/tap a planet: the system stops, its moons show their names
+     and its card lights up. Hover a moon: its note appears. Hover a
+     card: its planet lights up. */
   (function () {
     var wrap = document.getElementById('orbitWrap');
     var orbit = document.getElementById('skillsOrbit');
     var tip = document.getElementById('orbitTip');
     var grid = document.getElementById('skillsGrid');
     if (!orbit || !grid) return;
-    var rings = [];          // [{el, factor, planets: []}]
+    var orbits = [];          // [{el, factor}]
     var notes = {};
     var small = window.matchMedia('(max-width: 640px)');
 
     function norm(t) { return String(t || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
     function decode(t) { var d = document.createElement('textarea'); d.innerHTML = t; return d.value; }
+    function noteFor(name) { return notes[name] || notes[decode(name)] || ''; }
 
-    function build(data) {
-      notes = data.notes || {};
-      document.getElementById('orbitCore').textContent = data.core || 'AP';
-      document.getElementById('orbitCoreLabel').textContent = data.coreLabel || '';
-      var FACTORS = [0.34, 0.6, 0.86];
-      (data.rings || []).slice(0, 3).forEach(function (ring, ri) {
-        var el = document.createElement('div');
-        el.className = 'orbit-ring orbit-ring-' + (ri + 1);
-        el.style.setProperty('--spin', (ring.seconds || 50) + 's');
-        el.style.setProperty('--dir', ri % 2 ? 'reverse' : 'normal');
-        var list = ring.skills || [];
-        var planets = list.map(function (name, pi) {
-          var angle = (360 / list.length) * pi + ri * 22;
-          var b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'orbit-planet';
-          b.style.setProperty('--a', angle + 'deg');
-          b.setAttribute('aria-label', name + (notes[name] ? ': ' + notes[name] : ''));
-          b.dataset.skill = name;
-          var label = document.createElement('span');
-          label.className = 'orbit-label';
-          label.textContent = name;
-          b.appendChild(label);
-          el.appendChild(b);
-          return b;
-        });
-        orbit.insertBefore(el, tip);
-        rings.push({ el: el, factor: FACTORS[ri], planets: planets });
+    function makePlanet(cat, index, angle, moonSeconds) {
+      var label = decode(cat.label || '');
+      var planet = document.createElement('div');
+      planet.className = 'sol-planet sol-planet-' + (index % 2 ? 'b' : 'a');
+      planet.style.setProperty('--a', angle + 'deg');
+      planet.dataset.card = index;
+
+      var body = document.createElement('div');           // stays upright
+      body.className = 'sol-body';
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'sol-globe';
+      btn.setAttribute('aria-label', label + ': ' + (cat.pills || []).map(decode).join(', '));
+      var glyph = document.createElement('span');
+      glyph.className = 'sol-glyph';
+      glyph.innerHTML = cat.glyph || '';
+      btn.appendChild(glyph);
+
+      var name = document.createElement('span');
+      name.className = 'sol-name';
+      name.textContent = label;
+
+      var moons = document.createElement('div');          // spins around the planet
+      moons.className = 'sol-moons';
+      moons.style.setProperty('--moon-spin', moonSeconds + 's');
+      var pills = cat.pills || [];
+      pills.forEach(function (pill, mi) {
+        var skill = decode(pill);
+        var m = document.createElement('button');
+        m.type = 'button';
+        m.className = 'sol-moon';
+        m.style.setProperty('--ma', (360 / pills.length) * mi + 'deg');
+        m.dataset.skill = skill;
+        m.setAttribute('aria-label', skill + (noteFor(skill) ? ': ' + noteFor(skill) : ''));
+        var inner = document.createElement('span');        // counter-spins: label stays upright
+        inner.className = 'sol-moon-inner';
+        var dot = document.createElement('span'); dot.className = 'sol-moon-dot';
+        var txt = document.createElement('span'); txt.className = 'sol-moon-label'; txt.textContent = skill;
+        inner.appendChild(dot); inner.appendChild(txt);
+        m.appendChild(inner);
+        moons.appendChild(m);
       });
+
+      body.appendChild(moons);
+      body.appendChild(btn);
+      body.appendChild(name);
+      planet.appendChild(body);
+      return planet;
+    }
+
+    function build(skills, cfg) {
+      notes = cfg.notes || {};
+      document.getElementById('orbitCore').textContent = cfg.core || 'AP';
+      document.getElementById('orbitCoreLabel').textContent = cfg.coreLabel || '';
+      var cats = skills.categories || [];
+      var plan = cfg.planetOrbits || [{ planets: cats.map(function (_, i) { return i + 1; }), seconds: 80 }];
+      var FACTORS = plan.length > 1 ? [0.46, 0.84] : [0.72];
+      plan.slice(0, 2).forEach(function (o, oi) {
+        var ring = document.createElement('div');
+        ring.className = 'sol-orbit sol-orbit-' + (oi + 1);
+        ring.style.setProperty('--spin', (o.seconds || 80) + 's');
+        ring.style.setProperty('--dir', oi % 2 ? 'reverse' : 'normal');
+        var list = (o.planets || []).filter(function (n) { return cats[n - 1]; });
+        list.forEach(function (n, pi) {
+          var angle = (360 / list.length) * pi + oi * 60 - 90;
+          ring.appendChild(makePlanet(cats[n - 1], n - 1, angle, cfg.moonSeconds || 16));
+        });
+        orbit.insertBefore(ring, tip);
+        orbits.push({ el: ring, factor: FACTORS[oi] });
+      });
+      wrap.hidden = false;   // must be visible before measuring
       layout();
-      wrap.hidden = false;
     }
 
     function layout() {
       var w = orbit.clientWidth;
-      var compact = small.matches;
-      rings.forEach(function (ring, i) {
-        // On phones keep two rings; the outer ring's skills are in the cards.
-        var factor = compact ? [0.42, 0.84, 0][i] : ring.factor;
-        ring.el.hidden = factor === 0;
-        var r = (w / 2) * factor;
-        ring.el.style.width = ring.el.style.height = (r * 2) + 'px';
-        ring.el.style.setProperty('--r', r + 'px');
+      orbit.style.setProperty('--orbit-w', w + 'px');
+      orbits.forEach(function (o) {
+        var r = (w / 2) * o.factor;
+        o.el.style.width = o.el.style.height = (r * 2) + 'px';
+        o.el.style.setProperty('--r', r + 'px');
       });
     }
     window.addEventListener('resize', layout);
     if (small.addEventListener) small.addEventListener('change', layout);
 
-    /* Linking planets <-> cards */
-    function cardsFor(skill) {
-      return Array.prototype.filter.call(grid.querySelectorAll('.skill-card'), function (card) {
-        return Array.prototype.some.call(card.querySelectorAll('.skill-pill'), function (p) {
-          return norm(p.textContent) === norm(skill);
-        });
-      });
-    }
-    function skillsOf(card) {
-      return Array.prototype.map.call(card.querySelectorAll('.skill-pill'), function (p) { return norm(p.textContent); });
-    }
-    var litCard = null;
+    /* ── Highlighting ── */
+    var cardsEls = function () { return grid.querySelectorAll('.skill-card'); };
+    var current = null;
     function clearLit() {
-      litCard = null;
+      current = null;
       orbit.classList.remove('is-paused', 'has-lit');
-      orbit.querySelectorAll('.is-lit').forEach(function (n) { n.classList.remove('is-lit'); });
+      orbit.querySelectorAll('.is-lit, .is-open').forEach(function (n) { n.classList.remove('is-lit', 'is-open'); });
       grid.querySelectorAll('.is-lit').forEach(function (n) { n.classList.remove('is-lit'); });
       tip.hidden = true;
     }
-    function showPlanet(planet) {
-      clearLit();
-      var skill = planet.dataset.skill;
+    function litPlanet(planet) {
       orbit.classList.add('is-paused', 'has-lit');
-      planet.classList.add('is-lit');
-      cardsFor(skill).forEach(function (c) {
-        c.classList.add('is-lit');
-        c.querySelectorAll('.skill-pill').forEach(function (p) { if (norm(p.textContent) === norm(skill)) p.classList.add('is-lit'); });
-      });
-      var note = notes[skill];
+      planet.classList.add('is-lit', 'is-open');
+      var card = cardsEls()[+planet.dataset.card];
+      if (card) card.classList.add('is-lit');
+    }
+    function showTip(anchor, title, text) {
       tip.innerHTML = '';
-      var strong = document.createElement('strong'); strong.textContent = skill; tip.appendChild(strong);
-      if (note) { var span = document.createElement('span'); span.textContent = note; tip.appendChild(span); }
+      var strong = document.createElement('strong'); strong.textContent = title; tip.appendChild(strong);
+      if (text) { var span = document.createElement('span'); span.textContent = text; tip.appendChild(span); }
       tip.hidden = false;
-      var o = orbit.getBoundingClientRect(), p = planet.getBoundingClientRect();
-      var x = p.left + p.width / 2 - o.left;
-      var y = p.top - o.top;
-      var tw = tip.offsetWidth;
-      x = Math.max(tw / 2 + 4, Math.min(o.width - tw / 2 - 4, x));
-      var below = y < tip.offsetHeight + 16;
+      var o = orbit.getBoundingClientRect(), a = anchor.getBoundingClientRect();
+      var tw = tip.offsetWidth, th = tip.offsetHeight;
+      var x = Math.max(tw / 2 + 4, Math.min(o.width - tw / 2 - 4, a.left + a.width / 2 - o.left));
+      var below = a.top - o.top < th + 16;
       tip.classList.toggle('below', below);
       tip.style.left = x + 'px';
-      tip.style.top = (below ? p.bottom - o.top + 10 : y - 10) + 'px';
+      tip.style.top = (below ? a.bottom - o.top + 10 : a.top - o.top - 10) + 'px';
     }
-    orbit.addEventListener('mouseover', function (e) {
-      var planet = e.target.closest('.orbit-planet'); if (planet) showPlanet(planet);
-    });
-    orbit.addEventListener('focusin', function (e) {
-      var planet = e.target.closest('.orbit-planet'); if (planet) showPlanet(planet);
-    });
+    function focusTarget(target) {
+      var moon = target.closest('.sol-moon');
+      var planet = target.closest('.sol-planet');
+      if (!planet) return;
+      var key = moon ? 'm:' + moon.dataset.skill + planet.dataset.card : 'p:' + planet.dataset.card;
+      if (key === current) return;
+      clearLit();
+      current = key;
+      litPlanet(planet);
+      if (moon) {
+        moon.classList.add('is-lit');
+        var card = cardsEls()[+planet.dataset.card];
+        if (card) card.querySelectorAll('.skill-pill').forEach(function (p) {
+          if (norm(decode(p.textContent)) === norm(moon.dataset.skill)) p.classList.add('is-lit');
+        });
+        showTip(moon, moon.dataset.skill, noteFor(moon.dataset.skill));
+      }
+    }
+    orbit.addEventListener('mouseover', function (e) { focusTarget(e.target); });
+    orbit.addEventListener('focusin', function (e) { focusTarget(e.target); });
+    orbit.addEventListener('click', function (e) { focusTarget(e.target); });   // touch
     orbit.addEventListener('mouseleave', clearLit);
     orbit.addEventListener('focusout', function (e) { if (!orbit.contains(e.relatedTarget)) clearLit(); });
-    orbit.addEventListener('click', function (e) {
-      var planet = e.target.closest('.orbit-planet'); if (planet) showPlanet(planet);   // touch
-    });
 
     grid.addEventListener('mouseover', function (e) {
-      var card = e.target.closest('.skill-card');
-      if (!card || card === litCard) return;
+      var card = e.target.closest('.skill-card'); if (!card) return;
+      var idx = Array.prototype.indexOf.call(cardsEls(), card);
+      var key = 'c:' + idx;
+      if (key === current) return;
       clearLit();
-      litCard = card;
-      var names = skillsOf(card);
-      orbit.classList.add('is-paused', 'has-lit');
-      card.classList.add('is-lit');
-      orbit.querySelectorAll('.orbit-planet').forEach(function (p) {
-        if (names.indexOf(norm(p.dataset.skill)) !== -1) p.classList.add('is-lit');
-      });
+      current = key;
+      var planet = orbit.querySelector('.sol-planet[data-card="' + idx + '"]');
+      if (planet) litPlanet(planet); else card.classList.add('is-lit');
     });
     grid.addEventListener('mouseleave', clearLit);
 
-    fetch('JSON_Files/skills-orbit.json')
-      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
-      .then(function (data) {
-        // Labels in skills.json may contain HTML entities (&amp;); match on text.
-        Object.keys(data.notes || {}).forEach(function (k) { data.notes[decode(k)] = data.notes[k]; });
-        build(data);
-      })
-      .catch(function (err) { console.warn('Skills orbit: could not load skills-orbit.json.', err); });
+    Promise.all([
+      fetch('JSON_Files/skills.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch('JSON_Files/skills-orbit.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    ]).then(function (res) { build(res[0], res[1]); })
+      .catch(function (err) { console.warn('Skills solar system: could not load data.', err); });
 
-    // The Skills page is hidden until opened; size the rings when it shows.
+    // The Skills page is hidden until opened; size the orbits when it shows.
     new MutationObserver(function () {
       if (document.getElementById('page-skills').classList.contains('active')) layout();
     }).observe(document.getElementById('page-skills'), { attributes: true, attributeFilter: ['class'] });

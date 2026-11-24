@@ -1,43 +1,7 @@
 {
-  "_help": "Skills orbit on the Skills page. Each ring lists skill names exactly as they appear in skills.json (so hovering links them to their cards). 'notes' is the one-line tooltip for each skill.",
+  "_help": "Solar-system view on the Skills page. The sun is 'core'; every category in skills.json becomes a planet and its skills become moons. 'planetOrbits' says which planets (by category number, 1 = first card) go on the inner and outer orbit and how many seconds one lap takes. 'notes' is the tooltip for each skill (moon).",
   "core": "AP",
   "coreLabel": "Data · AI",
-  "rings": [
-    {
-      "label": "Daily tools",
-      "seconds": 38,
-      "skills": [
-        "Python",
-        "T-SQL",
-        "DAX",
-        "Power BI"
-      ]
-    },
-    {
-      "label": "Platforms",
-      "seconds": 56,
-      "skills": [
-        "Databricks",
-        "DBT",
-        "Azure DevOps",
-        "SSRS",
-        "SQL Server"
-      ]
-    },
-    {
-      "label": "Integration and delivery",
-      "seconds": 80,
-      "skills": [
-        "ODBC",
-        "Simba Spark Driver",
-        "PAT Authentication",
-        "ETL Transformations",
-        "CI/CD Pipelines",
-        "Version Control",
-        "Pipeline Management"
-      ]
-    }
-  ],
   "notes": {
     "Python": "Automated pulling table references and T-SQL out of hundreds of SSRS .rdl files.",
     "T-SQL": "Converted report queries and stored procedures from SQL Server to Databricks SQL.",
@@ -55,5 +19,24 @@
     "CI/CD Pipelines": "Automated, version-controlled deployments through Azure DevOps.",
     "Version Control": "Git repositories in Azure DevOps for models and notebooks.",
     "Pipeline Management": "Scheduling Databricks jobs, provisioned with Terraform."
-  }
+  },
+  "planetOrbits": [
+    {
+      "planets": [
+        1,
+        2,
+        3
+      ],
+      "seconds": 70
+    },
+    {
+      "planets": [
+        4,
+        5,
+        6
+      ],
+      "seconds": 110
+    }
+  ],
+  "moonSeconds": 16
 }

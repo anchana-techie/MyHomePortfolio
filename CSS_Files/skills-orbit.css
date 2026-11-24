@@ -1,12 +1,11 @@
     /* ── SKILLS ORBIT ────────────────────────────────────────────
-       Rings spin; each planet is placed on its ring with
-       rotate(angle) translateX(radius) and its label spins the other
-       way so text stays upright. Pausing = animation-play-state.   */
+       A small solar system: AP is the sun, categories are planets,
+       skills are moons. Pausing = animation-play-state.            */
 
-    .orbit-wrap { margin: 0 0 3rem; }
+    .orbit-wrap { margin: 0 0 3rem; padding-block: 2.5rem 0; }
     .orbit {
       position: relative;
-      width: min(560px, 100%);
+      width: min(640px, 100%);
       aspect-ratio: 1;
       margin: 0 auto;
     }
@@ -28,63 +27,137 @@
       50%      { box-shadow: 0 0 0 14px rgba(var(--accent-rgb), .03), 0 0 70px rgba(var(--accent-rgb), .28); }
     }
 
-    .orbit-ring {
+    /* ── Planet orbits ──
+       .sol-orbit spins; each .sol-planet sits on it at angle --a and
+       radius --r; .sol-body counter-spins so the planet stays upright;
+       .sol-moons spins around the planet and each moon's label
+       counter-spins too. */
+    .orbit { --globe: 54px; --moon-r: 50px; --sys: 150px; }
+    .sol-orbit {
       position: absolute; left: 50%; top: 50%;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      border: 1px dashed rgba(var(--accent2-rgb), .28);
+      border: 1px dashed rgba(var(--accent2-rgb), .26);
       pointer-events: none;
-      animation: orbit-spin var(--spin, 50s) linear infinite;
+      animation: orbit-spin var(--spin, 80s) linear infinite;
       animation-direction: var(--dir, normal);
     }
-    .orbit-ring-1 { border-color: rgba(var(--accent-rgb), .35); }
+    .sol-orbit-1 { border-color: rgba(var(--accent-rgb), .28); }
+    .sol-orbit:has(.is-lit) { z-index: 3; }
     @keyframes orbit-spin {
       from { transform: translate(-50%, -50%) rotate(0deg); }
       to   { transform: translate(-50%, -50%) rotate(360deg); }
     }
+    @keyframes counter-spin { from { rotate: 0deg; } to { rotate: -360deg; } }
+    @keyframes moon-spin    { from { rotate: 0deg; } to { rotate: 360deg; } }
 
-    .orbit-planet {
+    .sol-planet {
       position: absolute; left: 50%; top: 50%;
-      padding: 0; border: 0; background: none;
-      font: inherit;
-      cursor: default;
-      pointer-events: auto;
-      transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a))) translate(-50%, -50%);
-      transform-origin: 0 0;
+      width: 0; height: 0;
+      transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a)));
     }
-    .orbit-label {
-      display: inline-block;
-      white-space: nowrap;
-      padding: .34rem .75rem;
-      border-radius: 999px;
-      font-size: .74rem; font-weight: 500;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-soft);
-      box-shadow: 0 4px 16px rgba(0,0,0,.18);
-      animation: orbit-spin-label var(--spin, 50s) linear infinite;
+    .sol-planet.is-lit { z-index: 2; }
+    .sol-body {
+      position: absolute;
+      left: calc(var(--sys) / -2); top: calc(var(--sys) / -2);
+      width: var(--sys); height: var(--sys);
+      animation: counter-spin var(--spin, 80s) linear infinite;
       animation-direction: var(--dir, normal);
-      transition: background .2s, color .2s, border-color .2s, box-shadow .2s, opacity .25s, scale .2s;
+      transition: opacity .3s;
     }
-    @keyframes orbit-spin-label { from { rotate: 0deg; } to { rotate: -360deg; } }
-    .orbit-ring-1 .orbit-label { color: var(--gold); border-color: rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .08); }
-    .orbit-ring-2 .orbit-label { color: var(--teal); border-color: rgba(var(--accent2-rgb), .35); }
 
-    /* Paused + highlighting */
-    .orbit.is-paused .orbit-ring,
-    .orbit.is-paused .orbit-label { animation-play-state: paused; }
-    .orbit.has-lit .orbit-label { opacity: .4; }
-    body.light-theme .orbit.has-lit .orbit-label { opacity: .55; }
-    .orbit.has-lit .orbit-planet.is-lit .orbit-label {
-      opacity: 1;
-      scale: 1.08;
-      color: var(--bg);
-      background: var(--gold);
-      border-color: var(--gold);
-      box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .18), 0 6px 22px rgba(var(--accent-rgb), .35);
+    /* The planet itself */
+    .sol-globe {
+      position: absolute; left: 50%; top: 50%;
+      width: var(--globe); height: var(--globe);
+      margin: calc(var(--globe) / -2) 0 0 calc(var(--globe) / -2);
+      border-radius: 50%;
+      border: 0; padding: 0;
+      cursor: pointer;
+      pointer-events: auto;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      background: radial-gradient(circle at 32% 28%, #fbcfe8 0%, #f472b6 32%, #be185d 72%, #6b1239 100%);
+      box-shadow: inset -6px -8px 14px rgba(0,0,0,.35), 0 0 22px rgba(244,114,182,.35);
+      transition: transform .3s, box-shadow .3s;
     }
-    .orbit-planet:focus-visible { outline: none; }
-    .orbit-planet:focus-visible .orbit-label { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .sol-planet-b .sol-globe {
+      background: radial-gradient(circle at 32% 28%, #ede9fe 0%, #a78bfa 32%, #6d28d9 72%, #3b1478 100%);
+      box-shadow: inset -6px -8px 14px rgba(0,0,0,.35), 0 0 22px rgba(167,139,250,.35);
+    }
+    .sol-glyph { font-size: 1.15rem; line-height: 1; text-shadow: 0 1px 3px rgba(0,0,0,.35); }
+    .sol-name {
+      position: absolute; left: 50%; top: calc(50% + var(--globe) / 2 + 8px);
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: .6rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-soft);
+      pointer-events: none;
+      transition: color .3s;
+    }
+
+    /* Moons */
+    .sol-moons {
+      position: absolute; inset: 0;
+      animation: moon-spin var(--moon-spin, 16s) linear infinite;
+      pointer-events: none;
+    }
+    .sol-planet.is-open { --moon-r: calc(var(--globe) / 2 + 46px); }
+    .sol-planet.is-open .sol-moons { z-index: 2; }
+    .sol-globe { z-index: 1; }
+    .sol-moon {
+      transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+      position: absolute; left: 50%; top: 50%;
+      width: 0; height: 0;
+      padding: 0; border: 0; background: none; font: inherit;
+      transform: rotate(var(--ma)) translateX(var(--moon-r)) rotate(calc(-1 * var(--ma)));
+    }
+    .sol-moon-inner {
+      position: absolute; left: 0; top: 0;
+      display: inline-flex; align-items: center; gap: 0;
+      translate: -50% -50%;
+      padding: 0;
+      border-radius: 999px;
+      white-space: nowrap;
+      pointer-events: auto;
+      cursor: pointer;
+      animation: counter-spin var(--moon-spin, 16s) linear infinite;
+      transition: background .25s, padding .25s, gap .25s, box-shadow .25s;
+    }
+    .sol-moon-dot {
+      width: 12px; height: 12px; border-radius: 50%; flex: none;
+      background: radial-gradient(circle at 35% 30%, #fff 0%, #cbd5e1 45%, #64748b 100%);
+      box-shadow: 0 0 8px rgba(255,255,255,.25);
+    }
+    .sol-planet-a .sol-moon-dot { background: radial-gradient(circle at 35% 30%, #fff 0%, #f9a8d4 50%, #9d174d 100%); }
+    .sol-planet-b .sol-moon-dot { background: radial-gradient(circle at 35% 30%, #fff 0%, #c4b5fd 50%, #5b21b6 100%); }
+    .sol-moon-label {
+      max-width: 0; overflow: hidden; opacity: 0;
+      font-size: .68rem; font-weight: 500;
+      color: var(--text);
+      transition: max-width .3s, opacity .25s;
+    }
+    /* Open planet: moons grow into labelled pills */
+    .sol-planet.is-open .sol-moon-inner {
+      gap: 6px;
+      padding: 4px 10px 4px 5px;
+      background: var(--bg-raised);
+      box-shadow: 0 0 0 1px var(--border), 0 6px 18px rgba(0,0,0,.25);
+    }
+    .sol-planet.is-open .sol-moon-label { max-width: 160px; opacity: 1; }
+    .sol-moon.is-lit .sol-moon-inner { background: var(--gold); box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .2); }
+    .sol-moon.is-lit .sol-moon-label { color: var(--bg); }
+
+    /* Paused + dimmed */
+    .orbit.is-paused .sol-orbit,
+    .orbit.is-paused .sol-body,
+    .orbit.is-paused .sol-moons,
+    .orbit.is-paused .sol-moon-inner,
+    .orbit.is-paused .orbit-core { animation-play-state: paused; }
+    .orbit.has-lit .sol-planet:not(.is-lit) .sol-body { opacity: .3; }
+    .sol-planet.is-lit .sol-globe { transform: scale(1.12); box-shadow: inset -6px -8px 14px rgba(0,0,0,.35), 0 0 0 5px rgba(var(--accent-rgb), .18), 0 0 34px rgba(var(--accent-rgb), .55); }
+    .sol-planet.is-lit .sol-name { color: var(--gold); }
+    .sol-globe:focus-visible, .sol-moon:focus-visible .sol-moon-inner { outline: 2px solid var(--gold); outline-offset: 3px; }
 
     .orbit-tip {
       position: absolute;
@@ -110,11 +183,16 @@
     .skill-pill.is-lit { background: var(--gold) !important; color: var(--bg) !important; border-color: var(--gold) !important; }
 
     @media (max-width: 640px) {
-      .orbit-core { width: 78px; height: 78px; margin: -39px 0 0 -39px; }
-      .orbit-core-mono { font-size: 1.2rem; }
-      .orbit-label { font-size: .66rem; padding: .28rem .6rem; }
+      .orbit { --globe: 34px; --moon-r: 30px; --sys: 96px; }
+      .orbit-core { width: 70px; height: 70px; margin: -35px 0 0 -35px; }
+      .orbit-core-mono { font-size: 1.1rem; }
+      .orbit-core-label { font-size: .5rem; }
+      .sol-glyph { font-size: .8rem; }
+      .sol-name { font-size: .5rem; letter-spacing: .06em; top: calc(50% + var(--globe) / 2 + 4px); }
+      .sol-moon-dot { width: 8px; height: 8px; }
+      .sol-moon-label { font-size: .6rem; }
       .orbit-caption { font-size: .68rem; padding: 0 1rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .orbit-ring, .orbit-label, .orbit-core { animation: none !important; }
+      .sol-orbit, .sol-body, .sol-moons, .sol-moon-inner, .orbit-core { animation: none !important; }
     }
