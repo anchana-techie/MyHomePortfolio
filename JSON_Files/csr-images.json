@@ -1,5 +1,10 @@
 [
   {
+    "image": "CSR/csr-2026-tree.jpg",
+    "title": "Tree Plantation Drive (2026-10-10)",
+    "description": "We had so much fun planting trees, knowing each one is a small gift to the future."
+  },
+  {
     "image": "CSR/TreePlantation.jpeg",
     "title": "Tree Plantation Drive",
     "description": "Joined a community tree-plantation initiative aimed at increasing green cover in local neighbourhoods and raising awareness about environmental sustainability."
@@ -23,10 +28,5 @@
     "image": "CSR/SchoolPainting.jpeg",
     "title": "School Painting",
     "description": "Participated in a school painting initiative to enhance the learning environment and promote creativity among students."
-  },
-  {
-    "image": "CSR/csr-2026-tree.jpg",
-    "title": "Tree Plantation Drive (2026-10-10)",
-    "description": "We had so much fun planting trees, knowing each one is a small gift to the future."
   }
 ]
