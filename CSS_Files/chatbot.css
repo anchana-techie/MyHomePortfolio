@@ -82,3 +82,32 @@
       max-height: min(70vh, 520px);
     }
   }
+
+  /* ── Header: status dot + close button ── */
+  #pai-header { display: flex; align-items: center; gap: 8px; }
+  #pai-header > span:first-child { flex: 1; }
+  .pai-status {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--text-muted); box-shadow: 0 0 0 2px rgba(0,0,0,.12);
+  }
+  .pai-status.ready { background: #22c55e; }
+  .pai-status.waking { background: #f59e0b; animation: pai-pulse 1.2s infinite ease-in-out; }
+  .pai-status.offline { background: #ef4444; }
+  @keyframes pai-pulse { 50% { opacity: .35; } }
+  #pai-close {
+    border: none; background: transparent; color: inherit; cursor: pointer;
+    font-size: 15px; line-height: 1; padding: 2px 4px; opacity: .8;
+  }
+  #pai-close:hover { opacity: 1; }
+
+  /* ── Suggested questions ── */
+  .pai-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: -2px 0 10px; }
+  .pai-chip {
+    border: 1px solid var(--gold); background: transparent; color: var(--gold);
+    border-radius: 999px; padding: 5px 10px; font-size: 12.5px; cursor: pointer;
+    text-align: left; font-family: inherit; transition: background .2s, color .2s;
+  }
+  .pai-chip:hover { background: var(--gold); color: var(--bg); }
+
+  .pai-wait { font-size: 12.5px; color: var(--text-soft); }
+  #pai-send:disabled, #pai-input:disabled { opacity: .6; cursor: default; }

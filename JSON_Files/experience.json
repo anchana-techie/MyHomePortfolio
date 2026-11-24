@@ -5,7 +5,7 @@
   "stats": [
     {
       "icon": "briefcase",
-      "value": "2.5+",
+      "value": "{years}",
       "label": "Years of Experience"
     },
     {
@@ -30,7 +30,7 @@
       "company": "Indium Software Private Limited",
       "location": "Chennai, Tamil Nadu, India · Hybrid",
       "period": "Apr 2026 – Present",
-      "duration": "4 mos",
+      "duration": "{auto}",
       "current": true,
       "icon": "chart",
       "description": "Contributing to the final stretch of the SSRS-to-Databricks migration, while converting transformation logic into DBT models and Databricks notebooks deployed through Azure DevOps CI/CD pipelines.",

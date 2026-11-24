@@ -55,3 +55,65 @@
     .project ul { padding-left: 1rem; display: flex; flex-direction: column; gap: .45rem; }
     .project li { font-size: 0.85rem; color: var(--text-soft); }
 
+
+    /* ── PERSONAL PROJECTS (below the work projects) ── */
+    .personal-projects { margin-top: 3.5rem; }
+    .personal-intro {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      max-width: 60ch;
+      margin: -.25rem 0 1.5rem;
+    }
+    .personal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+    .personal-card {
+      display: flex;
+      flex-direction: column;
+      padding: 1.6rem 1.7rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color .2s, transform .2s, background .2s;
+    }
+    .personal-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .personal-card h3 {
+      font-family: var(--display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: .5rem;
+    }
+    .personal-summary {
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .personal-card ul {
+      padding-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+      margin-bottom: 1.1rem;
+    }
+    .personal-card li { font-size: 0.83rem; color: var(--text-soft); }
+    .personal-card .skill-pills { margin-bottom: 1.2rem; }
+    .personal-links { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: auto; }
+    .personal-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      padding: .45rem .9rem;
+      transition: background .2s, color .2s;
+    }
+    .personal-link:hover { background: var(--gold); color: var(--bg); }
+    @media (max-width: 760px) {
+      .personal-grid { grid-template-columns: 1fr; }
+    }

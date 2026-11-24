@@ -2,11 +2,11 @@
   {
     "id": "profile",
     "title": "Profile Summary",
-    "text": "Anchana Prabakaran is a Data Analyst based in Chennai, India, with 2+ years of experience engineering data pipelines, migrating hundreds of SSRS reports to Databricks, and delivering Power BI dashboards that drive business decisions. She is comfortable across the full data stack: converting T-SQL to Databricks-compatible SQL, configuring ODBC connectors, and deploying DBT models through Azure DevOps CI/CD. She holds an active Databricks Certified Data Engineer Associate certification."
+    "text": "Anchana Prabakaran is a Data Analyst based in Chennai, India, with {years} years of experience engineering data pipelines, migrating hundreds of SSRS reports to Databricks, and delivering Power BI dashboards that drive business decisions. She is comfortable across the full data stack: converting T-SQL to Databricks-compatible SQL, configuring ODBC connectors, and deploying DBT models through Azure DevOps CI/CD. She holds an active Databricks Certified Data Engineer Associate certification."
   },
   {
     "title": "Current Role",
-    "text": "Anchana's current role is Data Analyst at Indium Software Private Limited in Chennai, Tamil Nadu, India (Hybrid), since April 2026 (2.5+ years total professional experience). In this current position she is contributing to the final stretch of the SSRS-to-Databricks migration, converting transformation logic into DBT models and Databricks notebooks deployed through Azure DevOps CI/CD pipelines."
+    "text": "Anchana's current role is Data Analyst at Indium Software Private Limited in Chennai, Tamil Nadu, India (Hybrid), since April 2026 ({years} years total professional experience; {tenure} in total). In this current position she is contributing to the final stretch of the SSRS-to-Databricks migration, converting transformation logic into DBT models and Databricks notebooks deployed through Azure DevOps CI/CD pipelines."
   },
   {
     "title": "Work Experience Timeline",
@@ -114,11 +114,11 @@
   },
   {
     "title": "Quick Facts",
-    "text": "Quick facts about Anchana Prabakaran: she is a Data Analyst based in Chennai, Tamil Nadu, India. She currently works at Indium Software Private Limited (Hybrid), a role she has held since April 2026. She has 2.5+ years of total professional experience, all at Indium Software. She holds an active Databricks Certified Data Engineer Associate certification. She can be reached at anchana.techie@gmail.com or on LinkedIn at linkedin.com/in/anchana-prabakaran-231331233."
+    "text": "Quick facts about Anchana Prabakaran: she is a Data Analyst based in Chennai, Tamil Nadu, India. She currently works at Indium Software Private Limited (Hybrid), a role she has held since April 2026. She has {years} years ({tenure}) of total professional experience, all at Indium Software. She holds an active Databricks Certified Data Engineer Associate certification. She can be reached at anchana.techie@gmail.com or on LinkedIn at linkedin.com/in/anchana-prabakaran-231331233."
   },
   {
     "title": "Career Stats & Achievements Snapshot",
-    "text": "In her career so far, Anchana has: 2.5+ years of professional experience; migrated 300+ SSRS reports from SQL Server to Databricks (out of an original scope of 200-400 reports); built 10+ Power BI dashboards for business stakeholders; and earned 1 Databricks certification (Databricks Certified Data Engineer Associate). These stats are drawn from her Experience page."
+    "text": "In her career so far, Anchana has: {years} years of professional experience; migrated 300+ SSRS reports from SQL Server to Databricks (out of an original scope of 200-400 reports); built 10+ Power BI dashboards for business stakeholders; and earned 1 Databricks certification (Databricks Certified Data Engineer Associate). These stats are drawn from her Experience page."
   },
   {
     "title": "Role: Graduate Engineering Trainee (Oct 2023 - Sep 2024)",
@@ -138,6 +138,21 @@
   },
   {
     "title": "Portfolio Website Navigation & Chatbot Scope",
-    "text": "Anchana's portfolio website has the following sections, reachable from the top navigation: Experience (career timeline and stats), Projects (work experience and detailed project write-ups), Skills (technical skills grid), Education (degree and course certifications), Beyond Work (hobbies: art & painting, badminton, clay sculpting, table tennis), CSR (community service activities), and Resume (viewable/downloadable document). This chat assistant can answer questions about Anchana's experience, skills, projects, certifications, education, Beyond Work hobbies, and CSR involvement using the content from these sections."
+    "text": "Anchana's portfolio website has the following sections, reachable from the top navigation: Experience (career timeline and stats), Projects (work experience, detailed work project write-ups, and her personal projects Game Hub and Life Tracker), Skills (technical skills grid), Education (degree and course certifications), Beyond Work (hobbies: art & painting, badminton, clay sculpting, table tennis), CSR (community service activities), and Resume (viewable/downloadable document). This chat assistant can answer questions about Anchana's experience, skills, projects, certifications, education, Beyond Work hobbies, and CSR involvement using the content from these sections."
+  },
+  {
+    "id": "personal_projects_overview",
+    "title": "Personal Projects",
+    "text": "Outside her day job, Anchana builds her own web apps as personal projects. Her two featured personal projects are Game Hub (GameHubVerse), a multiplayer party-games web app, and Life Tracker, an invite-only personal tracking web app built on Google Sheets. Both are static sites hosted on GitHub Pages with no application server, and both are installable on phones like an app. The code is on her GitHub: github.com/anchana-techie."
+  },
+  {
+    "id": "personal_project_game_hub",
+    "title": "Personal Project: Game Hub (GameHubVerse)",
+    "text": "Game Hub is a browser game hub Anchana built for playing with friends online. It includes more than a dozen games, such as Who Is the Spy, Raja Rani, Scribblio (draw and guess), Chess for 2-4 seats, Ludo, Dots and Boxes, Indian Rummy, Rock Paper Scissors, a Number Game and ChristMom ChristChild / Diwali Daddy Diwali Kid secret-gift draws. Players join a room with a code or invite link; the host's browser acts as the game server and players connect peer-to-peer over WebRTC using PeerJS, so there is no backend to run. Computer players fill empty seats in some games. It has optional invite-only accounts with an admin dashboard built on Firebase Authentication and Firestore, room chat, and it is an installable progressive web app (PWA) with offline games and automatic updates. Tech: HTML, CSS, JavaScript, WebRTC/PeerJS, Firebase, service workers, GitHub Pages. Code: github.com/anchana-techie/GameHubVerse"
+  },
+  {
+    "id": "personal_project_life_tracker",
+    "title": "Personal Project: Life Tracker",
+    "text": "Life Tracker is an invite-only web app Anchana built on top of her yearly Excel tracker. A member uploads a yearly .xlsx tracker; a Google Apps Script bridge converts it into a Google Sheet in Google Drive, and the site then reads and writes that sheet. Members log daily tasks and habits in a day-view checklist, keep a monthly buy list, log food with AI-estimated calories and macros, and see in-depth Day, Week and Month insights. Sign-in uses Firebase Authentication, member data lives in Firestore, and Firestore security rules plus the Apps Script bridge make sure each person can only open their own files. It runs on GitHub Pages as a static site with no build step and installs on a phone as a progressive web app. Tech: HTML, CSS, JavaScript, Google Apps Script, Google Sheets and Drive, Firebase, GitHub Pages. Code: github.com/anchana-techie/LifeTrackerApp"
   }
 ]

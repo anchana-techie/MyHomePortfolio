@@ -4,11 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Anchana Prabakaran – Data Analyst</title>
+  <meta name="description" content="Anchana Prabakaran — Data Analyst in Chennai, India. Databricks Certified Data Engineer Associate working across Power BI, Azure Databricks, DBT and SSRS-to-Databricks migration. Ask the AI assistant about her work." />
+  <meta name="author" content="Anchana Prabakaran" />
+  <meta name="theme-color" content="#0f0f0f" />
+  <link rel="canonical" href="https://anchana-techie.github.io/MyHomePortfolio/" />
+  <!-- Link previews (LinkedIn, WhatsApp, Slack, X) -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="Anchana Prabakaran" />
+  <meta property="og:title" content="Anchana Prabakaran – Data Analyst" />
+  <meta property="og:description" content="Power BI, Azure Databricks, DBT and SSRS-to-Databricks migration. Databricks Certified Data Engineer Associate, Chennai, India." />
+  <meta property="og:url" content="https://anchana-techie.github.io/MyHomePortfolio/" />
+  <meta property="og:image" content="https://anchana-techie.github.io/MyHomePortfolio/Images/Anchu.jpg" />
+  <meta property="og:image:alt" content="Photo of Anchana Prabakaran" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Anchana Prabakaran",
+    "jobTitle": "Data Analyst",
+    "url": "https://anchana-techie.github.io/MyHomePortfolio/",
+    "image": "https://anchana-techie.github.io/MyHomePortfolio/Images/Anchu.jpg",
+    "email": "mailto:anchana.techie@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Chennai", "addressCountry": "IN" },
+    "sameAs": [
+      "https://www.linkedin.com/in/anchana-prabakaran-231331233",
+      "https://github.com/anchana-techie"
+    ],
+    "knowsAbout": ["Power BI", "Azure Databricks", "DBT", "SQL", "Python", "ETL pipelines", "Retrieval-augmented generation"]
+  }
+  </script>
   <link rel="icon" type="image/x-icon" href="Images/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="CSS_Files/base.css" />
   <link rel="stylesheet" href="CSS_Files/navigation.css" />
@@ -34,6 +65,25 @@
        The logo artwork has a near-white circular fill, which blends into
        the light-theme nav-bg (also near-white/cream). The box-shadow ring
        gives it a defined edge against ANY nav background, light or dark. */
+    /* The logo is a link now (so "#home" works), so undo the small
+       uppercase menu-link styling it would otherwise inherit. */
+    nav a.nav-logo {
+      font-size: 1.15rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-transform: none;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+    }
+    nav a.nav-logo:hover, nav a.nav-logo.active { color: var(--text); }
+    /* Visible focus ring for keyboard users. */
+    nav a:focus-visible, .theme-toggle:focus-visible, .nav-hamburger:focus-visible,
+    #pai-bubble:focus-visible, .pai-chip:focus-visible, .personal-link:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
     .nav-logo-mark {
       height: 40px;
       width: 40px;
@@ -47,22 +97,22 @@
 <!-- NAV -->
 <nav>
   <div class="wrap">
-    <span class="nav-logo" onclick="showPage('home')">
-      <img class="nav-logo-mark" src="Images/logo-192.png" alt="Anchana Prabakaran logo" />
+    <a class="nav-logo" href="#home" data-page="home">
+      <img class="nav-logo-mark" src="Images/logo-192.png" alt="" width="40" height="40" />
       Anchana Prabakaran
-    </span>
+    </a>
     <button class="nav-hamburger" id="navHamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navActions">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-actions" id="navActions">
       <ul>
-        <li><a onclick="showPage('YearExperience')" id="nav-YearExperience">Experience</a></li>
-        <li><a onclick="showPage('experience')" id="nav-experience">Projects</a></li>
-        <li><a onclick="showPage('skills')"     id="nav-skills">Skills</a></li>
-        <li><a onclick="showPage('education')"  id="nav-education">Education</a></li>
-        <li><a onclick="showPage('beyondwork')" id="nav-beyondwork">Beyond Work</a></li>
-        <li><a onclick="showPage('CSR')" id="nav-CSR">CSR</a></li>
-        <li><a onclick="openModal('resume')" id="nav-resume">Resume</a></li>
+        <li><a href="#experience" data-page="YearExperience" id="nav-YearExperience">Experience</a></li>
+        <li><a href="#projects" data-page="experience" id="nav-experience">Projects</a></li>
+        <li><a href="#skills" data-page="skills" id="nav-skills">Skills</a></li>
+        <li><a href="#education" data-page="education" id="nav-education">Education</a></li>
+        <li><a href="#beyond-work" data-page="beyondwork" id="nav-beyondwork">Beyond Work</a></li>
+        <li><a href="#csr" data-page="CSR" id="nav-CSR">CSR</a></li>
+        <li><a href="#resume" data-modal="resume" id="nav-resume">Resume</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
         <span class="toggle-sky dark" aria-hidden="true"></span>
@@ -184,6 +234,15 @@
       <div class="exp-company" id="projectsCompany"><!-- populated from JSON_Files/projects.json --></div>
 
       <div class="projects-wrap" id="projectsWrap"><!-- populated from JSON_Files/projects.json --></div>
+
+      <div class="personal-projects" id="personalProjects" hidden>
+        <div class="section-header">
+          <span class="eyebrow" id="personalEyebrow">Personal Projects</span>
+          <div class="eyebrow-rule"></div>
+        </div>
+        <p class="personal-intro" id="personalIntro"></p>
+        <div class="personal-grid" id="personalGrid"><!-- populated from JSON_Files/personal-projects.json --></div>
+      </div>
     </div>
   </section>
 </div><!-- /page-experience -->
@@ -339,6 +398,51 @@
 
 
 <script>
+  /* ── Live numbers ─────────────────────────────────────────────
+     Text in the JSON files can say {years} ("3+") or {tenure}
+     ("3 yrs 2 mos"); both are counted from CAREER_START, so the
+     site never shows a stale "2+ years" again. A timeline entry
+     whose duration is {auto} gets it worked out from its period,
+     e.g. "Apr 2026 – Present". Counted inclusively, like LinkedIn. */
+  var CAREER_START = '2023-10';
+  var PortfolioDates = (function () {
+    var MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    function parseMonth(text) {
+      var m = String(text || '').trim().toLowerCase().match(/^([a-z]{3})[a-z]*\.?\s+(\d{4})$/);
+      if (!m || MONTHS.indexOf(m[1]) === -1) return null;
+      return { y: +m[2], m: MONTHS.indexOf(m[1]) + 1 };
+    }
+    function monthsBetween(start, end) {
+      return (end.y - start.y) * 12 + (end.m - start.m) + 1;
+    }
+    function now() { var d = new Date(); return { y: d.getFullYear(), m: d.getMonth() + 1 }; }
+    function tenure(months) {
+      var y = Math.floor(months / 12), r = months % 12, parts = [];
+      if (y) parts.push(y + (y === 1 ? ' yr' : ' yrs'));
+      if (r) parts.push(r + (r === 1 ? ' mo' : ' mos'));
+      return parts.join(' ') || '1 mo';
+    }
+    var start = { y: +CAREER_START.slice(0, 4), m: +CAREER_START.slice(5, 7) };
+    function careerMonths() { return monthsBetween(start, now()); }
+    function fill(text) {
+      if (typeof text !== 'string') return text;
+      var months = careerMonths();
+      return text
+        .replace(/\{years\}/g, Math.floor(months / 12) + '+')
+        .replace(/\{tenure\}/g, tenure(months));
+    }
+    function durationFor(period) {
+      var halves = String(period || '').split(/\s*[–—-]\s*/);
+      if (halves.length !== 2) return '';
+      var from = parseMonth(halves[0]);
+      var to = /present|now|current/i.test(halves[1]) ? now() : parseMonth(halves[1]);
+      return from && to ? tenure(monthsBetween(from, to)) : '';
+    }
+    return { fill: fill, durationFor: durationFor };
+  })();
+</script>
+
+<script>
   /* Theme toggle */
   (function () {
     var toggle = document.getElementById('themeToggle');
@@ -414,20 +518,54 @@
     simulatorpar:{ title:'Simulator PAR Dashboard', type:'pbix', file:'PowerBi/Simulator_PAR.pbix' }
   };
 
-  /* ── Page switcher ── */
-  function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  /* ── Page switcher ──
+     Each page has a short, shareable address: …/MyHomePortfolio/#projects
+     opens straight on Projects, and the browser Back button works. */
+  const PAGE_SLUGS = {
+    home: 'home', YearExperience: 'experience', experience: 'projects',
+    skills: 'skills', education: 'education', beyondwork: 'beyond-work', CSR: 'csr'
+  };
+  const SLUG_PAGES = {};
+  Object.keys(PAGE_SLUGS).forEach(function (k) { SLUG_PAGES[PAGE_SLUGS[k]] = k; });
 
-    const target = document.getElementById('page-' + name);
-    if (target) target.classList.add('active');
+  function showPage(name, opts) {
+    if (!document.getElementById('page-' + name)) name = 'home';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => {
+      a.classList.remove('active');
+      a.removeAttribute('aria-current');
+    });
+
+    document.getElementById('page-' + name).classList.add('active');
 
     const link = document.getElementById('nav-' + name);
-    if (link) link.classList.add('active');
+    if (link) { link.classList.add('active'); link.setAttribute('aria-current', 'page'); }
+
+    // Keep the address bar in step without adding a history entry when the
+    // change came from the address bar itself.
+    const slug = PAGE_SLUGS[name];
+    if (!(opts && opts.fromHash) && location.hash !== '#' + slug) {
+      history.pushState(null, '', '#' + slug);
+    }
 
     window.scrollTo({ top: 0, behavior: 'instant' });
     closeMobileNav();
   }
+
+  function pageFromHash() {
+    const slug = decodeURIComponent(location.hash.replace(/^#/, '')).toLowerCase();
+    if (slug === 'resume') { showPage('home', { fromHash: true }); openModal('resume'); return; }
+    showPage(SLUG_PAGES[slug] || 'home', { fromHash: true });
+  }
+
+  document.addEventListener('click', function (e) {
+    const pageLink = e.target.closest('a[data-page]');
+    if (pageLink) { e.preventDefault(); showPage(pageLink.getAttribute('data-page')); return; }
+    const modalLink = e.target.closest('a[data-modal]');
+    if (modalLink) { e.preventDefault(); closeMobileNav(); openModal(modalLink.getAttribute('data-modal')); }
+  });
+  window.addEventListener('popstate', pageFromHash);
+  document.addEventListener('DOMContentLoaded', function () { if (location.hash) pageFromHash(); });
 
   /* ── Modal ── */
   function openModal(key) {
@@ -479,6 +617,10 @@
     document.body.style.overflow = '';
     document.getElementById('modalBody').innerHTML = '';
   }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('docModal').classList.contains('open')) closeModal();
+  });
 
   function handleOverlayClick(e) {
     if (e.target === document.getElementById('docModal')) closeModal();
@@ -1246,7 +1388,7 @@ requestAnimationFrame(loop);
 
       if (els.eyebrow) els.eyebrow.innerHTML = '<span></span>' + (hero.eyebrow || '');
       if (els.name) els.name.innerHTML = (hero.firstName || '') + '<br>' + (hero.lastName || '');
-      if (els.desc) els.desc.innerHTML = hero.description || '';
+      if (els.desc) els.desc.innerHTML = PortfolioDates.fill(hero.description || '');
       if (els.photo) { els.photo.src = hero.photo || ''; els.photo.alt = hero.photoAlt || ''; }
       var contact = hero.contact || {};
       if (els.email) { els.email.href = 'mailto:' + (contact.email || ''); els.email.textContent = contact.email || ''; }
@@ -1331,7 +1473,7 @@ requestAnimationFrame(loop);
             '<div class="exp-role">' + (company.role || '') + '</div>' +
             '<div class="exp-org">' + (company.org || '') + '</div>' +
           '</div>' +
-          '<div class="exp-period">' + (company.period || '') + '</div>';
+          '<div class="exp-period">' + PortfolioDates.fill(company.period || '') + '</div>';
       }
       var projects = data.projects || [];
       wrap.innerHTML = projects.map(function (proj) {
@@ -1354,6 +1496,55 @@ requestAnimationFrame(loop);
       .then(renderProjects)
       .catch(function (err) {
         console.warn('Projects: could not load projects.json.', err);
+      });
+  })();
+
+  /* ── PERSONAL PROJECTS (below the work projects on page-experience) —
+     driven by JSON_Files/personal-projects.json. The section stays hidden
+     if the file is missing or empty. ── */
+  (function () {
+    var section = document.getElementById('personalProjects');
+    var grid = document.getElementById('personalGrid');
+    if (!section || !grid) return;
+
+    function safeUrl(url) {
+      return /^https?:\/\//i.test(url || '') ? url : '#';
+    }
+
+    function render(data) {
+      var projects = data.projects || [];
+      if (!projects.length) return;
+      document.getElementById('personalEyebrow').textContent = data.eyebrow || 'Personal Projects';
+      document.getElementById('personalIntro').innerHTML = data.intro || '';
+      grid.innerHTML = projects.map(function (proj) {
+        var points = (proj.points || []).map(function (pt) { return '<li>' + pt + '</li>'; }).join('');
+        var tech = (proj.tech || []).map(function (t) { return '<span class="skill-pill">' + t + '</span>'; }).join('');
+        var links = (proj.links || []).map(function (l) {
+          return '<a class="personal-link" href="' + safeUrl(l.url) + '" target="_blank" rel="noopener">' +
+                 (l.label || 'Open') + ' <span aria-hidden="true">&#8599;</span></a>';
+        }).join('');
+        return (
+          '<article class="personal-card">' +
+            '<p class="project-tag">' + (proj.tag || '') + '</p>' +
+            '<h3>' + (proj.title || '') + '</h3>' +
+            (proj.summary ? '<p class="personal-summary">' + proj.summary + '</p>' : '') +
+            '<ul>' + points + '</ul>' +
+            (tech ? '<div class="skill-pills">' + tech + '</div>' : '') +
+            (links ? '<div class="personal-links">' + links + '</div>' : '') +
+          '</article>'
+        );
+      }).join('');
+      section.hidden = false;
+    }
+
+    fetch('JSON_Files/personal-projects.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('personal-projects.json not found (' + res.status + ')');
+        return res.json();
+      })
+      .then(render)
+      .catch(function (err) {
+        console.warn('Personal projects: could not load personal-projects.json.', err);
       });
   })();
 
@@ -1397,7 +1588,7 @@ requestAnimationFrame(loop);
 
       var certs = data.certifications || [];
       track.innerHTML = certs.map(function (c) {
-        return '<img src="' + c.image + '" alt="' + (c.alt || '') + '">';
+        return '<img src="' + c.image + '" alt="' + (c.alt || '') + '" loading="lazy" decoding="async">';
       }).join('');
 
       initCarousel({
@@ -1491,6 +1682,8 @@ requestAnimationFrame(loop);
           var img = document.createElement('img');
           img.src = src;
           img.alt = name;
+          img.loading = 'lazy';
+          img.decoding = 'async';
           track.appendChild(img);
         });
 
@@ -1744,6 +1937,9 @@ requestAnimationFrame(loop);
         var isLast = i === items.length - 1;
         var isCurrent = !!item.current;
         var icon = ICONS[item.icon] || ICONS.briefcase;
+        var duration = item.duration === '{auto}'
+          ? PortfolioDates.durationFor(item.period)
+          : PortfolioDates.fill(item.duration);
         var tags = Array.isArray(item.tags) ? item.tags.map(function (t) {
           return '<span class="skill-pill">' + escapeHtml(t) + '</span>';
         }).join('') : '';
@@ -1752,7 +1948,7 @@ requestAnimationFrame(loop);
           '<div class="tl-item' + (isCurrent ? ' is-current' : '') + '">' +
             '<div class="tl-when">' +
               '<div class="tl-period">' + escapeHtml(item.period) +
-                (item.duration ? '<br>' + escapeHtml(item.duration) : '') +
+                (duration ? '<br>' + escapeHtml(duration) : '') +
               '</div>' +
               (isCurrent ? '<span class="tl-current-badge">Current</span>' : '') +
             '</div>' +
@@ -1786,7 +1982,7 @@ requestAnimationFrame(loop);
           return (
             '<div class="tl-stat">' +
               '<div class="tl-stat-icon">' + icon + '</div>' +
-              '<div class="tl-stat-value">' + escapeHtml(s.value) + '</div>' +
+              '<div class="tl-stat-value">' + escapeHtml(PortfolioDates.fill(s.value)) + '</div>' +
               '<div class="tl-stat-label">' + escapeHtml(s.label) + '</div>' +
             '</div>'
           );
@@ -1807,108 +2003,256 @@ requestAnimationFrame(loop);
   })();
 </script>
 
-<button id="pai-bubble" aria-label="Chat with Anchana's portfolio assistant">💬</button>
+<button id="pai-bubble" type="button" aria-label="Chat with Anchana's portfolio assistant" aria-expanded="false" aria-controls="pai-panel">💬</button>
 
-<div id="pai-panel">
-  <div id="pai-header">Ask about Anchana's work</div>
-  <div id="pai-messages"></div>
+<div id="pai-panel" role="dialog" aria-label="Portfolio assistant">
+  <div id="pai-header">
+    <span>Ask about Anchana's work</span>
+    <span id="pai-status" class="pai-status" title="Assistant status"></span>
+    <button id="pai-close" type="button" aria-label="Close chat">&#x2715;</button>
+  </div>
+  <div id="pai-messages" aria-live="polite"></div>
   <div id="pai-input-row">
-    <input id="pai-input" type="text" placeholder="e.g. What did she do on the SSRS migration?" />
-    <button id="pai-send">Send</button>
+    <input id="pai-input" type="text" maxlength="500" autocomplete="off"
+           aria-label="Your question" placeholder="e.g. What did she do on the SSRS migration?" />
+    <button id="pai-send" type="button">Send</button>
   </div>
 </div>
 
 <script>
 (function () {
-  // Local dev (file:// or localhost) talks to your local `uvicorn main:app --reload`
-  // server on port 8000. Once you deploy the backend, replace the Render URL below
-  // with your real one — that's the only line you need to touch for production.
-  const LOCAL_BACKEND_URL = "http://127.0.0.1:8000/chat";
-  // const DEPLOYED_BACKEND_URL = "https://YOUR-RENDER-APP-NAME.onrender.com/chat"; // <-- replace this once deployed
-  const DEPLOYED_BACKEND_URL = "https://myhome-zb8s.onrender.com/chat";
+  // Local dev (file:// or localhost) talks to `uvicorn main:app --reload` on
+  // port 8000; the published site talks to the Render deployment.
+  const LOCAL_BACKEND = "http://127.0.0.1:8000";
+  const DEPLOYED_BACKEND = "https://myhome-zb8s.onrender.com";
   const isLocal = location.protocol === "file:" ||
                   location.hostname === "localhost" ||
                   location.hostname === "127.0.0.1";
-  const BACKEND_URL = isLocal ? LOCAL_BACKEND_URL : DEPLOYED_BACKEND_URL;
+  const BASE = isLocal ? LOCAL_BACKEND : DEPLOYED_BACKEND;
+
+  const SUGGESTIONS = [
+    "What does she work on day to day?",
+    "Tell me about the SSRS-to-Databricks migration",
+    "What are her personal projects?",
+    "What's her tech stack?",
+    "How can I contact her?"
+  ];
 
   const bubble = document.getElementById("pai-bubble");
   const panel = document.getElementById("pai-panel");
+  const closeBtn = document.getElementById("pai-close");
+  const statusEl = document.getElementById("pai-status");
   const messagesEl = document.getElementById("pai-messages");
   const input = document.getElementById("pai-input");
   const sendBtn = document.getElementById("pai-send");
 
-  let history = [];
+  let history = [];      // plain-text turns sent back to the backend
+  let busy = false;
+  let greeted = false;
 
-  bubble.addEventListener("click", (e) => {
+  /* ── Waking the backend ──
+     Render's free tier sleeps after ~15 idle minutes and takes up to a
+     minute to wake. Ping it as soon as the page loads, so it is usually
+     awake by the time a visitor types. */
+  let awake = false;
+  let wakePromise = null;
+  function setStatus(state) {
+    statusEl.className = "pai-status " + state;
+    statusEl.title = state === "ready" ? "Assistant is ready" :
+                     state === "waking" ? "Assistant is waking up" : "Assistant is offline";
+  }
+  function wake() {
+    if (awake) return Promise.resolve(true);
+    if (wakePromise) return wakePromise;
+    setStatus("waking");
+    const started = Date.now();
+    wakePromise = (function attempt() {
+      return fetch(BASE + "/health", { cache: "no-store" })
+        .then(function (res) { if (!res.ok) throw new Error(res.status); awake = true; setStatus("ready"); return true; })
+        .catch(function () {
+          // Keep trying for ~90 s; a cold start can briefly refuse requests.
+          if (Date.now() - started < 90000) {
+            return new Promise(function (r) { setTimeout(r, 5000); }).then(attempt);
+          }
+          setStatus("offline");
+          return false;
+        });
+    })().finally(function () { wakePromise = null; });
+    return wakePromise;
+  }
+  wake();
+
+  /* ── Panel ── */
+  function openPanel() {
+    panel.classList.add("open");
+    bubble.setAttribute("aria-expanded", "true");
+    if (!greeted) greet();
+    wake();
+    setTimeout(function () { input.focus(); }, 50);
+  }
+  function closePanel() {
+    panel.classList.remove("open");
+    bubble.setAttribute("aria-expanded", "false");
+  }
+  bubble.addEventListener("click", function (e) {
     e.stopPropagation();
-    panel.classList.toggle("open");
+    panel.classList.contains("open") ? closePanel() : openPanel();
   });
-
-  panel.addEventListener("click", (e) => e.stopPropagation());
-
-  document.addEventListener("click", (e) => {
+  closeBtn.addEventListener("click", function () { closePanel(); bubble.focus(); });
+  panel.addEventListener("click", function (e) { e.stopPropagation(); });
+  document.addEventListener("click", function (e) {
     if (!panel.classList.contains("open")) return;
     if (panel.contains(e.target) || bubble.contains(e.target)) return;
-    panel.classList.remove("open");
+    closePanel();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && panel.classList.contains("open")) { closePanel(); bubble.focus(); }
   });
 
-  function addMessage(role, text) {
-  const div = document.createElement("div");
-  div.className = "pai-msg " + role;
-  div.innerHTML = `<span class="bubble"></span>`;
+  /* ── Messages ── */
+  function scrollDown() { messagesEl.scrollTop = messagesEl.scrollHeight; }
 
-  const bubble = div.querySelector(".bubble");
-
-  // User messages stay as plain text.
-  if (role === "user") {
-    bubble.textContent = text;
-  } else {
-    // Bot messages can contain HTML (links)
-    bubble.innerHTML = text;
+  function addMessage(role, content, isHtml) {
+    const div = document.createElement("div");
+    div.className = "pai-msg " + role;
+    const span = document.createElement("span");
+    span.className = "bubble";
+    // Visitor text is always plain text; bot HTML comes from the backend,
+    // which escapes everything before adding its own links.
+    if (isHtml) span.innerHTML = content; else span.textContent = content;
+    div.appendChild(span);
+    messagesEl.appendChild(div);
+    scrollDown();
+    return span;
   }
 
-  messagesEl.appendChild(div);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-  return div;
-}
-
-  function addTypingIndicator() {
+  function addTyping() {
     const div = document.createElement("div");
     div.className = "pai-msg bot";
-    div.innerHTML = `<span class="bubble"><span class="pai-typing"><span></span><span></span><span></span></span></span>`;
+    div.innerHTML = '<span class="bubble"><span class="pai-typing"><span></span><span></span><span></span></span><span class="pai-wait"></span></span>';
     messagesEl.appendChild(div);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    scrollDown();
     return div;
   }
 
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = "";
-    addMessage("user", text);
-    const typingEl = addTypingIndicator();
+  function greet() {
+    greeted = true;
+    addMessage("bot", "Hi! I'm Anchana's portfolio assistant. Ask me about her experience, projects, skills or certifications — or pick a question:");
+    const chips = document.createElement("div");
+    chips.className = "pai-chips";
+    SUGGESTIONS.forEach(function (q) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pai-chip";
+      b.textContent = q;
+      b.addEventListener("click", function () { chips.remove(); send(q); });
+      chips.appendChild(b);
+    });
+    messagesEl.appendChild(chips);
+    scrollDown();
+  }
 
+  function setBusy(state) {
+    busy = state;
+    sendBtn.disabled = state;
+    input.disabled = state;
+    if (!state) input.focus();
+  }
+
+  /* ── Talking to the backend ── */
+  function readJsonReply(res) {
+    return res.json().catch(function () { return {}; }).then(function (data) {
+      return { html: data.reply || "Sorry, something went wrong. Please try again.", text: data.text || "" };
+    });
+  }
+
+  // Streams the answer word by word from /chat/stream. Resolves with the
+  // final {html, text}. Falls back to /chat when streaming isn't available.
+  async function ask(text, onDelta) {
+    const body = JSON.stringify({ message: text, history: history });
+    let res;
     try {
-      const res = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history: history }),
+      res = await fetch(BASE + "/chat/stream", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: body
       });
-      const data = await res.json();
-
-      messagesEl.removeChild(typingEl);
-      addMessage("bot", data.reply);
-
-      history.push({ role: "user", content: text });
-      history.push({ role: "assistant", content: data.reply });
     } catch (err) {
-      messagesEl.removeChild(typingEl);
-      addMessage("bot", "Sorry, I couldn't reach the server. Please try again shortly.");
+      res = null;
+    }
+    const isStream = res && res.ok && res.body &&
+                     (res.headers.get("content-type") || "").indexOf("text/event-stream") === 0;
+    if (res && res.status === 429) return readJsonReply(res);
+    if (!isStream) {
+      const plain = await fetch(BASE + "/chat", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: body
+      });
+      return readJsonReply(plain);
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let final = null;
+    while (true) {
+      const step = await reader.read();
+      if (step.done) break;
+      buffer += decoder.decode(step.value, { stream: true });
+      let cut;
+      while ((cut = buffer.indexOf("\n\n")) !== -1) {
+        const chunk = buffer.slice(0, cut);
+        buffer = buffer.slice(cut + 2);
+        if (chunk.indexOf("data: ") !== 0) continue;
+        let event;
+        try { event = JSON.parse(chunk.slice(6)); } catch (e) { continue; }
+        if (event.type === "delta") onDelta(event.text);
+        else if (event.type === "done") final = { html: event.html, text: event.text };
+      }
+    }
+    if (!final) throw new Error("stream ended early");
+    return final;
+  }
+
+  async function send(preset) {
+    const text = (preset || input.value).trim();
+    if (!text || busy) return;
+    input.value = "";
+    setBusy(true);
+    addMessage("user", text);
+    const typing = addTyping();
+
+    // If the backend is still asleep, say so instead of leaving silent dots.
+    const waitTimer = setTimeout(function () {
+      if (!awake) typing.querySelector(".pai-wait").textContent =
+        " Waking up the assistant — the first reply can take up to a minute.";
+    }, 2500);
+
+    let botSpan = null;
+    let streamed = "";
+    try {
+      const reply = await ask(text, function (piece) {
+        if (!botSpan) { typing.remove(); botSpan = addMessage("bot", ""); }
+        streamed += piece;
+        botSpan.textContent = streamed;
+        scrollDown();
+      });
+      awake = true; setStatus("ready");
+      if (!botSpan) { typing.remove(); botSpan = addMessage("bot", ""); }
+      botSpan.innerHTML = reply.html;   // final version, with clickable links
+      scrollDown();
+      history.push({ role: "user", content: text });
+      history.push({ role: "assistant", content: reply.text || botSpan.textContent });
+      history = history.slice(-8);
+    } catch (err) {
+      if (typing.isConnected) typing.remove();
+      const msg = "Sorry, I couldn't reach the assistant. Please try again shortly, or email anchana.techie@gmail.com.";
+      if (botSpan) botSpan.textContent = msg; else addMessage("bot", msg);
+    } finally {
+      clearTimeout(waitTimer);
+      setBusy(false);
     }
   }
 
-  sendBtn.addEventListener("click", sendMessage);
-  input.addEventListener("keydown", (e) => { if (e.key === "Enter") sendMessage(); });
+  sendBtn.addEventListener("click", function () { send(); });
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") send(); });
 })();
 </script>
 </body>

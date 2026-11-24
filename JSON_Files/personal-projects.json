@@ -1,0 +1,58 @@
+{
+  "eyebrow": "Personal Projects",
+  "intro": "Things I build in my own time — static web apps with no server to run, installable on a phone like an app.",
+  "projects": [
+    {
+      "tag": "Personal 01",
+      "title": "Game Hub",
+      "summary": "A browser game hub for playing with friends online — more than a dozen multiplayer games in one installable web app.",
+      "points": [
+        "Games include Who Is the Spy, Raja Rani, Scribblio (draw &amp; guess), Chess for 2–4 seats, Ludo, Dots and Boxes, Indian Rummy and Secret-Santa-style gift draws.",
+        "Peer-to-peer multiplayer over WebRTC (PeerJS): the host's browser runs the game rules, timers and computer players, so there is no backend to maintain.",
+        "Optional invite-only accounts and an admin dashboard on Firebase Authentication and Firestore.",
+        "Installable progressive web app with offline games, room chat and automatic updates."
+      ],
+      "tech": [
+        "JavaScript",
+        "WebRTC / PeerJS",
+        "Firebase",
+        "PWA",
+        "GitHub Pages"
+      ],
+      "links": [
+        {
+          "label": "Play it",
+          "url": "https://anchana-techie.github.io/GameHubVerse/"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/anchana-techie/GameHubVerse"
+        }
+      ]
+    },
+    {
+      "tag": "Personal 02",
+      "title": "Life Tracker",
+      "summary": "An invite-only web app built on top of a yearly Excel tracker, with daily logging and in-depth insights.",
+      "points": [
+        "Upload a yearly .xlsx tracker; a Google Apps Script bridge converts it into a Google Sheet in Drive and the site reads and writes it from then on.",
+        "Day-view checklist for daily tasks and habits, a monthly buy list, a food log with AI-estimated calories and macros, and Day / Week / Month insights.",
+        "Firebase sign-in, with Firestore security rules and the script both making sure each person can open only their own files.",
+        "Static site on GitHub Pages with no build step, installable on a phone."
+      ],
+      "tech": [
+        "JavaScript",
+        "Google Apps Script",
+        "Google Sheets",
+        "Firebase",
+        "PWA"
+      ],
+      "links": [
+        {
+          "label": "Code",
+          "url": "https://github.com/anchana-techie/LifeTrackerApp"
+        }
+      ]
+    }
+  ]
+}

@@ -5,10 +5,10 @@ A Streamlit UI for editing the JSON files that power the MyHome portfolio
 site, with real image uploads (files are saved to disk, JSON only stores
 the relative path — you never type a path by hand).
 
-FOLDER LAYOUT THIS APP EXPECTS (siblings of this app.py file):
+FOLDER LAYOUT THIS APP EXPECTS (siblings of this content_manager.py file):
 
     portfolio-root/
-      app.py                 <- this file
+      content_manager.py     <- this file
       JSON_Files/
         home.json
         skills.json
@@ -24,7 +24,7 @@ FOLDER LAYOUT THIS APP EXPECTS (siblings of this app.py file):
 
 Run with:
     pip install streamlit
-    streamlit run app.py
+    streamlit run content_manager.py
 """
 
 import json
@@ -52,6 +52,7 @@ FILES = {
     "Experience": "experience.json",
     "CSR": "csr-images.json",
     "Beyond Work": "beyondwork-images.json",
+    "Personal Projects": "personal-projects.json",
 }
 
 st.set_page_config(page_title="Portfolio Content Manager", page_icon="🗂️", layout="wide")
@@ -63,7 +64,7 @@ st.set_page_config(page_title="Portfolio Content Manager", page_icon="🗂️", 
 def load_json(filename):
     path = JSON_DIR / filename
     if not path.exists():
-        st.error(f"Couldn't find {path}. Make sure JSON_Files/ sits next to app.py.")
+        st.error(f"Couldn't find {path}. Make sure JSON_Files/ sits next to content_manager.py.")
         st.stop()
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -123,6 +124,12 @@ st.title("🗂️ Portfolio Content Manager")
 st.caption(
     "Edit every JSON file behind the site. Upload images directly — they're saved "
     "into the right folder automatically and the JSON only stores the path."
+)
+st.info(
+    "Live numbers: write **{years}** (shows e.g. \"3+\") or **{tenure}** (e.g. \"3 yrs 2 mos\") "
+    "anywhere in the text and the site counts it from the career start date (October 2023). "
+    "In the Experience timeline, a Duration of **{auto}** is worked out from the Period "
+    "(e.g. \"Apr 2026 – Present\")."
 )
 
 tabs = st.tabs(list(FILES.keys()))
@@ -529,3 +536,69 @@ with tabs[6]:
                 "images": cat.get("images", []),
             }
         save_json(FILES["Beyond Work"], out)
+
+
+# ==========================================================================
+# PERSONAL PROJECTS
+# ==========================================================================
+with tabs[7]:
+    init_state("personal_data", lambda: load_json(FILES["Personal Projects"]))
+    data = st.session_state["personal_data"]
+    data["projects"] = ensure_ids(data.get("projects", []))
+
+    c1, c2 = st.columns([1, 3])
+    with c1:
+        data["eyebrow"] = st.text_input("Section eyebrow", data.get("eyebrow", "Personal Projects"), key="pp_eyebrow")
+    with c2:
+        data["intro"] = st.text_input("Intro line", data.get("intro", ""), key="pp_intro")
+
+    st.divider()
+    for proj in list(data["projects"]):
+        with st.container(border=True):
+            c1, c2 = st.columns([1, 4])
+            with c1:
+                proj["tag"] = st.text_input("Tag", proj.get("tag", ""), key=f"pptag_{proj['_id']}")
+            with c2:
+                proj["title"] = st.text_input("Title", proj.get("title", ""), key=f"pptitle_{proj['_id']}")
+            proj["summary"] = st.text_input("One-line summary", proj.get("summary", ""), key=f"ppsum_{proj['_id']}")
+            points_text = st.text_area(
+                "Bullet points (one per line)",
+                "\n".join(proj.get("points", [])),
+                key=f"pppoints_{proj['_id']}",
+                height=140,
+            )
+            proj["points"] = [p.strip() for p in points_text.splitlines() if p.strip()]
+            tech_text = st.text_input(
+                "Tech tags (comma separated)", ", ".join(proj.get("tech", [])), key=f"pptech_{proj['_id']}"
+            )
+            proj["tech"] = [t.strip() for t in tech_text.split(",") if t.strip()]
+            links_text = st.text_area(
+                "Links, one per line as  Label | https://url",
+                "\n".join(f"{l.get('label', '')} | {l.get('url', '')}" for l in proj.get("links", [])),
+                key=f"pplinks_{proj['_id']}",
+                height=80,
+            )
+            links = []
+            for line in links_text.splitlines():
+                if "|" in line:
+                    label, url = line.split("|", 1)
+                    if url.strip():
+                        links.append({"label": label.strip() or "Open", "url": url.strip()})
+            proj["links"] = links
+            remove_button(data["projects"], proj, "🗑 Remove project")
+
+    if st.button("➕ Add personal project"):
+        n = len(data["projects"]) + 1
+        data["projects"].append({"_id": new_id(), "tag": f"Personal {n:02d}", "title": "New Project",
+                                 "summary": "", "points": [], "tech": [], "links": []})
+        st.rerun()
+
+    st.divider()
+    if st.button("💾 Save Personal Projects", type="primary"):
+        save_json(FILES["Personal Projects"], {
+            "eyebrow": data["eyebrow"],
+            "intro": data["intro"],
+            "projects": strip_ids(data["projects"]),
+        })
+        st.caption("Also add or update the matching entry in portfolio_content.json so the chat assistant knows about it.")
+
