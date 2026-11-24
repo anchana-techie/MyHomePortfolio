@@ -45,6 +45,14 @@
   ];
 
   var IMG_KEYS = ['image', 'photo', 'src', 'img', 'picture'];
+  // Lists shown on the site in list order: new entries go to the top so
+  // they appear first. (Achievements / What's New are also sorted by date.)
+  var NEW_ON_TOP = ['csr-images.json', 'education.json', 'beyondwork-images.json', 'personal-projects.json',
+                    'achievements.json', 'whats-new.json', 'home.json'];
+  function newOnTop() { return NEW_ON_TOP.some(function (f) { return cur.cfg.file.indexOf(f) !== -1; }); }
+  // Pages of the site, offered in every "link" field.
+  var SITE_PAGES = ['#whats-new', '#experience', '#projects', '#personal-projects', '#skills', '#education',
+                    '#achievements', '#beyond-work', '#csr', '#resume', '#home'];
   var LONG_KEYS = ['description', 'summary', 'text', 'problem', 'intro', 'subtitle', 'uniqueIntro', 'uniqueOutro', 'icon', 'note'];
   var SELECTS = {
     medal: ['gold', 'silver', 'bronze', 'star'],
@@ -147,16 +155,56 @@
     var name = parts.pop();
     return (await dirAt(parts, create)).getFileHandle(name, { create: !!create });
   }
-  async function readText(rel) { return (await (await fileHandle(rel)).getFile()).text(); }
+  // The editor sits inside the portfolio folder, so when it is served (e.g.
+  // by VS Code Live Server) it reads files straight over HTTP from "../".
+  var SERVED = location.protocol === 'http:' || location.protocol === 'https:';
+  var SITE = new URL('../', location.href).href;
+  async function readText(rel) {
+    if (root) return (await (await fileHandle(rel)).getFile()).text();
+    var res = await fetch(SITE + rel + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(rel + ' (' + res.status + ')');
+    return res.text();
+  }
+  /* Saving needs the browser's permission to write into the folder. Asked
+     once, at the first Save / Upload; pick "Allow on every visit" and it is
+     never asked again. */
+  async function ensureWritable() {
+    if (root) return true;
+    var stored = await idb('readonly', function (st) { return st.get('root'); });
+    if (stored) {
+      try {
+        var state = await stored.queryPermission({ mode: 'readwrite' });
+        if (state !== 'granted') state = await stored.requestPermission({ mode: 'readwrite' });
+        if (state === 'granted') { root = stored; showFolder(); return true; }
+      } catch (e) {}
+    }
+    if (!window.showDirectoryPicker) { toast('Saving needs Chrome or Microsoft Edge on a computer.', true); return false; }
+    toast('One-time step: pick your portfolio folder (the one with index.html) so I can save into it.');
+    try {
+      var picked = await window.showDirectoryPicker({ id: 'portfolio', mode: 'readwrite' });
+      try { await picked.getDirectoryHandle('JSON_Files'); }
+      catch (e) { toast('That folder has no JSON_Files inside — please pick your portfolio folder.', true); return false; }
+      root = picked;
+      idb('readwrite', function (st) { return st.put(picked, 'root'); });
+      showFolder();
+      return true;
+    } catch (e) { if (e.name !== 'AbortError') toast(e.message, true); return false; }
+  }
   async function writeFile(rel, data) {
+    if (!(await ensureWritable())) throw new Error('no permission to save into the folder');
     var w = await (await fileHandle(rel, true)).createWritable();
     await w.write(data); await w.close();
   }
   async function imageURL(rel) {
     if (!rel || /^https?:/i.test(rel)) return rel;
     if (urlCache[rel]) return urlCache[rel];
-    try { urlCache[rel] = URL.createObjectURL(await (await fileHandle(decodeURI(rel))).getFile()); }
-    catch (e) { urlCache[rel] = ''; }
+    try {
+      if (root) urlCache[rel] = URL.createObjectURL(await (await fileHandle(decodeURI(rel))).getFile());
+      else {
+        var res = await fetch(SITE + rel, { cache: 'no-store' });
+        urlCache[rel] = res.ok ? URL.createObjectURL(await res.blob()) : '';
+      }
+    } catch (e) { urlCache[rel] = ''; }
     return urlCache[rel];
   }
 
@@ -192,6 +240,7 @@
     return cfg.imgDir || 'Images';
   }
   async function uploadInto(path, currentValue) {
+    if (!(await ensureWritable())) return null;
     var input = h('input', { type: 'file', accept: 'image/*' });
     return new Promise(function (resolve) {
       input.addEventListener('change', async function () {
@@ -266,6 +315,10 @@
       input.value = value;
     } else {
       input = h('input', { type: 'text', value: value == null ? '' : value, oninput: function () { setAt(path, input.value); } });
+      if (/^(link|url)$/i.test(key)) {
+        input.setAttribute('list', 'sitePages');
+        input.placeholder = 'Pick a page or paste a https:// address';
+      }
     }
     label.appendChild(input);
     if (typeof value === 'string' && (isImageKey(key) || isImagePath(value))) label.appendChild(imageTools(path, input));
@@ -298,14 +351,15 @@
         imageURL(src).then(function (u) { if (u) img.src = u; else img.classList.add('missing'); });
         grid.appendChild(h('div', { class: 'img-cell' }, [img, h('span', { class: 'img-name', text: String(src).split('/').pop() }),
           h('div', { class: 'img-actions' }, [
+            h('button', { type: 'button', class: 'icon', title: 'Make this the first photo', text: '⤒', disabled: i === 0, onclick: function () { toTop(arr, i); } }),
             h('button', { type: 'button', class: 'icon', title: 'Move left', text: '←', disabled: i === 0, onclick: function () { move(arr, i, -1); } }),
             h('button', { type: 'button', class: 'icon', title: 'Move right', text: '→', disabled: i === arr.length - 1, onclick: function () { move(arr, i, 1); } }),
             h('button', { type: 'button', class: 'icon danger', title: 'Remove from list', text: '✕', onclick: function () { arr.splice(i, 1); markDirty(); render(); } })
           ])]));
       });
       grid.appendChild(h('button', { type: 'button', class: 'img-add', onclick: async function () {
-        var rel = await uploadInto(path.concat(arr.length), arr[arr.length - 1]);
-        if (rel) { arr.push(rel); markDirty(); render(); }
+        var rel = await uploadInto(path.concat(arr.length), arr[0]);
+        if (rel) { if (newOnTop()) arr.unshift(rel); else arr.push(rel); markDirty(); render(); }
       } }, [h('span', { text: '+' }), h('small', { text: 'Upload image' })]));
       wrap.appendChild(grid);
       return wrap;
@@ -334,6 +388,7 @@
       var summary = h('summary', null, [
         h('span', { class: 'card-title', text: cardTitle(item, i) }),
         h('span', { class: 'card-actions' }, [
+          h('button', { type: 'button', class: 'icon', title: 'Move to top', text: '⤒', disabled: i === 0, onclick: function (e) { e.preventDefault(); toTop(arr, i); } }),
           h('button', { type: 'button', class: 'icon', title: 'Move up', text: '↑', disabled: i === 0, onclick: function (e) { e.preventDefault(); move(arr, i, -1); } }),
           h('button', { type: 'button', class: 'icon', title: 'Move down', text: '↓', disabled: i === arr.length - 1, onclick: function (e) { e.preventDefault(); move(arr, i, 1); } }),
           h('button', { type: 'button', class: 'icon', title: 'Duplicate', text: '⧉', onclick: function (e) { e.preventDefault(); arr.splice(i + 1, 0, JSON.parse(JSON.stringify(item))); markDirty(); render(); } }),
@@ -350,8 +405,8 @@
       card.appendChild(body);
       wrap.appendChild(card);
     });
-    wrap.appendChild(h('button', { type: 'button', class: 'btn btn-add', text: '+ Add ' + singular(label), onclick: function () {
-      addItem(path, arr, false);
+    wrap.appendChild(h('button', { type: 'button', class: 'btn btn-add', text: '+ Add ' + singular(label) + (newOnTop() ? ' (goes to the top)' : ''), onclick: function () {
+      addItem(path, arr, newOnTop());
     } }));
     return wrap;
   }
@@ -466,6 +521,11 @@
     var cards = $('editor').querySelectorAll('details.card[open]');
     var target = Array.prototype.find.call(cards, function (c) { return c.querySelector('.card-title').textContent === cardTitle(item, idx); });
     if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); var f = target.querySelector('input, textarea, select'); if (f) setTimeout(function () { f.focus(); }, 300); }
+  }
+  function toTop(arr, i) {
+    if (i <= 0) return;
+    arr.unshift(arr.splice(i, 1)[0]);
+    markDirty(); render();
   }
   function move(arr, i, d) {
     var j = i + d;
@@ -636,7 +696,13 @@
     $('start').hidden = true; $('app').hidden = false;
     buildSidebar();
   }
+  function pagesList() {
+    if ($('sitePages')) return;
+    document.body.appendChild(h('datalist', { id: 'sitePages' }, SITE_PAGES.map(function (p) { return h('option', { value: p }); })));
+  }
+  function showFolder() { $('folderName').textContent = root ? 'Saving to “' + root.name + '”' : 'Saving not set up yet'; }
   function buildSidebar() {
+    pagesList();
     var list = $('fileList'); list.innerHTML = '';
     FILES.forEach(function (cfg) {
       list.appendChild(h('button', { type: 'button', class: 'file-btn', 'data-file': cfg.file, onclick: function () { openFile(cfg); } }, [
@@ -655,8 +721,18 @@
     try { await useFolder(await window.showDirectoryPicker({ id: 'portfolio', mode: 'readwrite' })); }
     catch (e) { if (e.name !== 'AbortError') toast(e.message, true); }
   });
+  if (!SERVED) $('start').hidden = false;   // opened as a file: pick the folder first
+  if (SERVED) {
+    // Opened via Live Server (or any web server): go straight to the editor.
+    $('start').hidden = true; $('app').hidden = false;
+    buildSidebar(); showFolder();
+    idb('readonly', function (st) { return st.get('root'); }).then(async function (handle) {
+      if (!handle) return;
+      try { if ((await handle.queryPermission({ mode: 'readwrite' })) === 'granted') { root = handle; showFolder(); } } catch (e) {}
+    });
+  }
   idb('readonly', function (s) { return s.get('root'); }).then(function (handle) {
-    if (!handle) return;
+    if (!handle || SERVED) return;
     $('lastFolder').textContent = '“' + handle.name + '”';
     var btn = $('reopenFolder'); btn.hidden = false;
     btn.addEventListener('click', async function () {

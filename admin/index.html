@@ -7,11 +7,30 @@
   <title>Portfolio Content Editor</title>
   <link rel="icon" href="../Images/favicon.ico" />
   <link rel="stylesheet" href="admin.css" />
+  <script>
+    /* VS Code Live Server reloads any open page when a file in the folder
+       changes — including every image and JSON file this editor saves, which
+       would throw away unsaved edits ("Reload site?" pop-up). Live Server
+       listens on a WebSocket ending in /ws; the editor simply doesn't connect. */
+    (function () {
+      var RealWS = window.WebSocket;
+      if (!RealWS) return;
+      function Quiet(url, protocols) {
+        if (/\/ws\/?$/.test(String(url))) {
+          return { readyState: 3, send: function () {}, close: function () {}, addEventListener: function () {}, removeEventListener: function () {} };
+        }
+        return protocols ? new RealWS(url, protocols) : new RealWS(url);
+      }
+      Quiet.prototype = RealWS.prototype;
+      ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'].forEach(function (k) { Quiet[k] = RealWS[k]; });
+      window.WebSocket = Quiet;
+    })();
+  </script>
 </head>
 <body>
 
 <!-- Start: pick the portfolio folder -->
-<main class="start" id="start">
+<main class="start" id="start" hidden>
   <div class="start-card">
     <img src="../Images/logo-192.png" alt="" width="64" height="64" />
     <h1>Portfolio Content Editor</h1>
@@ -95,7 +114,7 @@
         </select>
       </label>
     </div>
-    <label>Link <input name="link" placeholder="#achievements or https://…" /></label>
+    <label>Link <input name="link" list="sitePages" placeholder="Pick a page or paste a https:// address" /></label>
     <label>Image (optional) <input name="image" placeholder="Path to an image in your folder" /></label>
     <div class="dialog-actions">
       <button class="btn" value="skip" type="submit">Not now</button>
