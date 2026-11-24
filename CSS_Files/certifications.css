@@ -55,3 +55,12 @@
       animation: blink 2s ease-in-out infinite;
     }
 
+
+    /* Several certificates + automatic Expired state */
+    .cert-list { display: flex; flex-direction: column; gap: .75rem; }
+    .cert-row.is-expired { opacity: .75; }
+    .cert-row.is-expired .status-active { color: var(--text-muted); background: var(--bg-raised); border-color: var(--border); }
+    .cert-row.is-expired .status-active::before { background: var(--text-muted); animation: none; }
+    .cert-badge.is-expired .live { color: var(--text-muted); background: var(--bg-card); }
+    .cert-badge.is-expired .live::before { background: var(--text-muted); animation: none; }
+    .id-status.is-expired .id-dot { background: var(--text-muted); box-shadow: none; }

@@ -110,6 +110,7 @@
     </button>
     <div class="nav-actions" id="navActions">
       <ul>
+        <li><a href="#whats-new" data-page="whatsnew" id="nav-whatsnew">What's New<span class="nav-new-dot" id="navNewDot" hidden aria-label="new"></span></a></li>
         <li><a href="#experience" data-page="YearExperience" id="nav-YearExperience">Experience</a></li>
         <li><a href="#projects" data-page="experience" id="nav-experience">Projects</a></li>
         <li><a href="#personal-projects" data-page="personal" id="nav-personal">Personal Projects</a></li>
@@ -118,7 +119,6 @@
         <li><a href="#achievements" data-page="achievements" id="nav-achievements">Achievements</a></li>
         <li><a href="#beyond-work" data-page="beyondwork" id="nav-beyondwork">Beyond Work</a></li>
         <li><a href="#csr" data-page="CSR" id="nav-CSR">CSR</a></li>
-        <li><a href="#whats-new" data-page="whatsnew" id="nav-whatsnew">What's New<span class="nav-new-dot" id="navNewDot" hidden aria-label="new"></span></a></li>
         <li><a href="#resume" data-modal="resume" id="nav-resume">Resume</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
@@ -146,7 +146,7 @@
             <span aria-hidden="true">I build </span><span class="typed-word" id="heroTyped" aria-hidden="true"></span><span class="typed-caret" aria-hidden="true"></span>
           </p>
           <p class="hero-desc" id="heroDesc"></p>
-          <div class="cert-badge" id="heroCertBadge" onclick="openModal('cert')" title="Click to view certificate">
+          <div class="cert-badge" id="heroCertBadge" role="button" tabindex="0" title="Click to view certificate">
             <span class="live" id="heroCertStatus"></span>
             <span id="heroCertName"></span>
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="opacity:.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -232,26 +232,7 @@
         <span class="eyebrow" id="certEyebrow">Certifications</span>
         <div class="eyebrow-rule"></div>
       </div>
-      <div class="cert-row" onclick="openModal('cert')">
-        <div>
-          <div class="cert-name" id="certRowName"></div>
-          <div class="cert-row-hint">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            Click to view certificate
-          </div>
-        </div>
-        <div class="cert-meta">
-          <div class="cert-date-block">
-            <div class="cert-date-label" id="certIssuedLabel">Issued</div>
-            <div class="cert-date-val" id="certIssuedDate"></div>
-          </div>
-          <div class="cert-date-block">
-            <div class="cert-date-label" id="certValidLabel">Valid Until</div>
-            <div class="cert-date-val" id="certValidDate"></div>
-          </div>
-          <div class="status-active" id="certStatus"></div>
-        </div>
-      </div>
+      <div class="cert-list" id="certList"><!-- populated from home.json "certifications" --></div>
     </div>
   </section>
 
@@ -360,7 +341,7 @@
           <div class="orbit-core" aria-hidden="true"><span class="orbit-core-mono" id="orbitCore">AP</span><span class="orbit-core-label" id="orbitCoreLabel"></span></div>
           <div class="orbit-tip" id="orbitTip" role="tooltip" hidden></div>
         </div>
-        <p class="orbit-caption">Hover a planet to meet its moons &middot; hover a moon to see where I've used it</p>
+        <p class="orbit-caption">Each planet is a skill area and its moons are the skills &middot; hover or tap a planet, then a moon for details</p>
       </div>
 
       <div class="skills-grid" id="skillsGrid"><!-- populated from JSON_Files/skills.json --></div>
@@ -545,8 +526,46 @@
       var to = /present|now|current/i.test(halves[1]) ? now() : parseMonth(halves[1]);
       return from && to ? tenure(monthsBetween(from, to)) : '';
     }
-    return { fill: fill, durationFor: durationFor };
+    function startOf(period) { return parseMonth(String(period || '').split(/\s*[–—-]\s*/)[0]); }
+    function isCurrent(period) { return /present|now|current/i.test(String(period || '').split(/\s*[–—-]\s*/)[1] || ''); }
+    return { fill: fill, durationFor: durationFor, startOf: startOf, isCurrent: isCurrent };
   })();
+
+  /* ── Current role ────────────────────────────────────────────
+     Text can say {role}; it becomes the title of the role whose
+     period ends in "Present" in experience.json, so a promotion
+     only needs updating in one place. */
+  var PortfolioRole = fetch('JSON_Files/experience.json')
+    .then(function (r) { return r.ok ? r.json() : {}; })
+    .then(function (d) {
+      var cur = (d.timeline || []).find(function (t) { return PortfolioDates.isCurrent(t.period); });
+      return cur ? cur.role : '';
+    })
+    .catch(function () { return ''; });
+  function fillRole(el) {
+    if (!el || el.innerHTML.indexOf('{role}') === -1) return;
+    PortfolioRole.then(function (role) { el.innerHTML = el.innerHTML.split('{role}').join(role || ''); });
+  }
+
+  /* ── Certificates ──────────────────────────────────────────────
+     A certificate is Active until its "validUntil" date (YYYY-MM-DD),
+     then Expired — no manual change needed. No date = never expires. */
+  var PortfolioCerts = {
+    status: function (c) {
+      if (!c.validUntil) return 'Active';
+      var end = new Date(c.validUntil + 'T23:59:59');
+      return isNaN(end) || new Date() <= end ? 'Active' : 'Expired';
+    },
+    fmt: function (iso) {
+      if (!iso) return '';
+      var d = new Date(iso + 'T00:00:00');
+      return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    },
+    // The one shown in the hero and on the ID badge: first active one in the list.
+    primary: function (list) {
+      return list.find(function (c) { return PortfolioCerts.status(c) === 'Active'; }) || list[0];
+    }
+  };
 </script>
 
 <script>
@@ -682,31 +701,143 @@
   document.addEventListener('DOMContentLoaded', function () { if (location.hash) pageFromHash(); });
 
   /* ── Modal ── */
-  function openModal(key) {
-    const doc = docs[key];
-    document.getElementById('modalTitle').textContent = doc.title;
+  function openModal(key) { if (docs[key]) openDocument(docs[key]); }
+
+  /* Opens any document in the themed viewer.
+     doc = { title, type: 'image' | 'pdf' | 'pbix', file } */
+  function openDocument(doc) {
+    if (!doc || !doc.file) return;
+    document.getElementById('modalTitle').textContent = doc.title || 'Document';
     const body = document.getElementById('modalBody');
+    const box = document.querySelector('#docModal .modal-box');
+    box.classList.toggle('is-pdf', doc.type === 'pdf');
 
     if (doc.type === 'image') {
-      body.innerHTML = `<div style="padding:20px;text-align:center;">
-        <img src="${doc.file}" style="max-width:100%;max-height:75vh;border-radius:8px;">
-      </div>`;
+      body.innerHTML = '<div class="doc-image"><img alt=""></div>';
+      const img = body.querySelector('img'); img.src = doc.file; img.alt = doc.title || '';
     } else if (doc.type === 'pbix') {
       body.innerHTML = `<div class="modal-placeholder">
         <h3>Power BI File</h3>
         <p>Browsers cannot preview .pbix files directly.</p>
-        <a href="${doc.file}" download style="padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;">Download PBIX File</a>
+        <a class="doc-btn" href="${doc.file}" download>Download PBIX File</a>
       </div>`;
     } else {
-      body.innerHTML = `<iframe src="${doc.file}#toolbar=1&view=FitH" style="overflow:hidden;"></iframe>
-      <div style="padding:15px;text-align:center;">
-      <a href="${doc.file}" download style="padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;">Download</a>
-      </div>`;
+      PdfViewer.open(body, doc);
     }
 
     document.getElementById('docModal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
+
+  /* ── Themed PDF viewer (pdf.js, served from JS_Files/pdfjs) ──
+     Pages are drawn on canvases inside the site's own frame and
+     toolbar. "Themed" tints the pages to match the site; "Paper"
+     shows the original. Download always gives the original PDF. */
+  var PdfViewer = (function () {
+    var lib = null;
+    function loadLib() {
+      if (lib) return lib;
+      lib = new Promise(function (resolve, reject) {
+        var sc = document.createElement('script');
+        sc.src = 'JS_Files/pdfjs/pdf.min.js';
+        sc.onload = function () {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'JS_Files/pdfjs/pdf.worker.min.js';
+          resolve(window.pdfjsLib);
+        };
+        sc.onerror = reject;
+        document.head.appendChild(sc);
+      });
+      return lib;
+    }
+    var state = null;
+    function open(body, doc) {
+      var themed = true;
+      try { themed = localStorage.getItem('pdfLook') !== 'paper'; } catch (e) {}
+      body.innerHTML =
+        '<div class="pdfv">' +
+          '<div class="pdfv-bar">' +
+            '<span class="pdfv-pages" aria-live="polite">Loading…</span>' +
+            '<span class="pdfv-group">' +
+              '<button type="button" class="pdfv-btn" data-act="out" aria-label="Zoom out">&minus;</button>' +
+              '<span class="pdfv-zoom">100%</span>' +
+              '<button type="button" class="pdfv-btn" data-act="in" aria-label="Zoom in">+</button>' +
+              '<button type="button" class="pdfv-btn pdfv-text" data-act="fit">Fit</button>' +
+            '</span>' +
+            '<span class="pdfv-group">' +
+              '<span class="pdfv-switch" role="group" aria-label="Page look">' +
+                '<button type="button" data-look="themed">Themed</button><button type="button" data-look="paper">Paper</button>' +
+              '</span>' +
+              '<a class="doc-btn pdfv-dl" download>Download PDF</a>' +
+            '</span>' +
+          '</div>' +
+          '<div class="pdfv-scroll"><div class="pdfv-pagesbox"></div></div>' +
+        '</div>';
+      var root = body.querySelector('.pdfv');
+      var scroller = root.querySelector('.pdfv-scroll'), box = root.querySelector('.pdfv-pagesbox');
+      root.querySelector('.pdfv-dl').href = doc.file;
+      function setLook(t) {
+        themed = t; root.classList.toggle('is-themed', t);
+        root.querySelectorAll('[data-look]').forEach(function (b) { b.classList.toggle('on', (b.dataset.look === 'themed') === t); b.setAttribute('aria-pressed', String((b.dataset.look === 'themed') === t)); });
+        try { localStorage.setItem('pdfLook', t ? 'themed' : 'paper'); } catch (e) {}
+      }
+      setLook(themed);
+      root.querySelectorAll('[data-look]').forEach(function (b) { b.addEventListener('click', function () { setLook(b.dataset.look === 'themed'); }); });
+
+      var my = state = { pdf: null, zoom: 1, fitZoom: 1, rendering: 0 };
+      function render() {
+        if (!my.pdf || state !== my) return;
+        var token = ++my.rendering;
+        root.querySelector('.pdfv-zoom').textContent = Math.round(my.zoom / my.fitZoom * 100) + '%';
+        box.innerHTML = '';
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        (function page(n) {
+          if (n > my.pdf.numPages || token !== my.rendering) return;
+          my.pdf.getPage(n).then(function (pg) {
+            if (token !== my.rendering) return;
+            var vp = pg.getViewport({ scale: my.zoom });
+            var c = document.createElement('canvas');
+            c.className = 'pdfv-page';
+            c.width = Math.floor(vp.width * dpr); c.height = Math.floor(vp.height * dpr);
+            c.style.width = Math.floor(vp.width) + 'px'; c.style.height = Math.floor(vp.height) + 'px';
+            c.setAttribute('aria-label', 'Page ' + n + ' of ' + my.pdf.numPages);
+            box.appendChild(c);
+            return pg.render({ canvasContext: c.getContext('2d'), viewport: vp, transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null }).promise;
+          }).then(function () { page(n + 1); });
+        })(1);
+      }
+      function fit() {
+        my.pdf.getPage(1).then(function (pg) {
+          var w = pg.getViewport({ scale: 1 }).width;
+          my.fitZoom = my.zoom = Math.max(0.4, (scroller.clientWidth - 40) / w);
+          render();
+        });
+      }
+      root.querySelector('[data-act="in"]').addEventListener('click', function () { my.zoom = Math.min(my.fitZoom * 3, my.zoom * 1.2); render(); });
+      root.querySelector('[data-act="out"]').addEventListener('click', function () { my.zoom = Math.max(my.fitZoom * 0.5, my.zoom / 1.2); render(); });
+      root.querySelector('[data-act="fit"]').addEventListener('click', fit);
+      scroller.addEventListener('scroll', function () {
+        var pages = box.children, mid = scroller.scrollTop + scroller.clientHeight / 2, n = 1;
+        for (var i = 0; i < pages.length; i++) if (pages[i].offsetTop <= mid) n = i + 1;
+        if (my.pdf) root.querySelector('.pdfv-pages').textContent = 'Page ' + n + ' / ' + my.pdf.numPages;
+      });
+
+      loadLib().then(function (pdfjs) {
+        return pdfjs.getDocument(doc.file).promise;
+      }).then(function (pdf) {
+        if (state !== my) return;
+        my.pdf = pdf;
+        root.querySelector('.pdfv-pages').textContent = 'Page 1 / ' + pdf.numPages;
+        fit();
+      }).catch(function () {
+        // Fallback: the browser's own viewer
+        body.innerHTML = '<iframe title="' + (doc.title || 'Document') + '"></iframe>' +
+          '<div style="padding:15px;text-align:center;"><a class="doc-btn" download>Download</a></div>';
+        body.querySelector('iframe').src = doc.file + '#toolbar=1&view=FitH';
+        body.querySelector('a').href = doc.file;
+      });
+    }
+    return { open: open, close: function () { state = null; } };
+  })();
 
   function checkIframe(iframe) {
     /* If the PDF fails to load (e.g. file not found) the iframe contentDocument
@@ -727,6 +858,7 @@
   }
 
   function closeModal() {
+    PdfViewer.close();
     document.getElementById('docModal').classList.remove('open');
     document.body.style.overflow = '';
     document.getElementById('modalBody').innerHTML = '';
@@ -789,6 +921,7 @@
       dotsBar.querySelectorAll('.carousel-dot').forEach(function (d, i) {
         d.classList.toggle('active', i === current);
       });
+      if (cfg.onChange) cfg.onChange(current);
     }
 
     function setTrackPos(index) {
@@ -874,7 +1007,7 @@
     updateDots();
     if (total > 1) startTimer();
 
-    return { destroy: stopTimer };
+    return { destroy: stopTimer, current: function () { return current; } };
   }
 
   /* ── HOME PAGE — hero, profile summary and certification banner are all
@@ -904,9 +1037,12 @@
     function renderHome(data) {
       var hero = data.hero || {};
       var profile = data.profile || {};
-      var cert = data.certification || {};
+      var certs = Array.isArray(data.certifications) ? data.certifications : (data.certification ? [{
+        name: data.certification.name, shortName: 'Databricks', image: 'Images/Databricks.png',
+        issuedDate: '', validUntil: '' }] : []);
+      var primary = certs.length ? PortfolioCerts.primary(certs) : null;
 
-      if (els.eyebrow) els.eyebrow.innerHTML = '<span></span>' + (hero.eyebrow || '');
+      if (els.eyebrow) { els.eyebrow.innerHTML = '<span></span>' + (hero.eyebrow || ''); fillRole(els.eyebrow); }
       if (els.name) els.name.innerHTML = (hero.firstName || '') + '<br>' + (hero.lastName || '');
       if (els.desc) els.desc.innerHTML = PortfolioDates.fill(hero.description || '');
       if (els.photo) { els.photo.src = hero.photo || ''; els.photo.alt = hero.photoAlt || ''; }
@@ -919,24 +1055,62 @@
       var badgeRole = document.getElementById('badgeRole');
       var badgeStatus = document.getElementById('badgeStatus');
       if (badgeName) badgeName.textContent = [hero.firstName, hero.lastName].filter(Boolean).join(' ');
-      if (badgeRole) badgeRole.innerHTML = hero.eyebrow || '';
-      if (badgeStatus && cert.status && cert.name) {
-        badgeStatus.textContent = (/^active$/i.test(cert.status) ? 'Databricks certified' : cert.status);
+      if (badgeRole) { badgeRole.innerHTML = hero.eyebrow || ''; fillRole(badgeRole); }
+      var heroBadge = document.getElementById('heroCertBadge');
+      if (primary) {
+        var pActive = PortfolioCerts.status(primary) === 'Active';
+        var short = primary.shortName || primary.issuer || 'Certified';
+        if (badgeStatus) {
+          badgeStatus.textContent = pActive ? short + ' certified' : short + ' certification expired';
+          badgeStatus.parentNode.classList.toggle('is-expired', !pActive);
+        }
+        if (els.certBadgeStatus) els.certBadgeStatus.textContent = pActive ? 'Active' : 'Expired';
+        if (els.certBadgeName) els.certBadgeName.textContent = primary.name || '';
+        heroBadge.classList.toggle('is-expired', !pActive);
+        var openPrimary = function () { openDocument({ title: primary.name, type: 'image', file: primary.image }); };
+        heroBadge.onclick = openPrimary;
+        heroBadge.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPrimary(); } };
+      } else if (heroBadge) {
+        heroBadge.hidden = true;
+        if (badgeStatus) badgeStatus.parentNode.hidden = true;
       }
-
-      if (els.certBadgeStatus) els.certBadgeStatus.textContent = cert.status || '';
-      if (els.certBadgeName) els.certBadgeName.textContent = cert.name || '';
 
       if (els.profileEyebrow) els.profileEyebrow.textContent = profile.eyebrow || 'Profile';
       if (els.profileSummary) els.profileSummary.textContent = profile.summary || '';
 
-      if (els.certEyebrow) els.certEyebrow.textContent = cert.eyebrow || 'Certifications';
-      if (els.certRowName) els.certRowName.textContent = cert.name || '';
-      if (els.certIssuedLabel) els.certIssuedLabel.textContent = cert.issuedLabel || 'Issued';
-      if (els.certIssuedDate) els.certIssuedDate.textContent = cert.issuedDate || '';
-      if (els.certValidLabel) els.certValidLabel.textContent = cert.validLabel || 'Valid Until';
-      if (els.certValidDate) els.certValidDate.textContent = cert.validDate || '';
-      if (els.certStatus) els.certStatus.textContent = cert.status || '';
+      if (els.certEyebrow) els.certEyebrow.textContent = data.certificationsEyebrow || 'Certifications';
+      var list = document.getElementById('certList');
+      if (list) {
+        list.innerHTML = '';
+        certs.forEach(function (c) {
+          var st = PortfolioCerts.status(c);
+          var row = document.createElement('div');
+          row.className = 'cert-row' + (st === 'Expired' ? ' is-expired' : '');
+          row.setAttribute('role', 'button'); row.tabIndex = 0;
+          var hint = c.image ? 'Click to view certificate' : (c.credentialUrl ? 'Click to verify' : '');
+          row.innerHTML =
+            '<div><div class="cert-name"></div><div class="cert-row-hint">' +
+            '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' +
+            '<span class="cert-hint-text"></span></div></div>' +
+            '<div class="cert-meta">' +
+              '<div class="cert-date-block"><div class="cert-date-label">Issued</div><div class="cert-date-val cert-issued"></div></div>' +
+              '<div class="cert-date-block"><div class="cert-date-label">' + (st === 'Expired' ? 'Expired on' : 'Valid until') + '</div><div class="cert-date-val cert-valid"></div></div>' +
+              '<div class="status-active"></div>' +
+            '</div>';
+          row.querySelector('.cert-name').textContent = c.name || '';
+          row.querySelector('.cert-hint-text').textContent = hint;
+          row.querySelector('.cert-issued').textContent = PortfolioCerts.fmt(c.issuedDate) || '—';
+          row.querySelector('.cert-valid').textContent = c.validUntil ? PortfolioCerts.fmt(c.validUntil) : 'No expiry';
+          row.querySelector('.status-active').textContent = st;
+          var open = function () {
+            if (c.image) openDocument({ title: c.name, type: 'image', file: c.image });
+            else if (c.credentialUrl) window.open(c.credentialUrl, '_blank', 'noopener');
+          };
+          row.addEventListener('click', open);
+          row.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+          list.appendChild(row);
+        });
+      }
     }
 
     fetch('JSON_Files/home.json')
@@ -998,6 +1172,7 @@
       if (eyebrowEl) eyebrowEl.textContent = data.eyebrow || 'Work Experience';
       var company = data.company || {};
       if (companyEl) {
+        setTimeout(function () { fillRole(companyEl.querySelector('.exp-role')); });
         companyEl.innerHTML =
           '<div>' +
             '<div class="exp-role">' + (company.role || '') + '</div>' +
@@ -1462,12 +1637,16 @@
       if (titleEl && data.title) titleEl.innerHTML = escapeHtml(data.title) + '<span>.</span>';
       if (subtitleEl && data.subtitle) subtitleEl.textContent = data.subtitle;
 
-      var items = Array.isArray(data.timeline) ? data.timeline : [];
+      // Newest role first; a role is "current" when its period ends in Present.
+      var items = (Array.isArray(data.timeline) ? data.timeline : []).slice().sort(function (a, b) {
+        var x = PortfolioDates.startOf(a.period), y = PortfolioDates.startOf(b.period);
+        return (y ? y.y * 12 + y.m : 0) - (x ? x.y * 12 + x.m : 0);
+      });
       listEl.innerHTML = items.map(function (item, i) {
         var isLast = i === items.length - 1;
-        var isCurrent = !!item.current;
+        var isCurrent = PortfolioDates.isCurrent(item.period) || item.current === true;
         var icon = ICONS[item.icon] || ICONS.briefcase;
-        var duration = item.duration === '{auto}'
+        var duration = (!item.duration || item.duration === '{auto}')
           ? PortfolioDates.durationFor(item.period)
           : PortfolioDates.fill(item.duration);
         var tags = Array.isArray(item.tags) ? item.tags.map(function (t) {
@@ -1662,22 +1841,61 @@
         if (a.photos && a.photos.length) {
           var sec4 = el('div', 'ach-sec ach-sec-wide');
           sec4.appendChild(el('h4', null, 'Gallery'));
-          var g = el('div', 'ach-gallery');
-          a.photos.forEach(function (ph, i) {
-            var b = el('button', 'ach-thumb'); b.type = 'button';
-            b.setAttribute('aria-label', 'Open photo: ' + (ph.caption || ''));
-            var im = el('img'); im.src = ph.src; im.alt = ph.caption || ''; im.loading = 'lazy';
-            b.appendChild(im);
-            if (ph.caption) b.appendChild(el('span', 'ach-thumb-cap', ph.caption));
-            b.addEventListener('click', function () { lbOpen(a.photos, i, b); });
-            g.appendChild(b);
-          });
-          sec4.appendChild(g);
+          var CHEV = function (d) { return '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="' + d + '"/></svg>'; };
+          var cw = el('div', 'carousel-wrap ach-carousel');
+          var prev = el('button', 'carousel-btn prev'); prev.type = 'button'; prev.setAttribute('aria-label', 'Previous photo'); prev.innerHTML = CHEV('M15 19l-7-7 7-7');
+          var next = el('button', 'carousel-btn next'); next.type = 'button'; next.setAttribute('aria-label', 'Next photo'); next.innerHTML = CHEV('M9 5l7 7-7 7');
+          var vp = el('div', 'carousel-viewport'), tr = el('div', 'carousel-track');
+          a.photos.forEach(function (ph) { var im = el('img'); im.src = ph.src; im.alt = ph.caption || ''; im.loading = 'lazy'; tr.appendChild(im); });
+          vp.appendChild(tr);
+          var dots = el('div', 'carousel-dots');
+          cw.appendChild(prev); cw.appendChild(vp); cw.appendChild(next); cw.appendChild(dots);
+          var cap = el('p', 'ach-caption', a.photos[0].caption || '');
+          sec4.appendChild(cw); sec4.appendChild(cap);
+          var zoomBtn = el('button', 'ach-zoom', 'View full size'); zoomBtn.type = 'button';
+          sec4.appendChild(zoomBtn);
           body.appendChild(sec4);
+          (function (photos, card, vp, tr, prev, next, dots, cw, cap, zoomBtn) {
+            // started once the card is in the page (needs real sizes)
+            card._startCarousel = function () {
+              if (card._carousel) return;
+              card._carousel = initCarousel({
+                viewport: vp, track: tr, prevBtn: prev, nextBtn: next, dotsBar: dots, wrap: cw,
+                isActive: function () { return document.getElementById('page-achievements').classList.contains('active') && !card.hidden; },
+                onChange: function (i) { cap.textContent = photos[i].caption || ''; }
+              });
+            };
+            var openAt = function () { lbOpen(photos, card._carousel ? card._carousel.current() : 0, zoomBtn); };
+            vp.addEventListener('click', openAt);
+            zoomBtn.addEventListener('click', openAt);
+          })(a.photos, card, vp, tr, prev, next, dots, cw, cap, zoomBtn);
         }
         card.appendChild(body);
         list.appendChild(card);
       });
+
+      var cards = Array.prototype.slice.call(list.querySelectorAll('.ach-card'));
+      cards.forEach(function (c) { if (c._startCarousel) c._startCarousel(); });
+      if (cards.length > 1) {
+        // More than one achievement: a row of tabs, newest selected.
+        var bar = el('div', 'ach-switch'); bar.setAttribute('role', 'tablist');
+        items.forEach(function (a, i) {
+          var t = el('button', 'ach-tab' + (i === 0 ? ' on' : '')); t.type = 'button';
+          t.setAttribute('role', 'tab'); t.setAttribute('aria-selected', String(i === 0));
+          t.appendChild(el('span', 'ach-tab-medal ach-medal-' + (a.medal || 'star'), a.medal === 'gold' ? '🏆' : (a.medal === 'star' ? '★' : '🏅')));
+          var tx = el('span', 'ach-tab-text');
+          tx.appendChild(el('strong', null, a.placement || ''));
+          tx.appendChild(el('span', null, (a.title || '') + (a.date ? ' · ' + String(a.date).slice(0, 4) : '')));
+          t.appendChild(tx);
+          t.addEventListener('click', function () {
+            cards.forEach(function (c, j) { c.hidden = j !== i; });
+            bar.querySelectorAll('.ach-tab').forEach(function (b, j) { b.classList.toggle('on', j === i); b.setAttribute('aria-selected', String(j === i)); });
+          });
+          bar.appendChild(t);
+        });
+        list.parentNode.insertBefore(bar, list);
+        cards.forEach(function (c, j) { c.hidden = j !== 0; });
+      }
     }
 
     /* What's New */
@@ -1911,8 +2129,11 @@
       document.getElementById('orbitCore').textContent = cfg.core || 'AP';
       document.getElementById('orbitCoreLabel').textContent = cfg.coreLabel || '';
       var cats = skills.categories || [];
-      var plan = cfg.planetOrbits || [{ planets: cats.map(function (_, i) { return i + 1; }), seconds: 80 }];
-      var FACTORS = plan.length > 1 ? [0.46, 0.84] : [0.72];
+      var plan = JSON.parse(JSON.stringify(cfg.planetOrbits || [{ planets: [], seconds: 80 }]));
+      // Any category not listed on an orbit (e.g. a newly added card) joins the outer orbit.
+      var listed = [].concat.apply([], plan.map(function (o) { return o.planets || []; }));
+      cats.forEach(function (_, i) { if (listed.indexOf(i + 1) === -1) plan[plan.length - 1].planets.push(i + 1); });
+      var FACTORS = plan.length > 1 ? [0.44, 0.8] : [0.7];
       plan.slice(0, 2).forEach(function (o, oi) {
         var ring = document.createElement('div');
         ring.className = 'sol-orbit sol-orbit-' + (oi + 1);

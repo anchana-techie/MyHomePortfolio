@@ -64,6 +64,15 @@ Open **`admin/index.html`** in Chrome or Edge (double-click it, or visit `…/My
 ### Adding a future achievement
 Quick add → **+ Achievement**, fill in placement, medal (`gold` winner · `silver` 1st runner-up · `bronze` 2nd runner-up · `star` other), title, dates, story, team and photos → **Save** → accept the What's New prompt → commit and push. Also add a short paragraph about it under **Chatbot knowledge** so the assistant can talk about it.
 
+
+### Things that update themselves
+- **Years of experience** — counted from October 2023 (`{years}`, `{tenure}`, `{auto}`).
+- **Current role** — the timeline entry whose period ends in "Present" is current. `{role}` in text (homepage title, ID badge, Projects page) shows its title. When promoted: editor → Quick add → **+ New role / promotion**.
+- **Certificates** — Home → certifications: each has `issuedDate` and `validUntil` (YYYY-MM-DD). The site shows **Active** until that date and **Expired** after it. The first active one is shown in the hero and on the ID badge.
+- **"New" link on the homepage** — always the newest What's New item.
+- **Achievements** — newest date first; with more than one, tabs appear to switch between them.
+- **Skills solar system** — every skill card is a planet and its skills are moons; a new card joins the outer orbit by itself. Hover notes live in Skills solar system → Skill notes (the editor lists skills that still need one).
+
 ## The chat assistant
 
 ### What it knows

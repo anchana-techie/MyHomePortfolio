@@ -747,7 +747,6 @@
       if (step.kind === 'act' && step.st === s) a = Math.min(1, k * 6, (1 - k) * 6);
       caption(s, a);
     });
-    clock(hour);
 
     // end of the day: fade to the page colour, then a new day starts
     if (step.kind === 'fade') { ctx.fillStyle = C.bg; ctx.globalAlpha = ease(k); ctx.fillRect(camX - 10, 0, viewW + 20, H); ctx.globalAlpha = 1; }

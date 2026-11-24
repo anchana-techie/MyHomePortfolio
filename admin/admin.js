@@ -30,7 +30,11 @@
         title: function (it) { return 'New personal project: ' + (it.title || ''); },
         text: function (it) { return it.summary || ''; },
         image: function () { return ''; } } },
-    { file: 'JSON_Files/experience.json', name: 'Experience timeline', desc: 'Roles over time. Use {auto} as a duration to count it automatically from the period.' },
+    { file: 'JSON_Files/experience.json', name: 'Experience timeline', desc: 'Roles over time. The role whose period ends in "Present" is your current one — use Quick add → + New role when you are promoted.',
+      news: { list: 'timeline', type: 'role', link: '#experience',
+        title: function (it) { return 'Started a new role: ' + (it.role || ''); },
+        text: function (it) { return it.company || ''; },
+        image: function () { return ''; } } },
     { file: 'JSON_Files/projects.json', name: 'Work projects', desc: 'Projects from your job. {tenure} in the period shows live years and months.' },
     { file: 'JSON_Files/skills.json', name: 'Skills', desc: 'Skill cards. Each card is also a planet in the Skills solar system; its pills are the moons.' },
     { file: 'JSON_Files/skills-orbit.json', name: 'Skills solar system', desc: 'Which planets go on which orbit, how fast, and the one-line note for each skill.' },
@@ -55,7 +59,12 @@
     seconds: 'Seconds for one full lap — bigger is slower',
     planets: 'Card numbers, 1 = first skill card',
     me: 'Your name exactly as in the list, to highlight it',
-    current: 'Tick for your current role'
+    current: 'Tick for your current role',
+    period: 'Current role: "Apr 2027 – Present". Past role: "Oct 2024 – Mar 2026".',
+    validUntil: 'Expiry date. Leave empty if it never expires — the site shows Expired by itself after this date.',
+    issuedDate: 'Date the certificate was issued',
+    shortName: 'Short name used on the ID badge, e.g. "Databricks" → "Databricks certified"',
+    credentialUrl: 'Optional link to verify the certificate online'
   };
   var LABELS = { src: 'Image', alt: 'Image description', url: 'Link address', tech: 'Tech tags', pills: 'Skills', points: 'Bullet points',
     uniqueIntro: 'Intro line', uniqueOutro: 'Closing line', uniqueTitle: 'Section title', problemTitle: 'Section title', dateLabel: 'Date shown',
@@ -247,9 +256,11 @@
       input = h('select', { onchange: function () { setAt(path, input.value); } },
         [h('option', { value: '', text: '—' })].concat(SELECTS[key].map(function (o) { return h('option', { value: o, text: o }); })));
       input.value = value;
-    } else if (key === 'date' && (value === '' || /^\d{4}-\d{2}(-\d{2})?$/.test(value))) {
-      var monthOnly = /^\d{4}-\d{2}$/.test(value) || (value === '' && cur.cfg.file.indexOf('achievements') !== -1);
+    } else if (/(^date$|Date$|Until$)/.test(key) && (value === '' || /^\d{4}-\d{2}(-\d{2})?$/.test(value))) {
+      var monthOnly = /^\d{4}-\d{2}$/.test(value) || (value === '' && key === 'date' && cur.cfg.file.indexOf('achievements') !== -1);
       input = h('input', { type: monthOnly ? 'month' : 'date', value: value, oninput: function () { setAt(path, input.value); } });
+    } else if (key === 'icon' && (value === '' || /^\s*<svg/i.test(value))) {
+      return iconField(value, path);
     } else if (LONG_KEYS.indexOf(key) !== -1 || String(value).length > 90) {
       input = h('textarea', { rows: key === 'icon' ? 3 : Math.min(8, Math.max(2, Math.ceil(String(value).length / 90))), oninput: function () { setAt(path, input.value); } });
       input.value = value;
@@ -345,6 +356,59 @@
     return wrap;
   }
 
+  /* ── Icon picker (Beyond Work categories) ─────────────────── */
+  var ICON_WRAP = function (body) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>'; };
+  var ICONS = {
+    'Palette': '<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.9 1.6-1.7 0-.9-.7-1.3-.7-2.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4.1-4-7.6-9-7.6z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/>',
+    'Brush': '<path d="M14.5 4.5l5 5-8 8-5-5z"/><path d="M6.5 12.5C4.5 12.5 3 14 3 16c0 1.5-.5 3-1 4 3 0 7-1 7.5-5"/>',
+    'Camera': '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.5"/>',
+    'Music': '<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+    'Book': '<path d="M4 19.5V5.5A2.5 2.5 0 0 1 6.5 3H20v14H6.5A2.5 2.5 0 0 0 4 19.5zm0 0A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+    'Travel': '<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
+    'Cycling': '<circle cx="6" cy="16" r="4"/><circle cx="18" cy="16" r="4"/><path d="M6 16l4-8h5l3 8M10 8l2 8M14 5h2"/>',
+    'Fitness': '<path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/>',
+    'Running': '<circle cx="14" cy="4.5" r="2"/><path d="M7 21l3-6 3 2v5M5 11l3-3 4 1 3 3h3M10 15l2-6"/>',
+    'Chess': '<circle cx="12" cy="6" r="2.5"/><path d="M10 9h4l-1 6h-2z"/><path d="M8 20h8l-1-5H9z"/>',
+    'Carrom': '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/><circle cx="5.5" cy="5.5" r="1"/><circle cx="18.5" cy="5.5" r="1"/><circle cx="5.5" cy="18.5" r="1"/><circle cx="18.5" cy="18.5" r="1"/>',
+    'Badminton': '<path d="M9 15L5 4h14l-4 11z"/><path d="M9 15a3 3 0 0 0 6 0z"/><path d="M12 4v11M8.5 9h7"/>',
+    'Table tennis': '<circle cx="10" cy="10" r="6.5"/><path d="M14.5 14.5l5.5 5.5"/><circle cx="19" cy="5" r="1.6"/>',
+    'Pottery': '<path d="M9 3h6M10 3c0 2-3 4-3 8 0 5 2 9 5 9s5-4 5-9c0-4-3-6-3-8"/>',
+    'Gardening': '<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19l8-8"/>',
+    'Cooking': '<path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M2 10h20M9 6c0-1 1-1 1-2M14 6c0-1 1-1 1-2"/>',
+    'Gaming': '<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r=".9"/><circle cx="18" cy="13.5" r=".9"/>',
+    'Volunteering': '<path d="M12 20s-7-4.4-9-9.2C1.8 7.8 3.6 4.5 7 4.5c2 0 3.3 1.2 5 3 1.7-1.8 3-3 5-3 3.4 0 5.2 3.3 4 6.3-2 4.8-9 9.2-9 9.2z"/>',
+    'Hiking': '<path d="M3 20l6-11 4 7 2-3 6 7z"/><path d="M8 11.5l1-2.5 1.5 2.5"/>',
+    'Coding': '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+    'Star': '<path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L3.3 9.2l6.1-.6z"/>'
+  };
+  function iconField(value, path) {
+    var box = h('div', { class: 'f' }, [h('span', { class: 'f-label', text: 'Icon' })]);
+    var grid = h('div', { class: 'icon-grid' });
+    var choices = [];
+    // Icons already used in this file come first, then the built-in set.
+    var used = [];
+    if (cur.cfg.mapRoot) Object.keys(cur.data).forEach(function (k) { var v = cur.data[k] && cur.data[k].icon; if (v && used.indexOf(v) === -1) used.push(v); });
+    used.forEach(function (svg, i) { choices.push({ name: 'In use ' + (i + 1), svg: svg }); });
+    Object.keys(ICONS).forEach(function (n) { choices.push({ name: n, svg: ICON_WRAP(ICONS[n]) }); });
+    var ta = h('textarea', { rows: 3, spellcheck: 'false' });
+    ta.value = value;
+    function paint() {
+      grid.querySelectorAll('.icon-opt').forEach(function (b) { b.classList.toggle('on', b._svg.replace(/\s+/g, ' ') === String(getAt(path) || '').replace(/\s+/g, ' ')); });
+    }
+    choices.forEach(function (c) {
+      var b = h('button', { type: 'button', class: 'icon-opt', title: c.name, 'aria-label': c.name });
+      b.innerHTML = c.svg; b._svg = c.svg;
+      b.appendChild(h('span', { text: c.name }));
+      b.addEventListener('click', function () { setAt(path, c.svg); ta.value = c.svg; paint(); });
+      grid.appendChild(b);
+    });
+    ta.addEventListener('input', function () { setAt(path, ta.value); paint(); });
+    box.appendChild(grid);
+    box.appendChild(h('details', { class: 'icon-custom' }, [h('summary', { text: 'Use my own SVG code instead' }), ta]));
+    paint();
+    return box;
+  }
+
   /* Skill -> note pairs (Skills solar system) */
   function notesField(obj, path) {
     var box = h('fieldset', { class: 'group' }, [h('legend', { text: 'Skill notes' }),
@@ -368,6 +432,19 @@
       if (!nn || obj[nn] != null) return;
       obj[nn] = ''; markDirty(); render();
     } }));
+    // Skills on the cards that have no note yet — one click adds them.
+    var missing = h('div', { class: 'missing' });
+    box.appendChild(missing);
+    readText('JSON_Files/skills.json').then(function (txt) {
+      var dec = h('textarea'); var names = [];
+      (JSON.parse(txt).categories || []).forEach(function (c) { (c.pills || []).forEach(function (p) { dec.innerHTML = p; var n = dec.value.trim(); if (names.indexOf(n) === -1) names.push(n); }); });
+      var lacking = names.filter(function (n) { return obj[n] == null || obj[n] === ''; });
+      if (!lacking.length) { missing.appendChild(h('span', { class: 'f-hint', text: 'Every skill on your cards has a note.' })); return; }
+      missing.appendChild(h('span', { class: 'f-label', text: 'Skills without a note yet — click to add:' }));
+      lacking.forEach(function (n) {
+        missing.appendChild(h('button', { type: 'button', class: 'chip', text: '+ ' + n, onclick: function () { if (obj[n] == null) obj[n] = ''; markDirty(); render(); } }));
+      });
+    }).catch(function () {});
     return box;
   }
 
@@ -497,8 +574,9 @@
     // Offer a What's New post for each newly added achievement / project.
     var news = cur.cfg.news;
     if (!news) return;
-    var oldKeys = (before[news.list] || []).map(function (x) { return JSON.stringify([x.id || '', x.title || '']); });
-    var added = (cur.data[news.list] || []).filter(function (x) { return x.title && oldKeys.indexOf(JSON.stringify([x.id || '', x.title || ''])) === -1; });
+    var key = function (x) { return JSON.stringify([x.id || '', x.title || x.role || '', x.period || '']); };
+    var oldKeys = (before[news.list] || []).map(key);
+    var added = (cur.data[news.list] || []).filter(function (x) { return (x.title || x.role) && oldKeys.indexOf(key(x)) === -1; });
     for (var i = 0; i < added.length; i++) await offerNews(news, added[i]);
   }
 
@@ -589,6 +667,41 @@
     });
   });
 
+  /* Promotion / new job: ends the current role the month before and adds
+     the new one at the top as "… – Present". */
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  async function newRole() {
+    var cfg = FILES.find(function (f) { return f.file === 'JSON_Files/experience.json'; });
+    if (!(cur && cur.cfg === cfg) && !(await openFile(cfg))) return;
+    var tl = cur.data.timeline = cur.data.timeline || [];
+    var curIdx = tl.findIndex(function (t) { return /present/i.test(t.period || ''); });
+    var now = new Date();
+    var role = prompt('New job title (e.g. Senior Data Analyst):');
+    if (!role) return;
+    var start = prompt('Start month (like "' + MONTHS[now.getMonth()] + ' ' + now.getFullYear() + '"):', MONTHS[now.getMonth()] + ' ' + now.getFullYear());
+    var m = /^\s*([A-Za-z]{3})[a-z]*\.?\s+(\d{4})\s*$/.exec(start || '');
+    var mi = m ? MONTHS.map(function (x) { return x.toLowerCase(); }).indexOf(m[1].toLowerCase()) : -1;
+    if (mi === -1) { toast('Please give the month like "Apr 2027".', true); return; }
+    var startLabel = MONTHS[mi] + ' ' + m[2];
+    var prev = mi === 0 ? 'Dec ' + (Number(m[2]) - 1) : MONTHS[mi - 1] + ' ' + m[2];
+    var old = curIdx >= 0 ? tl[curIdx] : null;
+    var sameCompany = old ? confirm('Is this at the same company (' + (old.company || '') + ')?') : false;
+    if (old) old.period = String(old.period).replace(/\s*[–—-]\s*present.*$/i, ' – ' + prev);
+    var tpl = templates['timeline.*'] ? JSON.parse(JSON.stringify(templates['timeline.*'])) : {};
+    tpl.role = role;
+    tpl.company = sameCompany ? old.company : '';
+    if ('location' in tpl || old) tpl.location = sameCompany ? old.location : '';
+    tpl.period = startLabel + ' – Present';
+    tpl.duration = '{auto}';
+    if ('icon' in tpl || old) tpl.icon = old ? old.icon : 'chart';
+    tpl.description = ''; tpl.tags = [];
+    delete tpl.current;
+    tl.unshift(tpl);
+    openCards.add('timeline.0');
+    markDirty(); render();
+    toast(old ? 'Added "' + role + '" as current and ended "' + old.role + '" in ' + prev + '. Fill in the rest and Save.' : 'Added "' + role + '". Fill in the rest and Save.');
+  }
+
   // Lets automated tests hand the editor a folder without the picker.
   window.portfolioEditor = { useFolder: useFolder };
 
@@ -607,6 +720,7 @@
   document.querySelectorAll('[data-quick]').forEach(function (b) {
     b.addEventListener('click', async function () {
       var kind = b.getAttribute('data-quick');
+      if (kind === 'role') { newRole(); return; }
       var file = { achievement: 'JSON_Files/achievements.json', project: 'JSON_Files/personal-projects.json', news: 'JSON_Files/whats-new.json' }[kind];
       var cfg = FILES.find(function (f) { return f.file === file; });
       if (!(cur && cur.cfg === cfg) && !(await openFile(cfg))) return;

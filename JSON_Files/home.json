@@ -1,6 +1,6 @@
 {
   "hero": {
-    "eyebrow": "Data Analyst &nbsp;&middot;&nbsp; Chennai, India",
+    "eyebrow": "{role} &nbsp;&middot;&nbsp; Chennai, India",
     "firstName": "Anchana",
     "lastName": "Prabakaran",
     "description": "{years} years engineering data pipelines, migrating hundreds of SSRS reports to Databricks, and delivering Power&nbsp;BI dashboards that drive business decisions.",
@@ -16,14 +16,16 @@
     "eyebrow": "Profile",
     "summary": "Detail-oriented data analyst with proven expertise in SSRS-to-Databricks migration at scale, Power BI dashboard development, and data validation using Python. Comfortable across the full data stack &mdash; from converting T-SQL to Databricks-compatible SQL and configuring ODBC connectors, to deploying DBT models through Azure DevOps CI/CD. Certified Databricks Data Engineer Associate."
   },
-  "certification": {
-    "eyebrow": "Certifications",
-    "name": "Databricks Certified Data Engineer Associate",
-    "status": "Active",
-    "issuedLabel": "Issued",
-    "issuedDate": "June 1, 2026",
-    "validLabel": "Valid Until",
-    "validDate": "June 1, 2028",
-    "modalKey": "cert"
-  }
+  "certificationsEyebrow": "Certifications",
+  "certifications": [
+    {
+      "name": "Databricks Certified Data Engineer Associate",
+      "shortName": "Databricks",
+      "issuer": "Databricks",
+      "issuedDate": "2026-06-01",
+      "validUntil": "2028-06-01",
+      "image": "Images/Databricks.png",
+      "credentialUrl": ""
+    }
+  ]
 }

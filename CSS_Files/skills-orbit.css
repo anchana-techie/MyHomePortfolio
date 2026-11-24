@@ -131,12 +131,18 @@
     }
     .sol-planet-a .sol-moon-dot { background: radial-gradient(circle at 35% 30%, #fff 0%, #f9a8d4 50%, #9d174d 100%); }
     .sol-planet-b .sol-moon-dot { background: radial-gradient(circle at 35% 30%, #fff 0%, #c4b5fd 50%, #5b21b6 100%); }
+    /* Moon names: always shown small next to the moon; the open planet's
+       moons become full labelled pills. */
+    .sol-moon-inner { gap: 4px; }
     .sol-moon-label {
-      max-width: 0; overflow: hidden; opacity: 0;
-      font-size: .68rem; font-weight: 500;
-      color: var(--text);
-      transition: max-width .3s, opacity .25s;
+      max-width: 140px; overflow: hidden; opacity: .85;
+      font-size: .6rem; font-weight: 600; letter-spacing: .01em;
+      color: var(--text-soft);
+      text-shadow: 0 1px 3px var(--bg), 0 0 6px var(--bg);
+      transition: max-width .3s, opacity .25s, font-size .25s, color .25s;
     }
+    .sol-planet.is-open .sol-moon-label { font-size: .68rem; color: var(--text); text-shadow: none; }
+    .orbit.has-lit .sol-planet:not(.is-lit) .sol-moon-label { opacity: 0; }
     /* Open planet: moons grow into labelled pills */
     .sol-planet.is-open .sol-moon-inner {
       gap: 6px;
@@ -195,4 +201,25 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .sol-orbit, .sol-body, .sol-moons, .sol-moon-inner, .orbit-core { animation: none !important; }
+    }
+
+    /* Moon names sit under their dot and above the planet, so they're never hidden. */
+    .sol-moons { z-index: 2; }
+    .sol-planet:not(.is-open) .sol-moon-inner { flex-direction: column; gap: 2px; }
+    .sol-planet:not(.is-open) .sol-moon-label { text-align: center; }
+    @media (max-width: 640px) {
+      .sol-moon-label { font-size: .5rem; max-width: 80px; }
+      .orbit.has-lit .sol-planet.is-lit .sol-moon-label { font-size: .58rem; }
+    }
+
+    /* Room for always-on moon names: moons orbit further out, and the
+       planet's own name appears only when you hover/tap it. */
+    .orbit { --moon-r: 60px; --sys: 170px; }
+    .sol-planet.is-open { --moon-r: calc(var(--globe) / 2 + 50px); }
+    .sol-name { opacity: 0; transition: opacity .25s, color .3s; }
+    .sol-planet.is-lit .sol-name { opacity: 1; }
+    @media (max-width: 640px) {
+      .orbit { --moon-r: 30px; --sys: 96px; }
+      .sol-planet.is-open { --moon-r: calc(var(--globe) / 2 + 34px); }
+      .sol-planet:not(.is-open) .sol-moon-label { display: none; }
     }
