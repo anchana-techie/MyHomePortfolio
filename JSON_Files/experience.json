@@ -5,8 +5,8 @@
   "stats": [
     {
       "icon": "briefcase",
-      "value": "{years}",
-      "label": "Years of Experience"
+      "value": "{tenure}",
+      "label": "Total Experience"
     },
     {
       "icon": "layers",
