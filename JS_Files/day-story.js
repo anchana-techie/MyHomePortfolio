@@ -8,7 +8,8 @@
      07:15 Coffee first      kitchen counter
      09:30 Building pipelines desk + laptop dashboard
      12:00 Team sync         whiteboard + teammates
-     15:00 Hackathon win!    trophy + confetti
+     15:00 Carrom            carrom board with a friend
+     16:30 Chess             chess at a small table
      18:00 Badminton         rally with a partner
      19:30 Painting          easel
      20:45 Clay time         pottery wheel
@@ -29,7 +30,7 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── World ─────────────────────────────────────────────── */
-  var WORLD_W = 2050, H = 430, GROUND = 352;
+  var WORLD_W = 2290, H = 430, GROUND = 352;
   var MIN_SCALE = 0.5;            // below this, the camera follows her instead
   var scale = 1, viewW = WORLD_W, camX = 0;
 
@@ -38,12 +39,15 @@
     { id: 'coffee',    x: 345, sx: 345,  hour: 7.25, dur: 3.6, label: 'Coffee first' },
     { id: 'desk',      x: 575, sx: 545,  hour: 9.5,  dur: 4.6, label: 'Building data pipelines' },
     { id: 'meeting',   x: 815, sx: 805,  hour: 12,   dur: 4.0, label: 'Team sync' },
-    { id: 'trophy',    x: 1050, sx: 1070, hour: 15,   dur: 4.2, label: 'Hackathon win!' },
-    { id: 'badminton', x: 1275, sx: 1285, hour: 18,   dur: 4.6, label: 'Badminton' },
-    { id: 'paint',     x: 1505, sx: 1513, hour: 19.5, dur: 4.2, label: 'Painting' },
-    { id: 'pottery',   x: 1710, sx: 1689, hour: 20.75, dur: 4.0, label: 'Clay time' },
-    { id: 'sleep',     x: 1925, sx: 1899, hour: 22.5, dur: 4.6, label: 'Good night' }
+    { id: 'carrom',    x: 1050, sx: 1040, hour: 15,   dur: 4.6, label: 'Carrom with friends' },
+    { id: 'chess',     x: 1290, sx: 1280, hour: 16.5, dur: 4.6, label: 'A game of chess' },
+    { id: 'badminton', x: 1515, sx: 1525, hour: 18,   dur: 4.6, label: 'Badminton' },
+    { id: 'paint',     x: 1745, sx: 1753, hour: 19.5, dur: 4.2, label: 'Painting' },
+    { id: 'pottery',   x: 1950, sx: 1929, hour: 20.75, dur: 4.0, label: 'Clay time' },
+    { id: 'sleep',     x: 2165, sx: 2139, hour: 22.5, dur: 4.6, label: 'Good night' }
   ];
+  var BY = {};
+  STATIONS.forEach(function (s) { BY[s.id] = s; });
   var WALK_SPEED = 95;            // world units per second
 
   /* ── Colours ───────────────────────────────────────────── */
@@ -430,36 +434,70 @@
     ctx.fillStyle = '#fbbf24'; ctx.fillRect(x + 104, GROUND - 150, 18, 14);          // sticky notes
     ctx.fillStyle = '#93c5fd'; ctx.fillRect(x + 84, GROUND - 150, 16, 14);
   }
-  function trophyStand(x, k) {
-    stroke(); ctx.fillStyle = C.fill;
-    rr(x + 24, GROUND - 46, 52, 46, 3); ctx.fill(); ctx.stroke();            // plinth
-    ctx.fillStyle = C.accent; ctx.font = '700 11px Inter, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('2nd', x + 50, GROUND - 18);
-    // banner
-    ctx.fillStyle = C.accent2; ctx.globalAlpha = 0.18; rr(x - 40, GROUND - 210, 180, 34, 6); ctx.fill(); ctx.globalAlpha = 1;
-    ctx.fillStyle = C.accent2; ctx.font = '600 11px Inter, sans-serif'; ctx.fillText('AGENTIC AI HACKATHON', x + 50, GROUND - 189);
+  function chair(x, dir, seatY) {            // side-view chair, back behind the sitter
+    stroke(); var back = x - dir * 14;
+    line(x - 14, seatY, x + 14, seatY); line(x - 12, seatY, x - 12, GROUND); line(x + 12, seatY, x + 12, GROUND);
+    line(back, seatY, back - dir * 4, seatY - 46);
   }
-  function trophy(x, y) {           // blue crystal on a clear block, like the real one
-    ctx.fillStyle = 'rgba(226,232,245,.55)'; ctx.strokeStyle = 'rgba(226,232,245,.9)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(x - 6, y); ctx.lineTo(x + 6, y); ctx.lineTo(x + 4, y - 22); ctx.lineTo(x - 4, y - 22); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#3b82f6';
-    ctx.beginPath(); ctx.moveTo(x - 8, y - 26); ctx.lineTo(x + 8, y - 26); ctx.lineTo(x, y - 16); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#93c5fd'; ctx.beginPath(); ctx.moveTo(x - 8, y - 26); ctx.lineTo(x + 8, y - 26); ctx.lineTo(x + 4, y - 31); ctx.lineTo(x - 4, y - 31); ctx.closePath(); ctx.fill();
-  }
-  var confetti = [];
-  function burst(x, y) {
-    confetti = [];
-    for (var i = 0; i < 46; i++) confetti.push({ x: x, y: y, vx: (rand(i) - 0.5) * 150, vy: -80 - rand(i + 7) * 120, r: rand(i + 3) * 6, c: [C.accent, C.accent2, '#fbbf24', '#38bdf8'][i % 4], life: 1 });
-  }
-  function drawConfetti(dt) {
-    confetti.forEach(function (p) {
-      p.vy += 160 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.r += dt * 6; p.life -= dt * 0.45;
-      if (p.life <= 0) return;
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, p.life);
-      ctx.fillStyle = p.c; ctx.fillRect(-3, -1.5, 6, 3); ctx.restore();
+  function stool(x, seatY) { stroke(); ctx.fillStyle = C.fill; rr(x - 13, seatY, 26, 6, 2); ctx.fill(); ctx.stroke(); line(x - 9, seatY + 6, x - 9, GROUND); line(x + 9, seatY + 6, x + 9, GROUND); }
+
+  /* Carrom: a low board on a stand, seen slightly from above. The striker
+     is flicked at the coins; one coin drops into a pocket. */
+  function carromProp(cx, k, playing) {
+    var top = GROUND - 46, w = 92, d = 22;          // board front-edge y, width, depth
+    stroke(); line(cx - 40, top + 6, cx - 34, GROUND); line(cx + 40, top + 6, cx + 34, GROUND); line(cx - 37, GROUND - 16, cx + 37, GROUND - 16);
+    ctx.fillStyle = '#8b5a2b';                        // frame
+    ctx.beginPath(); ctx.moveTo(cx - w / 2, top + 6); ctx.lineTo(cx + w / 2, top + 6); ctx.lineTo(cx + w / 2 - 8, top - d); ctx.lineTo(cx - w / 2 + 8, top - d); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#f3d9a4';                        // playing surface
+    ctx.beginPath(); ctx.moveTo(cx - w / 2 + 6, top + 2); ctx.lineTo(cx + w / 2 - 6, top + 2); ctx.lineTo(cx + w / 2 - 12, top - d + 4); ctx.lineTo(cx - w / 2 + 12, top - d + 4); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#3b2412';                        // pockets
+    [[-w / 2 + 10, 0], [w / 2 - 10, 0], [-w / 2 + 15, -d + 6], [w / 2 - 15, -d + 6]].forEach(function (p) { ctx.beginPath(); ctx.ellipse(cx + p[0], top + p[1], 3.4, 1.8, 0, 0, Math.PI * 2); ctx.fill(); });
+    ctx.strokeStyle = '#b5523b'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(cx, top - d / 2 + 2, 11, 4, 0, 0, Math.PI * 2); ctx.stroke();
+    // coins: a cluster that scatters after the hit
+    var hit = playing ? clamp((k - 0.45) / 0.3, 0, 1) : (k > 0 ? 1 : 0);
+    var coins = [[0, 0, '#c81e3a'], [-6, -1, '#f8fafc'], [6, -1, '#1f1a17'], [-3, 2, '#1f1a17'], [3, 2, '#f8fafc'], [-4, -3, '#1f1a17'], [4, -3, '#f8fafc']];
+    coins.forEach(function (c, i) {
+      var spread = 1 + hit * (1.6 + i * 0.25), sunk = i === 3 && hit > 0.6;
+      if (sunk) return;
+      var px = cx + c[0] * spread, py = top - d / 2 + 2 + c[1] * spread * 0.5;
+      if (i === 3) { px = lerp(px, cx + w / 2 - 15, hit); py = lerp(py, top - d + 6, hit); }
+      ctx.fillStyle = c[2]; ctx.beginPath(); ctx.ellipse(px, py, 3, 1.6, 0, 0, Math.PI * 2); ctx.fill();
     });
-    confetti = confetti.filter(function (p) { return p.life > 0 && p.y < GROUND + 10; });
+    // striker: rests near her edge, slides in on the flick, comes back
+    var sx = cx - 34, sy = top - 2;
+    if (playing) { var go = k < 0.45 ? 0 : (k < 0.6 ? (k - 0.45) / 0.15 : Math.max(0, 1 - (k - 0.7) / 0.2)); sx = lerp(cx - 34, cx - 6, go); sy = lerp(top - 2, top - d / 2 + 2, go); }
+    ctx.fillStyle = '#e2e8f5'; ctx.beginPath(); ctx.ellipse(sx, sy, 4.2, 2.2, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = C.accent; ctx.lineWidth = 0.8; ctx.stroke();
   }
+
+  /* Chess: a small table with a board seen slightly from above. */
+  var CHESS_TOP = GROUND - 58;
+  function chessProp(cx, k, playing, held) {
+    stroke(); ctx.fillStyle = C.fill;
+    rr(cx - 44, CHESS_TOP, 88, 6, 2); ctx.fill(); ctx.stroke();
+    line(cx - 36, CHESS_TOP + 6, cx - 36, GROUND); line(cx + 36, CHESS_TOP + 6, cx + 36, GROUND);
+    // board (8 × 3 visible rows in perspective)
+    var bw = 64, bd = 14, top = CHESS_TOP;
+    for (var r = 0; r < 3; r++) for (var c = 0; c < 8; c++) {
+      var y0 = top - r * bd / 3, y1 = top - (r + 1) * bd / 3, sh0 = r * 2, sh1 = (r + 1) * 2;
+      var x0 = cx - bw / 2 + sh0 + c * (bw - 2 * sh0) / 8, x1 = cx - bw / 2 + sh0 + (c + 1) * (bw - 2 * sh0) / 8;
+      var x2 = cx - bw / 2 + sh1 + (c + 1) * (bw - 2 * sh1) / 8, x3 = cx - bw / 2 + sh1 + c * (bw - 2 * sh1) / 8;
+      ctx.fillStyle = (r + c) % 2 ? '#5b4636' : '#efe1c6';
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y0); ctx.lineTo(x2, y1); ctx.lineTo(x3, y1); ctx.closePath(); ctx.fill();
+    }
+    // pieces: hers (pink) on the left, the friend's (violet) on the right
+    var mine = [[-26, -3], [-20, -8], [-14, -4]], theirs = [[14, -5], [20, -9], [26, -3], [8, -10]];
+    mine.forEach(function (p, i) { if (!(held && i === 2)) piece(cx + p[0], top + p[1] + 1, C.accent, i === 1); });
+    theirs.forEach(function (p, i) { piece(cx + p[0], top + p[1] + 1, C.accent2, i === 1); });
+    if (!held && playing && k > 0.62) {}  // the moved piece is drawn at its new square below
+  }
+  function piece(x, y, col, king) {
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.moveTo(x - 3, y); ctx.lineTo(x + 3, y); ctx.lineTo(x + 1.6, y - (king ? 9 : 6)); ctx.lineTo(x - 1.6, y - (king ? 9 : 6)); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y - (king ? 10 : 7), king ? 2.2 : 2, 0, Math.PI * 2); ctx.fill();
+    if (king) ctx.fillRect(x - 0.6, y - 15, 1.2, 4);
+  }
+
   function net(x) {
     stroke(); line(x, GROUND, x, GROUND - 78);
     ctx.strokeStyle = C.furnitureDim; ctx.lineWidth = 1;
@@ -541,7 +579,6 @@
 
   /* ── Scene: everything for one moment in the loop ──────── */
   var ME = function () { return { top: C.top, pants: C.pants, hair: C.hair, hairStyle: 'ponytail', glasses: true }; };
-  var burstDone = false;
 
   function draw(time, dt) {
     time = time || 0; dt = dt || 0;
@@ -565,30 +602,40 @@
     drawBackground(hour, time);
 
     var night = nightness(hour);
-    var st = STATIONS;
     // props (static parts)
-    bed(st[0].x, 0);
-    kitchen(st[1].x, time);
-    desk(st[2].x, time, act === 'desk');
-    whiteboard(st[3].x, act === 'meeting' ? k : (time > steps.find(function (s) { return s.st && s.st.id === 'meeting'; }).t1 ? 1 : 0), time);
-    trophyStand(st[4].x, k);
-    net(st[5].x + 70);
-    easelProp(st[6].x, act === 'paint' ? ease(k) : (hour > st[6].hour + 0.3 ? 1 : 0));
-    potteryProp(st[7].x, act === 'pottery' ? ease(k) : (hour > st[7].hour + 0.3 ? 1 : 0), act === 'pottery' ? time : 0);
-    bed(st[8].x, night);
-
-    // the trophy waits on its plinth until she picks it up
-    var holdingTrophy = act === 'trophy' && k > 0.18;
-    if (!holdingTrophy && hour < st[4].hour) trophy(st[4].x + 50, GROUND - 46);
-    if (!holdingTrophy && hour > st[4].hour + 0.3) trophy(st[4].x + 50, GROUND - 46);
+    bed(BY.wake.x, 0);
+    kitchen(BY.coffee.x, time);
+    desk(BY.desk.x, time, act === 'desk');
+    whiteboard(BY.meeting.x, act === 'meeting' ? k : (hour > BY.meeting.hour + 0.3 ? 1 : 0), time);
+    stool(BY.carrom.sx, GROUND - 30); stool(BY.carrom.sx + 134, GROUND - 30);
+    carromProp(BY.carrom.sx + 67, act === 'carrom' ? k : (hour > BY.carrom.hour + 0.3 ? 1 : 0), act === 'carrom');
+    chair(BY.chess.sx, 1, GROUND - 44); chair(BY.chess.sx + 116, -1, GROUND - 44);
+    var chessHeld = act === 'chess' && k > 0.35 && k < 0.62;
+    chessProp(BY.chess.sx + 58, act === 'chess' ? k : 0, act === 'chess', chessHeld || (act === 'chess' && k >= 0.62) || hour > BY.chess.hour + 0.3);
+    if ((act === 'chess' && k >= 0.62) || hour > BY.chess.hour + 0.3) piece(BY.chess.sx + 58 - 4, CHESS_TOP - 9, C.accent, false); // her moved piece
+    net(BY.badminton.x + 70);
+    easelProp(BY.paint.x, act === 'paint' ? ease(k) : (hour > BY.paint.hour + 0.3 ? 1 : 0));
+    potteryProp(BY.pottery.x, act === 'pottery' ? ease(k) : (hour > BY.pottery.hour + 0.3 ? 1 : 0), act === 'pottery' ? time : 0);
+    bed(BY.sleep.x, night);
 
     // teammates at the meeting (around from late morning to early afternoon)
     if (hour > 11 && hour < 13.5) {
       var mt = act === 'meeting' ? time : 0;
-      drawPerson({ x: st[3].x + 160, ground: GROUND, dir: -1, t: mt, look: { top: C.mate1, pants: '#334155', hair: C.mateHair, hairStyle: 'short', glasses: false },
+      drawPerson({ x: BY.meeting.x + 160, ground: GROUND, dir: -1, t: mt, look: { top: C.mate1, pants: '#334155', hair: C.mateHair, hairStyle: 'short', glasses: false },
         pose: { legB: [0, 0], legF: [0.05, 0], armB: [0.1, 0.2], armF: [0.2, 0.9 + Math.sin(mt * 3) * 0.15] } });
-      drawPerson({ x: st[3].x + 205, ground: GROUND, dir: -1, t: mt, look: { top: C.mate2, pants: '#3f3a5a', hair: C.mateHair, hairStyle: 'ponytail', glasses: false },
+      drawPerson({ x: BY.meeting.x + 205, ground: GROUND, dir: -1, t: mt, look: { top: C.mate2, pants: '#3f3a5a', hair: C.mateHair, hairStyle: 'ponytail', glasses: false },
         pose: { legB: [0, 0], legF: [-0.05, 0], armB: [0.05, 0.1], armF: [-0.05, 0.6 + Math.sin(mt * 2.4 + 1) * 0.2] } });
+    }
+    // carrom friend (sits across the board) and chess friend (thinking, chin on hand)
+    if (hour > 14.4 && hour < 15.6) {
+      var ct = act === 'carrom' ? time : 0;
+      drawPerson({ x: BY.carrom.sx + 134, ground: GROUND, dir: -1, t: ct, look: { top: C.mate2, pants: '#3f3a5a', hair: C.mateHair, hairStyle: 'ponytail' },
+        pose: { hipY: GROUND - 30, legB: [70 * D, 0], legF: [74 * D, -4 * D], armB: [0.5, 1.2], armF: [0.6 + Math.sin(ct * 2) * 0.05, 1.35], lean: 0.25 } });
+    }
+    if (hour > 15.9 && hour < 17.1) {
+      var cht = act === 'chess' ? time : 0;
+      drawPerson({ x: BY.chess.sx + 116, ground: GROUND, dir: -1, t: cht, look: { top: C.mate1, pants: '#334155', hair: C.mateHair, hairStyle: 'short' },
+        pose: { hipY: GROUND - 62, legB: [88 * D, 4 * D], legF: [92 * D, 0], armB: [0.4, 1.5], armF: [0.35, 2.75 + Math.sin(cht * 1.5) * 0.06], lean: 0.18, head: 0.1 } });
     }
     // badminton partner
     var shuttleT = 0;
@@ -596,7 +643,7 @@
       var bt = act === 'badminton' ? time : 0;
       shuttleT = (bt * 0.9) % 2;
       var pSwing = shuttleT > 1.75 ? 1 : 0;
-      drawPerson({ x: st[5].x + 145, ground: GROUND, dir: -1, t: bt, look: { top: C.mate1, pants: '#334155', hair: C.mateHair, hairStyle: 'short' },
+      drawPerson({ x: BY.badminton.x + 145, ground: GROUND, dir: -1, t: bt, look: { top: C.mate1, pants: '#334155', hair: C.mateHair, hairStyle: 'short' },
         pose: { legB: [-0.25, -0.1], legF: [0.25, 0.1], armB: [0.2, 0.4], armF: [-2.2 + pSwing * 1.4, -2.6 + pSwing * 1.2] },
         item: function (hx, hy) { racket(hx, hy, -0.4 - pSwing * 0.8); } });
     }
@@ -630,18 +677,20 @@
         dir = 1;
         item = function (hx, hy) { stroke('#be185d', 2.2); line(hx, hy, hx + 6, hy - 3); };
         break;
-      case 'trophy':
-        if (k < 0.1) burstDone = false;
-        pose = pStand();
-        if (k < 0.18) { pose.armF = [0.3 + k * 4, 0.6 + k * 3]; }
-        else {
-          var lift = ease(clamp((k - 0.18) / 0.25, 0, 1)), bob = Math.sin(time * 6) * 0.08 * lift;
-          pose.armF = [-0.2 - 2.6 * lift + bob, -0.3 - 2.6 * lift + bob];
-          pose.armB = [-0.2 - 2.4 * lift - bob, -0.3 - 2.5 * lift - bob];
-          pose.legF = [0.05, 0]; pose.legB = [-0.05, 0];
-          item = function (hx, hy) { trophy(hx + 1, hy + 8); };
-          if (!burstDone && k > 0.38) { burstDone = true; burst(x + 4, GROUND - 160); }
-        }
+      case 'carrom':
+        pose = pSit(GROUND - 30);
+        pose.legB = [70 * D, 0]; pose.legF = [74 * D, -4 * D]; pose.lean = 0.32;
+        // line up the striker, then flick it
+        var aim = k < 0.45 ? Math.sin(time * 3) * 0.04 : 0, flick = k > 0.45 && k < 0.52 ? 0.35 : 0;
+        pose.armF = [1.05 + aim, 1.5 + flick]; pose.armB = [0.7, 1.35];
+        break;
+      case 'chess':
+        pose = pSit(GROUND - 62);
+        pose.lean = 0.15;
+        if (k < 0.3) { pose.armF = [0.3, 2.7]; pose.head = 0.12; }                  // thinking, chin on hand
+        else if (k < 0.62) { var r = Math.sin((k - 0.3) / 0.32 * Math.PI); pose.armF = [0.6 + r * 0.6, 1.25 + r * 0.2];
+          item = function (hx, hy) { piece(hx + 2, hy + 4, C.accent, false); }; }  // lifting a piece across
+        else { pose.armF = [0.35, 1.3]; pose.head = -0.05; }
         break;
       case 'badminton':
         var sw = shuttleT < 0.25 ? 1 : 0;
@@ -666,8 +715,7 @@
     }
 
     // draw her (lying = in bed)
-    var bedX = act === 'wake' || (step.kind !== 'walk' && step.st && step.st.id === 'wake') ? st[0].x : st[8].x;
-    if (step.kind === 'fade' || act === 'sleep') bedX = st[8].x;
+    var bedX = act === 'wake' ? BY.wake.x : BY.sleep.x;
     if (lying != null) {
       // lying → sitting up: rotate a seated figure back onto the pillow
       drawPerson({ x: bedX - 4, ground: GROUND, dir: 1, t: time, look: ME(), pose: pLie(GROUND - 34, lying) });
@@ -683,16 +731,15 @@
     } else {
       drawPerson({ x: x, ground: GROUND, dir: dir, t: time, look: ME(), pose: pose, item: item, itemBack: itemBack });
     }
-    if (act === 'wake' && k < 0.6) blanket(st[0].x, k > 0.35 ? ease((k - 0.35) / 0.25) : 0);
+    if (act === 'wake' && k < 0.6) blanket(BY.wake.x, k > 0.35 ? ease((k - 0.35) / 0.25) : 0);
 
     // shuttlecock
     if (act === 'badminton') {
-      var fx = x + 22, tx = st[5].x + 128, u = shuttleT < 1 ? shuttleT : 2 - shuttleT;
+      var fx = x + 22, tx = BY.badminton.x + 128, u = shuttleT < 1 ? shuttleT : 2 - shuttleT;
       var sx = lerp(fx, tx, u), sy = GROUND - 120 - Math.sin(u * Math.PI) * 90;
       ctx.fillStyle = C.paper; ctx.beginPath(); ctx.arc(sx, sy, 3, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = C.paper; ctx.lineWidth = 1; line(sx, sy, sx + (shuttleT < 1 ? -6 : 6), sy - 3);
     }
-    drawConfetti(dt);
 
     // captions: fade in on arrival, out on leaving
     STATIONS.forEach(function (s) {
@@ -732,7 +779,7 @@
     draw((deskStep.t0 + deskStep.t1) / 2, 0);
   } else kick();
 
-  // Let tests jump to a moment: window.dayStory.at('trophy', 0.6)
+  // Let tests jump to a moment: window.dayStory.at('chess', 0.5)
   window.dayStory = {
     loop: LOOP,
     at: function (id, frac) {
