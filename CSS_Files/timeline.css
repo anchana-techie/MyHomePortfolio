@@ -48,7 +48,7 @@
       font-weight: 600;
       letter-spacing: .04em;
       text-transform: uppercase;
-      color: #0a0b0e;
+      color: var(--bg);
       background: var(--gold);
       padding: .22rem .55rem;
       border-radius: 20px;
@@ -73,7 +73,7 @@
       margin-top: .3rem;
       border: none;
       background: var(--gold);
-      box-shadow: 0 0 0 5px var(--gold-dim), 0 0 16px rgba(201,168,76,.55);
+      box-shadow: 0 0 0 5px var(--gold-dim), 0 0 16px rgba(var(--accent-rgb),.55);
     }
     .tl-line {
       width: 1px;
@@ -91,7 +91,7 @@
       transition: border-color .2s, background .2s;
     }
     .tl-item.is-current .tl-card {
-      border-color: rgba(201,168,76,.35);
+      border-color: rgba(var(--accent-rgb),.35);
       background: var(--gold-dim);
     }
     .tl-card:hover { border-color: var(--gold); }

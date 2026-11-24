@@ -15,7 +15,7 @@
       top: -40%; right: -10%;
       width: 600px; height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,168,76,.07) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(var(--accent-rgb),.07) 0%, transparent 65%);
       pointer-events: none;
     }
     .hero-grid {

@@ -6,7 +6,7 @@
   <title>Anchana Prabakaran – Data Analyst</title>
   <meta name="description" content="Anchana Prabakaran — Data Analyst in Chennai, India. Databricks Certified Data Engineer Associate working across Power BI, Azure Databricks, DBT and SSRS-to-Databricks migration. Ask the AI assistant about her work." />
   <meta name="author" content="Anchana Prabakaran" />
-  <meta name="theme-color" content="#0f0f0f" />
+  <meta name="theme-color" content="#0b1220" />
   <link rel="canonical" href="https://anchana-techie.github.io/MyHomePortfolio/" />
   <!-- Link previews (LinkedIn, WhatsApp, Slack, X) -->
   <meta property="og:type" content="profile" />
@@ -40,7 +40,7 @@
   <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="CSS_Files/base.css" />
   <link rel="stylesheet" href="CSS_Files/navigation.css" />
   <link rel="stylesheet" href="CSS_Files/hero.css" />
@@ -581,12 +581,12 @@
       body.innerHTML = `<div class="modal-placeholder">
         <h3>Power BI File</h3>
         <p>Browsers cannot preview .pbix files directly.</p>
-        <a href="${doc.file}" download style="padding:10px 20px;border:1px solid #c9a84c;text-decoration:none;">Download PBIX File</a>
+        <a href="${doc.file}" download style="padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;">Download PBIX File</a>
       </div>`;
     } else {
       body.innerHTML = `<iframe src="${doc.file}#toolbar=1&view=FitH" style="overflow:hidden;"></iframe>
       <div style="padding:15px;text-align:center;">
-      <a href="${doc.file}" download style="padding:10px 20px;border:1px solid #c9a84c;text-decoration:none;">Download</a>
+      <a href="${doc.file}" download style="padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;">Download</a>
       </div>`;
     }
 
@@ -671,13 +671,13 @@ window.addEventListener('resize', resize);
 resize();
 
 const COL_DARK = {
-  bg:'#0a0a12', line:'#8f7cf0', lineDim:'#5c4fae',
+  bg:'#0b1220', line:'#8f7cf0', lineDim:'#5c4fae',
   girl:'#c7bbfb', partner:'#ffb4d0',
   accentSun:'#f6c667', accentMoon:'#d9def0',
   paper:'#efe7ff', ink:'#3a2f66', screen:'#2a2350', code:'#a996ff', shuttle:'#ffffff'
 };
 const COL_LIGHT = {
-  bg:'#f7f4ed', line:'#5b4aa8', lineDim:'#b3a7de',
+  bg:'#fbf6f9', line:'#5b4aa8', lineDim:'#b3a7de',
   girl:'#6b57c9', partner:'#c9527e',
   accentSun:'#d99a1f', accentMoon:'#8d89ab',
   paper:'#ffffff', ink:'#3a2f66', screen:'#e3ddf7', code:'#5b4aa8', shuttle:'#3a2f66'
@@ -1763,9 +1763,9 @@ requestAnimationFrame(loop);
 
     var FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 360">' +
-      '<rect width="330" height="360" fill="#161820"/>' +
-      '<circle cx="165" cy="150" r="42" fill="none" stroke="#4a5060" stroke-width="3"/>' +
-      '<path d="M110 235 Q165 175 220 235" fill="none" stroke="#4a5060" stroke-width="3"/>' +
+      '<rect width="330" height="360" fill="#131f35"/>' +
+      '<circle cx="165" cy="150" r="42" fill="none" stroke="#5b6a85" stroke-width="3"/>' +
+      '<path d="M110 235 Q165 175 220 235" fill="none" stroke="#5b6a85" stroke-width="3"/>' +
       '</svg>'
     );
 

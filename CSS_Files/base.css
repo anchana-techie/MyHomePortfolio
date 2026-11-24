@@ -1,48 +1,55 @@
     :root {
-      --bg:          #0a0b0e;
-      --bg-raised:   #111318;
-      --bg-card:     #161820;
-      --border:      #21252f;
-      --border-soft: #1c1f28;
-      --text:        #e8eaf0;
-      --text-soft:   #8b90a0;
-      --text-muted:  #4a5060;
-      --gold:        #c9a84c;
-      --gold-dim:    rgba(201,168,76,.12);
-      --teal:        #2dd4bf;
-      --teal-dim:    rgba(45,212,191,.1);
-      --nav-bg:      rgba(10,11,14,0.92);
-      --photo-shade: rgba(10,11,14,0.85);
-      --project-hover: #13151d;
-      --carousel-btn-bg: rgba(10,11,14,0.70);
-      --modal-overlay: rgba(0,0,0,0.82);
-      --canvas-text:  #e8eaf0;
-      --shadow-strong: rgba(0,0,0,0.7);
-      --display:     'DM Serif Display', Georgia, serif;
+      /* Theme: "Ocean pink" - deep navy, pink accent, violet second accent.
+         --gold / --teal are the historic names of the main and second
+         accent; every section reads them, so only these values change. */
+      --bg:          #0b1220;
+      --bg-raised:   #101a2c;
+      --bg-card:     #131f35;
+      --border:      #22304a;
+      --border-soft: #1a2640;
+      --text:        #e6edf7;
+      --text-soft:   #94a3bf;
+      --text-muted:  #5b6a85;
+      --gold:        #f472b6;
+      --gold-dim:    rgba(244,114,182,.12);
+      --teal:        #a78bfa;
+      --teal-dim:    rgba(167,139,250,.1);
+      --accent-rgb:  244,114,182;
+      --accent2-rgb: 167,139,250;
+      --nav-bg:      rgba(11,18,32,0.92);
+      --photo-shade: rgba(11,18,32,0.85);
+      --project-hover: #111c30;
+      --carousel-btn-bg: rgba(11,18,32,0.70);
+      --modal-overlay: rgba(3,6,14,0.82);
+      --canvas-text:  #e6edf7;
+      --shadow-strong: rgba(0,0,0,0.6);
+      --display:     'Space Grotesk', 'Inter', sans-serif;
       --body:        'Inter', sans-serif;
       --max:         1080px;
     }
 
     body.light-theme {
-      --bg:          #f7f4ed;
+      --bg:          #fbf6f9;
       --bg-raised:   #ffffff;
-      --bg-card:     #fbfaf7;
-      --border:      #ded7c8;
-      --border-soft: #ebe4d7;
-      --text:        #20232a;
-      --text-soft:   #5e6673;
-      --text-muted:  #8a8276;
-      --gold:        #9f7a18;
-      --gold-dim:    rgba(159,122,24,.12);
-      --teal:        #008b7d;
-      --teal-dim:    rgba(0,139,125,.1);
-      --nav-bg:      rgba(247,244,237,0.92);
-      --photo-shade: rgba(247,244,237,0.82);
-      --project-hover: #f3eee4;
+      --bg-card:     #fefbfd;
+      --border:      #ecdde6;
+      --border-soft: #f4e9ef;
+      --text:        #1c1726;
+      --text-soft:   #5c5670;
+      --text-muted:  #8f879e;
+      --gold:        #be185d;
+      --gold-dim:    rgba(190,24,93,.10);
+      --teal:        #6d28d9;
+      --teal-dim:    rgba(109,40,217,.08);
+      --accent-rgb:  190,24,93;
+      --accent2-rgb: 109,40,217;
+      --nav-bg:      rgba(251,246,249,0.92);
+      --photo-shade: rgba(251,246,249,0.82);
+      --project-hover: #f8eef4;
       --carousel-btn-bg: rgba(255,255,255,0.78);
-      --modal-overlay: rgba(32,35,42,0.55);
-      --canvas-text:  #20232a;
-      --shadow-strong: rgba(47,42,31,0.22);
+      --modal-overlay: rgba(28,23,38,0.55);
+      --canvas-text:  #1c1726;
+      --shadow-strong: rgba(60,20,45,0.18);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

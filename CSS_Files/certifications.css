@@ -45,7 +45,7 @@
       text-transform: uppercase;
       padding: .35rem .8rem;
       border-radius: 4px;
-      border: 1px solid rgba(45,212,191,.2);
+      border: 1px solid rgba(var(--accent2-rgb),.2);
     }
     .status-active::before {
       content: '';
