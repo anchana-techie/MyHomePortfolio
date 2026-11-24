@@ -71,3 +71,23 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }
+
+    /* ── Phones and small tablets: nothing may be wider than the screen ── */
+    .hero-grid > * { min-width: 0; }          /* a long one-line link can't stretch the column */
+    .hero-latest { max-width: 100%; }
+    html, body { overflow-x: clip; }
+    @media (max-width: 640px) {
+      nav .wrap { padding-inline: 1.25rem 1.5rem; }   /* logo flush left, menu button a little in from the edge */
+      nav .wrap a.nav-logo { font-size: 1.05rem; margin-right: 1rem; }
+      .nav-logo-mark { height: 34px; width: 34px; }
+      .hero-desc { font-size: .95rem; }
+      .cert-badge { max-width: 100%; }
+      .hero-latest { font-size: .72rem; }
+      .hero-photo-col { justify-self: stretch; align-items: center; }
+      .id-scene { margin-inline: auto; }
+    }
+    @media (max-width: 380px) {
+      nav .wrap a.nav-logo { font-size: .95rem; margin-right: .5rem; }
+      .nav-logo-mark { height: 30px; width: 30px; margin-right: 6px; }
+      .nav-hamburger { margin-right: 4px; }
+    }
